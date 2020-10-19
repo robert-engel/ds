@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {ExtraOptions, RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {DashboardService} from './service/dashboard/dashboard.service';
+import {environment} from '../environments/environment';
 
 const routes: Routes = [
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
 
 const config: ExtraOptions = {
   useHash: false,
-  enableTracing: true,
+  enableTracing: !environment.production,
 };
 
 
