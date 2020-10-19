@@ -1,0 +1,4 @@
+<mat-toolbar color="primary">Menu</mat-toolbar>
+<mat-nav-list>
+  <a *ngFor="let item of items" mat-list-item [routerLink]="item.link">{{item.title}}</a>
+</mat-nav-list>

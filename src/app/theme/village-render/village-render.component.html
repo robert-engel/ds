@@ -1,0 +1,9 @@
+<ng-container *ngIf="value">
+  <a *ngIf="link" [href]="link" (click)="$event.stopPropagation()">
+    {{value.name}} ({{value.x}}|{{value.y}})<br>
+  </a>
+  <span *ngIf="!link">
+    {{value.name}} ({{value.x}}|{{value.y}})<br>
+  </span>
+  <small>Punkte: {{value.points | number:'1.0' : 'de'}}</small>
+</ng-container>

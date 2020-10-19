@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <div class="flex-between fullwidth">
+    <div>
+      <button *ngIf="isHandset$ | async" type="button" mat-icon-button (click)="perfToggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span></span>
+    </div>
+    <div>
+      <button *ngIf="running" type="button" mat-mini-fab [matMenuTriggerFor]="menu">
+        <mat-icon>settings</mat-icon>
+      </button>
+      <button *ngIf="connected" class="m-left" color="warn" type="button" mat-mini-fab
+              (click)="stop()">
+        <mat-icon>power_settings_new</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/settings/discord">
+          <mat-icon>dialpad</mat-icon>
+          <span>Discord Webhooks</span>
+        </button>
+        <button mat-menu-item routerLink="/settings/troops">
+          <mat-icon>group</mat-icon>
+          <span>Standard Angriffe</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>

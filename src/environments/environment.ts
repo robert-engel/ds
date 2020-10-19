@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  ws: 'ws://192.168.178.21:8888',
 };
 
 /*

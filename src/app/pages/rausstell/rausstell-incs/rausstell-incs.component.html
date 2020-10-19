@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-xl-6">
+    <mat-card>
+      <mat-card-title>Ignorierte Incs</mat-card-title>
+      <mat-card-content>
+        <mat-table [dataSource]="incs" class="w-100">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="mobile-label">Name:</span>
+              {{element.name}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="slowestUnit">
+            <mat-header-cell *matHeaderCellDef>Einheit</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="mobile-label">Einheit:</span>
+              <app-unit-render [value]="element.slowestUnit"></app-unit-render>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="target">
+            <mat-header-cell *matHeaderCellDef>Ziel</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="mobile-label">Ziel:</span>
+              <app-village-render [value]="element.target"></app-village-render>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="origin">
+            <mat-header-cell *matHeaderCellDef>Herkunft</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="mobile-label">Herkunft:</span>
+              <app-village-render [value]="element.origin"></app-village-render>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="player">
+            <mat-header-cell *matHeaderCellDef>Spieler</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="mobile-label">Spieler:</span>
+              <b>{{element.player.name}}</b>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="arrival">
+            <mat-header-cell *matHeaderCellDef>Ankunft</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="mobile-label">Ankunft:</span>
+              {{element.arrival}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="mobile-label">Entfernen:</span>
+              <button type="button" mat-mini-fab color="warn" (click)="unignoreInc(element.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-xl-6">
+    <mat-card [ngClass]="{'m-top': (isHandset$ | async) === true}">
+      <mat-card-title>Inc ignorieren</mat-card-title>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-md-9">
+            <mat-form-field class="w-100">
+              <mat-label>Inc ID</mat-label>
+              <input type="number" matInput [formControl]="incForm">
+              <mat-hint>Wenn man einen Inc anklickt in der URL zu finden.</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-3">
+            <button [disabled]="incForm.disabled || incForm.invalid" mat-raised-button
+                    color="primary" (click)="ignoreInc()">
+              Inc ignorieren
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

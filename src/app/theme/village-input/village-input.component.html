@@ -1,0 +1,10 @@
+<mat-form-field class="full-width">
+  <input autocomplete="off" autocapitalize="off" spellcheck="false" class="full-width"
+         matInput [placeholder]="label" [matAutocomplete]="auto" [formControl]="formControl">
+</mat-form-field>
+<mat-autocomplete panelWidth="450px" #auto="matAutocomplete" [displayWith]="displayFn">
+  <mat-option *ngFor="let village of (villages$ | async)" [value]="village">
+    <span>{{ village.search }}</span>
+    <small> | Punkte: {{village.points}}</small>
+  </mat-option>
+</mat-autocomplete>

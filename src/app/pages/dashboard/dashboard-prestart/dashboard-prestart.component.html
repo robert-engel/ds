@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-6">
+    <mat-card>
+      <p *ngIf="gameData">
+        Eingeloggt als <b>{{gameData.player.name}}</b> auf <b>{{gameData.world}}</b>.
+      </p>
+      <p *ngIf="!gameData">
+        Im Bot Fenster auf einer Welt einloggen.
+      </p>
+      <button *ngIf="gameData" color="primary" mat-raised-button (click)="start()">Bot Starten.
+      </button>
+      <button *ngIf="!gameData" color="primary" mat-raised-button (click)="refresh()">Refresh.
+      </button>
+    </mat-card>
+  </div>
+</div>
+<div *ngIf="loading" class="fullsize">
+  <mat-card class="fullcenter">
+    <mat-card-content>
+      <mat-progress-bar style="height: 20px; border-radius: 3px;" [mode]="mode"
+                        [value]="progress"></mat-progress-bar>
+    </mat-card-content>
+    <mat-card-footer>
+      <div style="width: 100%; text-align: center"><h2>{{message}}</h2></div>
+    </mat-card-footer>
+  </mat-card>
+</div>

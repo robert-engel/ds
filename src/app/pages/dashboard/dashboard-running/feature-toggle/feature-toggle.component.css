@@ -1,0 +1,30 @@
+.no-click {
+  pointer-events: none;
+}
+
+mat-card {
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  height: 100px;
+}
+
+.on {
+  padding: 0;
+}
+
+.icon-container {
+  height: 100%;
+  width: 15%;
+}
+
+.details {
+  height: 100px;
+  line-height: 100px;
+  width: 65%;
+}
+
+.toggle {
+  height: 100px;
+  width: 20%;
+}

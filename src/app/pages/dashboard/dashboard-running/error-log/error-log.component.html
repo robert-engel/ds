@@ -1,0 +1,5 @@
+<mat-card *ngIf="errors.length>0">
+  <mat-chip-list>
+    <mat-chip *ngFor="let error of errors">{{error.message}}</mat-chip>
+  </mat-chip-list>
+</mat-card>

@@ -1,0 +1,37 @@
+export interface Player {
+  id: string;
+  name: string;
+  ally: string;
+  ally_level: string;
+  ally_member_count: string;
+  sitter: string;
+  sleep_start: string;
+  sitter_type: string;
+  sleep_end: string;
+  sleep_last: string;
+  email_valid: string;
+  villages: string;
+  incomings: string;
+  supports: string;
+  knight_location: string;
+  knight_unit: string;
+  rank: number;
+  points: string;
+  date_started: string;
+  is_guest: string;
+  birthdate: string;
+  confirmation_skipping_hash: string;
+  quest_progress: string;
+  points_formatted: string;
+  rank_formatted: string;
+  pp: string;
+  new_ally_application: string;
+  new_ally_invite: string;
+  new_buddy_request: string;
+  new_daily_bonus: string;
+  new_forum_post: string;
+  new_igm: string;
+  new_items: string;
+  new_report: string;
+  new_quest: string;
+}

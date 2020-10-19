@@ -1,0 +1,15 @@
+<div class="grid-container">
+  <h1 class="mat-h1">Dashboard</h1>
+  <div *ngIf="!connected" class="row">
+    <div class="col-6">
+      <mat-card>
+        <mat-card-title>Konnte keine Verbindung herstellen.</mat-card-title>
+        <mat-card-content>Seite neu laden wenn der Bot gestartet wurde.</mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <ng-container *ngIf="connected">
+    <app-dashboard-prestart *ngIf="!running"></app-dashboard-prestart>
+    <app-dashboard-running *ngIf="running"></app-dashboard-running>
+  </ng-container>
+</div>

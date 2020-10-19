@@ -1,0 +1,6 @@
+<nav mat-tab-nav-bar>
+  <span mat-tab-link *ngFor="let link of links" (click)="activeLink = link"
+        [active]="activeLink === link"
+        [routerLink]="[link.link]"> {{link.title}} </span>
+</nav>
+<router-outlet></router-outlet>

@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-xl-3">
+    <div class="row">
+      <div class="col-md-12 gap-bottom">
+        <app-feature-toggle [on]="websocket" title="WebSocket" icon="cached"
+                            (toggle)="websocketToggle($event)"></app-feature-toggle>
+      </div>
+      <div *ngIf="false" class="col-md-12 gap-bottom">
+        <app-feature-toggle [on]="farm" title="Farm Manager"
+                            (toggle)="farmToggle($event)"></app-feature-toggle>
+      </div>
+      <div class="col-md-12 gap-bottom">
+        <app-feature-toggle [on]="inc" title="Inc Manager"
+                            (toggle)="incToggle($event)"></app-feature-toggle>
+      </div>
+      <div class="col-md-12 gap-bottom">
+        <app-feature-toggle [on]="rausstell" title="Rausstell Manager"
+                            (toggle)="rausstellToggle($event)"></app-feature-toggle>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-9">
+    <div class="row">
+      <div class="col-md-12 gap-bottom">
+        <app-driver></app-driver>
+      </div>
+      <div class="col-md-12 gap-bottom">
+        <app-taskmanager></app-taskmanager>
+      </div>
+      <div class="col-md-12 gap-bottom">
+        <app-error-log></app-error-log>
+      </div>
+    </div>
+  </div>
+</div>

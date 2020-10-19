@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-6">
+    <table class="table">
+      <tr *ngFor="let building of buildingsA">
+        <th>
+          <img *ngIf="imageBase" [src]="imageBase+'buildings/'+building+'.png'"
+               class="img-fluid"/>
+        </th>
+        <td *ngIf="value[building]">{{value[building]}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <table class="table">
+      <tr *ngFor="let building of buildingsB">
+        <th>
+          <img *ngIf="imageBase" [src]="imageBase+'buildings/'+building+'.png'"
+               class="img-fluid"/>
+        </th>
+        <td *ngIf="value[building]">{{value[building]}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th *ngFor="let unit of units">
+      <img *ngIf="imagebase" [src]="imagebase+'unit/unit_'+unit+'.png'" class="img-fluid"/>
+      <ng-container *ngIf="unit === 'catapult' && value.cataTarget">
+        <ng-container *ngIf="value.cataTarget !== '///DEFAULT///'">
+          ({{value.cataTarget | titlecase}})
+        </ng-container>
+        <ng-container *ngIf="value.cataTarget === '///DEFAULT///'">
+          (Default)
+        </ng-container>
+      </ng-container>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td *ngFor="let unit of units">
+      {{value[unit]}}
+    </td>
+  </tr>
+  </tbody>
+</table>

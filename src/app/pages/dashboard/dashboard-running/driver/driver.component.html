@@ -1,0 +1,10 @@
+<mat-card>
+  <mat-card-title>Driver Queue</mat-card-title>
+  <mat-card-content>
+    <mat-chip-list [@listAnimation]="jobs.length">
+      <mat-chip *ngIf="currentJob" [@actionAnimation]="'yes'">{{currentJob.task}}</mat-chip>
+      <mat-chip *ngFor="let job of jobs"
+                [@actionAnimation]="job.running?'yes':'no'">{{job.task}}</mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+</mat-card>
