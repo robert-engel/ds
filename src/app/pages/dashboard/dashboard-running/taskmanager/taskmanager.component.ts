@@ -46,19 +46,6 @@ export class TaskmanagerComponent implements OnInit, OnDestroy {
     });
   }
 
-  time(millis: number): string {
-    const hours = Math.floor(millis / 36e5);
-    const mins = Math.floor((millis % 36e5) / 6e4);
-    const secs = Math.floor((millis % 6e4) / 1000);
-    return this.pad(hours, 2) + ':' + this.pad(mins, 2) + ':' + this.pad(secs, 2);
-  }
-
-  pad(n, width): string {
-    const z = '0';
-    n = n + '';
-    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-  }
-
   ngOnDestroy(): void {
     this.unsub$.next();
     this.unsub$.complete();

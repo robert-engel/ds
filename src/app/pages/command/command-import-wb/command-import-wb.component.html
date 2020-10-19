@@ -1,20 +1,46 @@
+<mat-card *ngIf="importing || result">
+  <mat-card-content>
+    <div *ngIf="importing" class="row">
+      <div class="col-xl-12">
+        <mat-progress-bar style="height: 20px; border-radius: 3px;"
+                          [value]="progress"></mat-progress-bar>
+      </div>
+    </div>
+    <div *ngIf="result" class="row">
+      <div class="col-xl-12">
+        <h1>Import abgeschlossen.</h1>
+        <p>{{result.success}} von {{result.tasks}} Tasks erfolgreich importiert.</p>
+        <div *ngIf="result.error>0">
+          <p>{{result.error}} Tasks konnten nicht importiert werden.</p>
+          <mat-list>
+            <mat-list-item *ngFor="let error of result.errors">
+              <small>{{error.line}} </small> <span style="color: red"> {{error.error}}</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
 <mat-card>
-  <div class="form-group row">
-    <label for="plan" class="label col-sm-1 col-form-label">Plan</label>
-    <div class="col-sm-11">
-      <mat-form-field class="full-width">
+  <mat-card-content>
+    <div class="form-group row">
+      <label for="plan" class="label col-sm-1 col-form-label">Plan</label>
+      <div class="col-sm-11">
+        <mat-form-field class="full-width">
         <textarea rows="10" class="example-full-width" id="plan" matInput placeholder="Plan"
                   [formControl]="control"></textarea>
-        <mat-hint>Befehle in der Übersicht auswählen und mit STRG+C kopieren.</mat-hint>
-      </mat-form-field>
+          <mat-hint>Befehle in der Übersicht auswählen und mit STRG+C kopieren.</mat-hint>
+        </mat-form-field>
+      </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <div class="offset-sm-1 col-sm-11">
-      <button (click)="submit(control.value)" [disabled]="control.invalid || control.disabled"
-              type="submit" mat-raised-button color="primary">
-        Importieren
-      </button>
+    <div class="form-group row">
+      <div class="offset-sm-1 col-sm-11">
+        <button (click)="submit(control.value)" [disabled]="control.invalid || control.disabled"
+                type="submit" mat-raised-button color="primary">
+          Importieren
+        </button>
+      </div>
     </div>
-  </div>
+  </mat-card-content>
 </mat-card>

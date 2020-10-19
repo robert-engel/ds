@@ -7,6 +7,7 @@ import {CommandService} from '../../../service/command/command.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-command-edit',
@@ -47,6 +48,7 @@ export class CommandEditComponent implements OnInit, OnDestroy {
     private command: CommandService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) {
   }
 
@@ -80,6 +82,15 @@ export class CommandEditComponent implements OnInit, OnDestroy {
           time: moment(timings.arrivalTime).format('HH:mm:ss:SSS'),
         });
       });
+    });
+    this.command.editCommandsEvents().pipe(takeUntil(this.unsub$)).subscribe(command => {
+      this.toastr.success(
+        `Erfolgreich bearbeitet.`,
+        undefined,
+        {
+          timeOut: 7000,
+        }
+      );
     });
     this.route.params.pipe(takeUntil(this.unsub$)).subscribe(params => {
       // TODO

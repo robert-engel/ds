@@ -43,7 +43,9 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.commandService.getCommandList(50, 0).subscribe(resp => {
+    this.isLoadingResults = true;
+    this.commandService.getCommandList(10, 0).subscribe(resp => {
+      this.isLoadingResults = false;
       this.tasks = resp;
     });
     this.commandService.addCommandEvents().pipe(takeUntil(this.unsub$)).subscribe(task => {

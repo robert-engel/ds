@@ -18,6 +18,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
+import {ThemeModule} from '../../theme/theme.module';
 
 @NgModule({
   declarations: [DashboardComponent, DashboardPrestartComponent, DashboardRunningComponent, TaskmanagerComponent, DriverComponent, FeatureToggleComponent, ErrorLogComponent],
@@ -33,7 +34,8 @@ import {MatTableModule} from '@angular/material/table';
     MatChipsModule,
     MatSlideToggleModule,
     ReactiveFormsModule,
-    MatTableModule
+    MatTableModule,
+    ThemeModule
   ]
 })
 export class DashboardModule {

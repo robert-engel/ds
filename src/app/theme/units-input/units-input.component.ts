@@ -2,7 +2,7 @@ import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {WebsocketService} from '../../service/websocket.service';
 import {Observable} from 'rxjs';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {BreakpointObserver} from '@angular/cdk/layout';
 import {map, shareReplay} from 'rxjs/operators';
 import {MatSelect} from '@angular/material/select';
 import {Tablet} from '../breakpoints';
@@ -52,7 +52,6 @@ export class UnitsInputComponent implements OnInit, ControlValueAccessor {
   };
 
   ngOnInit(): void {
-    console.log(Breakpoints.Handset);
     this.web.infoObservable.subscribe(info => {
       this.units = info.units;
       this.imagebase = info.imageBase;

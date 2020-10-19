@@ -26,6 +26,7 @@ import {AddStandardTroopTemplateRequest} from './packet/add-standard-troop-templ
 import {EditStandardTroopTemplateRequest} from './packet/edit-standard-troop-template-request';
 import {DeleteStandardTroopTemplateRequest} from './packet/delete-standard-troop-template-request';
 import {ExportWorkbenchRequest} from './packet/export-workbench-request';
+import {ImportWorkbenchFinish} from '../structures/import-workbench-finish';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,19 @@ export class CommandService {
     .pipe(shareReplay(1));
     this.editTaskObservable.subscribe();
     this.editTaskSubject.next(undefined);
+  }
+
+  importWorkbenchStart(): Observable<number> {
+    return this.websocket.observable('ImportWorkbenchStartEvent')
+    .pipe(map(resp => resp.id));
+  }
+
+  importWorkbenchProgress(): Observable<any> {
+    return this.websocket.observable('ImportWorkbenchProgressEvent');
+  }
+
+  importWorkbenchFinish(): Observable<ImportWorkbenchFinish> {
+    return this.websocket.observable('ImportWorkbenchFinishEvent');
   }
 
   getEditTask(): Observable<CommandTask> {
@@ -84,6 +98,10 @@ export class CommandService {
     return this.websocket.observable('AddCommandEvent');
   }
 
+  editCommandsEvents(): Observable<CommandTask> {
+    return this.websocket.observable('EditCommandEvent');
+  }
+
   removeCommandEvents(): Observable<number> {
     return this.websocket.observable('RemoveCommandEvent').pipe(map(data => data.id));
   }
@@ -92,8 +110,10 @@ export class CommandService {
     this.websocket.sendData(new SimpleTimerRequest(time));
   }
 
-  importWorkbench(plan: string): void {
-    this.websocket.sendData(new ImportWorkbenchRequest(plan));
+  importWorkbench(plan: string): number {
+    const req = new ImportWorkbenchRequest(plan);
+    this.websocket.sendData(req);
+    return req.id;
   }
 
   getCommandList(max: number, firstTask: number): Observable<CommandListResponse> {

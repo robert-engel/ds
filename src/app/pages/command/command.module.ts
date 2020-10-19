@@ -25,6 +25,10 @@ import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -48,6 +52,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatMomentDateModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatProgressBarModule,
+    MatGridListModule,
+    MatDividerModule,
+    MatListModule,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},

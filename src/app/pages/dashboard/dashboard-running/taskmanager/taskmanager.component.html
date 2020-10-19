@@ -13,7 +13,7 @@
       <th mat-header-cell *matHeaderCellDef> Noch</th>
       <td mat-cell *matCellDef="let element">
         <ng-container *ngIf="(element.remainingDelay * 1000)>0">
-          {{time(element.remainingDelay * 1000)}}
+          {{(element.remainingDelay * 1000) | hms}}
         </ng-container>
         <ng-container *ngIf="(element.remainingDelay * 1000)<=0">
           Wird ausgeführt.
