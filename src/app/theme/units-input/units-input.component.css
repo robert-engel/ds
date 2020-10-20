@@ -2,8 +2,9 @@
   width: 99%;
 }
 
-.less-pad {
-  padding-right: 3px;
+.pad {
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 div.spread {

@@ -1,7 +1,7 @@
 <div
   [ngClass]="{'spread': !(forceVertical || ((isHandset$ | async) === true)), 'row': (forceVertical || ((isHandset$ | async) === true))}">
   <span *ngFor="let unit of units"
-        [ngClass]="{'col-xl-12': (forceVertical || ((isHandset$ | async) === true))}">
+        [ngClass]="{'col-xl-12': (forceVertical || ((isHandset$ | async) === true)), 'pad': !(forceVertical || ((isHandset$ | async) === true))}">
     <mat-form-field class="full-width">
       <mat-label>{{unit | titlecase}}</mat-label>
       <input [id]="'troop_input_'+unit" #t (change)="input(t.value, unit)" matInput type="text">
