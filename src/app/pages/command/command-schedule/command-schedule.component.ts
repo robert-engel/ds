@@ -34,6 +34,7 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
   templates: StandardTroopTemplate[];
   units: string[];
   disabled = false;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -46,40 +47,50 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      console.log(params);
-      if (params.source) {
-        this.villageService
-        .byId(parseInt(params.source, 10))
-        .subscribe(village => {
-          this.form.patchValue({
-            from: village,
+    this.route.paramMap.subscribe(params => {
+      if (params.has('source')) {
+        let ids = JSON.parse(params.get('source'));
+        if (Array.isArray(ids) === false) {
+          ids = [ids];
+        }
+        console.log(ids);
+        if (ids.length === 1) {
+          this.villageService
+          .byId(parseInt(ids[0], 10))
+          .subscribe(village => {
+            this.form.patchValue({
+              from: village,
+            });
           });
-        });
+        } else {
+          this.form.patchValue({
+            from: ids,
+          });
+        }
       }
-      if (params.target) {
+      if (params.has('target')) {
         this.villageService
-        .byId(parseInt(params.target, 10))
+        .byId(parseInt(params.get('target'), 10))
         .subscribe(village => {
           this.form.patchValue({
             to: village,
           });
         });
       }
-      if (params.unit) {
+      if (params.has('unit')) {
         this.form.patchValue({
-          unit: params.unit,
+          unit: params.get('unit'),
         });
       }
-      if (params.type) {
+      if (params.has('type')) {
         this.form.patchValue({
-          commandType: params.type,
+          commandType: params.get('type'),
         });
       }
-      if (params.time) {
+      if (params.has('time')) {
         this.form.patchValue({
-          date: moment(parseInt(params.time, 10)),
-          time: moment(parseInt(params.time, 10)).format('HH:mm:ss:SSS'),
+          date: moment(parseInt(params.get('time'), 10)),
+          time: moment(parseInt(params.get('time'), 10)).format('HH:mm:ss:SSS'),
         });
       }
     });
@@ -100,6 +111,10 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
     });
   }
 
+  get multiSource(): boolean {
+    return Array.isArray(this.form.value.from);
+  }
+
   submit(data): void {
     this.disabled = true;
     timer(1500).subscribe(() => {
@@ -109,15 +124,29 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
       return;
     }
     const time = moment(data.date.format('DD.MM.YYYY') + ' ' + data.time, 'DD.MM.YYYY HH:mm:ss:SSS');
-    this.commandService.addCommand(
-      data.from.id,
-      data.to.id,
-      data.unit,
-      data.commandType,
-      time.valueOf(),
-      data.template === 'custom' ? undefined : data.template,
-      data.template === 'custom' ? data.units : undefined,
-    );
+    if (Array.isArray(data.from) === false) {
+      this.commandService.addCommand(
+        data.from.id,
+        data.to.id,
+        data.unit,
+        data.commandType,
+        time.valueOf(),
+        data.template === 'custom' ? undefined : data.template,
+        data.template === 'custom' ? data.units : undefined,
+      );
+    } else {
+      data.from.forEach(id => {
+        this.commandService.addCommand(
+          id,
+          data.to.id,
+          data.unit,
+          data.commandType,
+          time.valueOf(),
+          data.template === 'custom' ? undefined : data.template,
+          data.template === 'custom' ? data.units : undefined,
+        );
+      });
+    }
   }
 
   ngOnDestroy(): void {

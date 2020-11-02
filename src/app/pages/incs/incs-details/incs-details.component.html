@@ -1,0 +1,83 @@
+<mat-card>
+  <div *ngIf="loading" class="row">
+    <div class="col-md-12 flex-between">
+      <span></span>
+      <mat-spinner></mat-spinner>
+      <span></span>
+    </div>
+  </div>
+  <ng-container *ngIf="!inc && !loading">
+    Konnte keinen Inc mit dieser ID finden.
+  </ng-container>
+  <mat-card-content *ngIf="inc">
+    <div class="row">
+      <div class="col-xl-9">
+        <mat-card class="mat-elevation-z6 h-100">
+          <div class="row align-items-center">
+            <div class="col-xl-1">
+              {{inc.name}}
+            </div>
+            <div class="col-xl-1">
+              <mat-select [formControl]="unitForm">
+                <mat-select-trigger>
+                  <app-unit-render [value]="unitForm.value"></app-unit-render>
+                </mat-select-trigger>
+                <mat-option *ngFor="let unit of units" [value]="unit">
+                  <app-unit-render [value]="unit"></app-unit-render>
+                </mat-option>
+              </mat-select>
+            </div>
+            <div class="col-xl-2">
+              Ziel:
+              <app-village-render [value]="inc.target"></app-village-render>
+            </div>
+            <div class="col-xl-2">
+              Herkunft:
+              <app-village-render [value]="inc.origin"></app-village-render>
+            </div>
+            <div class="col-xl-1">
+              Spieler: {{inc.player.name}}
+            </div>
+            <div class="col-xl-2">
+              Ankunft: {{inc.arrival}}
+            </div>
+            <div class="col-xl-2">
+              Rückkehr: {{inc.return}}
+            </div>
+            <div class="col-xl-1">
+              Verbleibend: {{inc.remaining * 1000 | hms}}
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div class="col-xl-3">
+        <div class="row">
+          <div class="col-md-12">
+            <button [routerLink]="['/planner/command', inc.target.id, inc.time, {type: 'SUPPORT'}]"
+                    mat-raised-button
+                    class="w-100 mat-elevation-z6" color="accent">
+              DEFF planen.
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button [routerLink]="['/planner/command', inc.target.id, inc.time, {type: 'ATTACK'}]"
+                    mat-raised-button class="w-100 mat-elevation-z6 mt-2" color="warn">
+              Cleaner planen.
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button
+              [routerLink]="['/planner/command', inc.origin.id, inc.returnTime, {type: 'ATTACK'}]"
+              mat-raised-button class="w-100 mat-elevation-z6 mt-2" color="warn">
+              Retime planen.
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

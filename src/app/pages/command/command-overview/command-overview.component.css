@@ -2,9 +2,7 @@ table {
   width: 100%;
 }
 
-button + button {
-  margin-left: 15px;
-}
+
 
 button {
   padding: 2px !important;

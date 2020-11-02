@@ -1,0 +1,50 @@
+<mat-table [dataSource]="rows" class="w-100">
+  <ng-container matColumnDef="select">
+    <mat-header-cell mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="available">
+    <mat-header-cell *matHeaderCellDef>Mögliche Fakes</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <span class="mobile-label">Mögliche Fakes:</span>
+      {{element.potential}}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="village">
+    <mat-header-cell *matHeaderCellDef>Dorf</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <span class="mobile-label">Dorf:</span>
+      <app-village-render [value]="element.village"></app-village-render>
+    </mat-cell>
+  </ng-container>
+  <ng-container *ngFor="let unit of units" [matColumnDef]="unit">
+    <mat-header-cell *matHeaderCellDef>
+      <app-unit-render [value]="unit"></app-unit-render>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <span class="mobile-label"><app-unit-render [value]="unit"></app-unit-render></span>
+      {{element.units[unit]}}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="plan">
+    <mat-header-cell *matHeaderCellDef> Zeit</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <span class="mobile-label">Zeit:</span>
+      <mat-form-field>
+        <input matInput type="text">
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="cols; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: cols;"></mat-row>
+</mat-table>

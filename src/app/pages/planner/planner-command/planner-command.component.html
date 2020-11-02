@@ -1,0 +1,119 @@
+<mat-card>
+  <div class="row">
+    <div class="col-md-12 flex-between">
+      <ng-container *ngIf="type">
+        {{type}}
+      </ng-container>
+      <ng-container *ngIf="!type">
+        Truppen
+      </ng-container>
+      <span><b>Ziel:</b> <app-village-render [value]="target"></app-village-render></span>
+      <span><b>Ankunft:</b> {{time.format('DD.MM.YYYY HH:mm:ss:SSS')}}</span>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-xl-4">
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>Einheiten</mat-label>
+        <mat-select [formControl]="unitsForm" multiple>
+          <mat-select-trigger>
+            <app-unit-render class="p-1" *ngFor="let unit of unitsForm.value"
+                             [value]="unit"></app-unit-render>
+          </mat-select-trigger>
+          <mat-option *ngFor="let unit of units" [value]="unit">
+            <app-unit-render [value]="unit"></app-unit-render>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-xl-4 cen">
+      <div *ngIf="selection.selected.length > 0">
+        {{selection.selected.length}} Dörfer ausgewählt.
+        <a
+          [routerLink]="['/command/schedule', {source: selectVillages(), target: target.id, type: type, time: time.valueOf()}]">
+          <button mat-raised-button color="primary">
+            Für alle planen.
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div *ngIf="loading" class="row">
+    <div class="col-md-12 flex-between">
+      <span></span>
+      <mat-spinner></mat-spinner>
+      <span></span>
+    </div>
+  </div>
+  <div *ngIf="!loading && poss && poss.length === 0" class="row">
+    <div class="col-md-12 flex-between">
+      <span></span>
+      <h2>Keine Truppen erreichen das Dorf bis zu dem gewählten Zeitpunkt.</h2>
+      <span></span>
+    </div>
+  </div>
+  <div *ngIf="!loading && poss && poss.length > 0" class="row">
+    <div class="col-md-12">
+      <mat-table [dataSource]="poss" class="w-100">
+        <ng-container matColumnDef="select">
+          <mat-header-cell mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="planned">
+          <mat-header-cell *matHeaderCellDef>Geplante Befehle</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span class="mobile-label">Geplante Befehle:</span>
+            {{element.alreadyPlanned}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="village">
+          <mat-header-cell *matHeaderCellDef>Dorf</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span class="mobile-label">Dorf:</span>
+            <app-village-render [value]="element.village"></app-village-render>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="distance">
+          <mat-header-cell *matHeaderCellDef> Entfernung</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span class="mobile-label">Entfernung:</span>
+            {{element.distance.toFixed(2)}}
+          </mat-cell>
+        </ng-container>
+        <ng-container *ngFor="let unit of units" [matColumnDef]="unit">
+          <mat-header-cell *matHeaderCellDef>
+            <app-unit-render [value]="unit"></app-unit-render>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span class="mobile-label"><app-unit-render [value]="unit"></app-unit-render></span>
+            <span [class.dis]="element.units[unit]===0" [class.red]="element.units[unit]>0 && element.remaining[unit]===0"
+                  [routerLink]="['/command/schedule', {unit: unit, source: element.village.id, target: target.id, type: type, time: time.valueOf()}]">
+              {{element.units[unit]}}
+            </span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="plan">
+          <mat-header-cell *matHeaderCellDef> Zeit</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span class="mobile-label">Zeit:</span>
+            {{min(element.remaining) * 1000|hms}}
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="cols; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: cols;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</mat-card>

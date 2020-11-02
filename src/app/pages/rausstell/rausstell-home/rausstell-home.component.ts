@@ -58,7 +58,6 @@ export class RausstellHomeComponent implements OnInit, OnDestroy {
     if (this.incForm.invalid) {
       return;
     }
-    console.log(typeof this.incForm.value);
     if (!(typeof this.incForm.value === 'number')) {
       return;
     }

@@ -15,14 +15,18 @@
         <mat-icon>power_settings_new</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item routerLink="/settings/discord">
-          <mat-icon>dialpad</mat-icon>
-          <span>Discord Webhooks</span>
-        </button>
-        <button mat-menu-item routerLink="/settings/troops">
-          <mat-icon>group</mat-icon>
-          <span>Standard Angriffe</span>
-        </button>
+        <a routerLink="/settings/discord">
+          <button mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
+            <span>Discord Webhooks</span>
+          </button>
+        </a>
+        <a routerLink="/settings/troops">
+          <button mat-menu-item>
+            <mat-icon>group</mat-icon>
+            <span>Standard Angriffe</span>
+          </button>
+        </a>
       </mat-menu>
     </div>
   </div>

@@ -23,6 +23,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/rausstell/rausstell.module')
     .then(m => m.RausstellModule),
   },
+  {
+    path: 'incs',
+    canActivate: [DashboardService],
+    loadChildren: () => import('./pages/incs/incs.module')
+    .then(m => m.IncsModule),
+  },
+  {
+    path: 'planner',
+    canActivate: [DashboardService],
+    loadChildren: () => import('./pages/planner/planner.module')
+    .then(m => m.PlannerModule),
+  },
   {path: '', component: DashboardComponent},
   {path: '**', redirectTo: ''},
 ];

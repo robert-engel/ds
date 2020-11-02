@@ -1,0 +1,89 @@
+<mat-card>
+  <mat-form-field appearance="fill" *ngIf="(isHandset$ | async) === true">
+    <mat-label>Einheit</mat-label>
+    <mat-select [formControl]="unitsForm" multiple>
+      <mat-select-trigger>
+        <app-unit-render class="p-1" *ngFor="let unit of unitsForm.value"
+                         [value]="unit"></app-unit-render>
+      </mat-select-trigger>
+      <mat-option *ngFor="let unit of units" [value]="unit">
+        <app-unit-render [value]="unit"></app-unit-render>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="loading" class="row">
+    <div class="col-md-12 flex-between">
+      <span></span>
+      <mat-spinner></mat-spinner>
+      <span></span>
+    </div>
+  </div>
+  <mat-table *ngIf="!loading" [dataSource]="incs" class="w-100">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Name:</span>
+        <a [routerLink]="'/incs/'+element.id">{{element.name}}</a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="slowestUnit">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-form-field appearance="fill">
+          <mat-label>Einheit</mat-label>
+          <mat-select [formControl]="unitsForm" multiple>
+            <mat-select-trigger>
+              <app-unit-render class="p-1" *ngFor="let unit of unitsForm.value"
+                               [value]="unit"></app-unit-render>
+            </mat-select-trigger>
+            <mat-option *ngFor="let unit of units" [value]="unit">
+              <app-unit-render [value]="unit"></app-unit-render>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Einheit:</span>
+        <app-unit-render [value]="element.slowestUnit"></app-unit-render>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="target">
+      <mat-header-cell *matHeaderCellDef>Ziel</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Ziel:</span>
+        <app-village-render [value]="element.target"></app-village-render>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="origin">
+      <mat-header-cell *matHeaderCellDef>Herkunft</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Herkunft:</span>
+        <app-village-render [value]="element.origin"></app-village-render>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="player">
+      <mat-header-cell *matHeaderCellDef>Spieler</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Spieler:</span>
+        {{element.player.name}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="arrival">
+      <mat-header-cell *matHeaderCellDef>Ankunft</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Ankunft:</span>
+        {{element.arrival}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="remaining">
+      <mat-header-cell *matHeaderCellDef>Verbleibend</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Verbleibend:</span>
+        {{element.remaining * 1000 | hms}}
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator (page)="pageUpdate($event)" [length]="count" [pageSize]="10"
+                 [pageSizeOptions]="[10, 50, 100, 250]"></mat-paginator>
+</mat-card>

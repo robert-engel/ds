@@ -12,11 +12,15 @@ export const MENU_ITEMS_USER: Menu[] = [
   /*{
     title: 'Farm Manager',
     link: '/farmmanager',
+  },*/
+  {
+    title: 'Incs',
+    link: '/incs',
   },
   {
-    title: 'Inc Manager',
-    link: '/incmanager',
-  },*/
+    title: 'Planer',
+    link: '/planner',
+  },
   {
     title: 'Befehle',
     link: '/command',

@@ -1,0 +1,6 @@
+<app-units-input [formControl]="troopForm"></app-units-input>
+<br>
+<button [disabled]="troopForm.disabled || troopForm.invalid" mat-raised-button
+        color="primary" (click)="saveTroops()">
+  Speichern
+</button>
