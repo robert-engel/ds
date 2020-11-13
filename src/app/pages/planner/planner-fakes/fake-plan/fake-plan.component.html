@@ -1,0 +1,23 @@
+<mat-horizontal-stepper [linear]="true">
+  <mat-step [editable]="true" [hasError]="villageCountValidator(sources)"
+            [completed]="!villageCountValidator(sources)">
+    <ng-template matStepLabel>Herkunftsdörfer wählen</ng-template>
+    <app-fake-sources (valueChange)="sources=$event"></app-fake-sources>
+  </mat-step>
+  <mat-step [editable]="true" [hasError]="villageCountValidator(targets)"
+            [completed]="!villageCountValidator(targets)">
+    <ng-template matStepLabel>Ziele wählen</ng-template>
+    <app-fake-targets (valueChange)="targets=$event"></app-fake-targets>
+  </mat-step>
+  <mat-step [editable]="true" [hasError]="timeFrameValidator()" [completed]="!timeFrameValidator()">
+    <ng-template matStepLabel>Zeiten wählen</ng-template>
+    <app-fake-timeframes (arrivalChange)="arrivalFrames=$event" (sendChange)="sendFrames=$event">
+    </app-fake-timeframes>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Bestätigen</ng-template>
+    <app-fake-confirmation [sources]="sources" [targets]="targets" [arrivalFrames]="arrivalFrames"
+                           [sendFrames]="sendFrames">
+    </app-fake-confirmation>
+  </mat-step>
+</mat-horizontal-stepper>

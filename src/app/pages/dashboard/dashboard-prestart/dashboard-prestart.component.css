@@ -8,7 +8,7 @@
   right: 0;
   bottom: 0;
   position: fixed;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .fullcenter {
@@ -18,4 +18,9 @@
   margin: 0 -50% 0 0;
   transform: translate(-50%, -50%);
   width: 70%;
+}
+
+::ng-deep .mat-card-header-text {
+  /* CSS styles go here */
+  margin: 0;
 }

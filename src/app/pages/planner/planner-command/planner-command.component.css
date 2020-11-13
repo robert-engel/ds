@@ -12,6 +12,10 @@
   text-decoration: line-through;
 }
 
+.red-color {
+  color: orange;
+}
+
 .cen {
   display: flex;
   justify-content: center;

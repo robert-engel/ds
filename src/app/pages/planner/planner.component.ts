@@ -18,6 +18,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
     {
       title: 'Fakes',
       link: '/planner/fake',
+      disabled: true,
     },
     {
       title: 'Befehle',

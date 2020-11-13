@@ -3,7 +3,7 @@ import {interval, Observable, Subject} from 'rxjs';
 import {IncomingEntity} from '../../../service/structures/incoming-entity';
 import {WebsocketService} from '../../../service/websocket.service';
 import {IncManagerService} from '../../../service/incmanager/inc-manager.service';
-import {map, shareReplay, takeUntil} from 'rxjs/operators';
+import {debounceTime, map, shareReplay, takeUntil} from 'rxjs/operators';
 import {PageEvent} from '@angular/material/paginator';
 import {FormControl} from '@angular/forms';
 import {BreakpointObserver} from '@angular/cdk/layout';
@@ -59,7 +59,12 @@ export class IncsOverviewComponent implements OnInit, OnDestroy {
         }
       });
     });
-    this.unitsForm.valueChanges.pipe(takeUntil(this.unsub$)).subscribe(val => {
+    this.unitsForm.valueChanges
+    .pipe(
+      takeUntil(this.unsub$),
+      debounceTime(1000)
+    )
+    .subscribe(val => {
       this.loading = true;
       this.incService.getIncList(0, this.size, this.cancelled, val).subscribe(resp => {
         this.incs = resp.incs;

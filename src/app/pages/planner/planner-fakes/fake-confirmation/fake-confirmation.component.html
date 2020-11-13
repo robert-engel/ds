@@ -1,0 +1,35 @@
+<ng-container *ngIf="sources && targets && arrivalFrames && sendFrames">
+  <div class="row">
+    <div class="col-md-12">
+      {{countSum(sources)}} Fakes({{sources.length}} Herkunftsdörfer) => {{countSum(targets)}}
+      Fakes({{targets.length}} Zieldörfer)
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 flex-between">
+      <span></span>
+      <button mat-raised-button color="primary" (click)="getPlan()">
+        Fakes berechnen
+      </button>
+      <span></span>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="result" class="row mt-2">
+  <div class="col-xl-3">
+    <ng-container *ngFor="let village of result.count">
+      <app-village-render [value]="village.village"></app-village-render>
+      {{village.assigned}}/{{village.wanted}}
+      <br>
+    </ng-container>
+  </div>
+  <div class="col-xl-9">
+    <ng-container *ngFor="let plan of result.plan">
+      <app-village-render [value]="plan.source"></app-village-render>
+      <app-village-render [value]="plan.target"></app-village-render>
+      SendTime: {{plan.sendTime}}
+      Arrival: {{plan.arrival}}
+      <br>
+    </ng-container>
+  </div>
+</div>

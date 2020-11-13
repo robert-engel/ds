@@ -78,7 +78,7 @@
       <mat-header-cell *matHeaderCellDef>Verbleibend</mat-header-cell>
       <mat-cell *matCellDef="let element">
         <span class="mobile-label">Verbleibend:</span>
-        {{element.remaining * 1000 | hms}}
+        <span [class.red]="element.remaining<300">{{element.remaining * 1000 | hms}}</span>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -25,10 +25,18 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FakeSelectorTableComponent } from './planner-fakes/fake-selector-table/fake-selector-table.component';
 import { FakeSelectorTemplateComponent } from './planner-fakes/fake-selector-template/fake-selector-template.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { FakeSourcesComponent } from './planner-fakes/fake-sources/fake-sources.component';
+import { FakeTargetsComponent } from './planner-fakes/fake-targets/fake-targets.component';
+import { FakeTimeframesComponent } from './planner-fakes/fake-timeframes/fake-timeframes.component';
+import { FakePlanComponent } from './planner-fakes/fake-plan/fake-plan.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import {NgxSliderModule} from '@angular-slider/ngx-slider';
+import {MatListModule} from '@angular/material/list';
+import { FakeConfirmationComponent } from './planner-fakes/fake-confirmation/fake-confirmation.component';
 
 
 @NgModule({
-  declarations: [PlannerComponent, PlannerFakesComponent, PlannerCommandComponent, PlannerHomeComponent, PlannerCommandOpenComponent, FakeSelectorTableComponent, FakeSelectorTemplateComponent],
+  declarations: [PlannerComponent, PlannerFakesComponent, PlannerCommandComponent, PlannerHomeComponent, PlannerCommandOpenComponent, FakeSelectorTableComponent, FakeSelectorTemplateComponent, FakeSourcesComponent, FakeTargetsComponent, FakeTimeframesComponent, FakePlanComponent, FakeConfirmationComponent],
   imports: [
     CommonModule,
     PlannerRoutingModule,
@@ -46,7 +54,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatDatepickerModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatStepperModule,
+    NgxSliderModule,
+    MatListModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},

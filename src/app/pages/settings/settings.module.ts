@@ -12,10 +12,13 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatBadgeModule} from '@angular/material/badge';
+import { DiscordWebhooksComponent } from './discord-webhooks/discord-webhooks.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
-  declarations: [SettingsComponent, TroopTemplateComponent],
+  declarations: [SettingsComponent, TroopTemplateComponent, DiscordWebhooksComponent],
   imports: [
     CommonModule,
     SettingsRoutingModule,
@@ -26,7 +29,9 @@ import {MatBadgeModule} from '@angular/material/badge';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSelectModule,
+    MatListModule
   ]
 })
 export class SettingsModule { }

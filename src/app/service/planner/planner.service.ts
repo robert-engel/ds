@@ -4,10 +4,16 @@ import {Observable} from 'rxjs';
 import {CommandPlannerPossibility} from '../structures/command-planner-possibility';
 import {GetCommandPlannerPossibilitiesRequest} from './packet/get-command-planner-possibilities-request';
 import {filter, first, map, shareReplay} from 'rxjs/operators';
-import {FakeSelector} from '../structures/fake-selector';
 import {FakeSelectorRequest} from './packet/fake-selector-request';
 import {GetFakeTemplateRequest} from './packet/get-fake-template-request';
 import {EditFakeTemplateRequest} from './packet/edit-fake-template-request';
+import {FakeSelector} from '../structures/fake-selector';
+import {EditGlobalTimeFrameRequest} from './packet/edit-global-time-frame-request';
+import {GetGlobalTimeFrameRequest} from './packet/get-global-time-frame-request';
+import {VillageCount} from '../structures/village-count';
+import {Timeframe} from '../structures/timeframe';
+import {FakePlanResult} from '../structures/fake-plan-result';
+import {FakePlanRequest} from './packet/fake-plan-request';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +55,27 @@ export class PlannerService {
 
   updateFakeTemplate(troops: any): void {
     this.websocket.sendData(new EditFakeTemplateRequest(troops));
+  }
+
+  editGlobalStart(date: number): void {
+    this.websocket.sendData(new EditGlobalTimeFrameRequest(true, date));
+  }
+
+  editGlobalEnd(date: number): void {
+    this.websocket.sendData(new EditGlobalTimeFrameRequest(false, date));
+  }
+
+  getGlobalTimeFrame(): Observable<any> {
+    return this.websocket.observable('GlobalTimeFrameResponse', new GetGlobalTimeFrameRequest());
+  }
+
+  getFakePlan(
+    sources: VillageCount[],
+    targets: VillageCount[],
+    sendFrames: Timeframe[],
+    arrivalFrames: Timeframe[]
+  ): Observable<FakePlanResult> {
+    const req = new FakePlanRequest(sources, targets, sendFrames, arrivalFrames);
+    return this.websocket.observable('FakePlanResponse', req).pipe(first());
   }
 }

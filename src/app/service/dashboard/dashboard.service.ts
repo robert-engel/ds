@@ -10,6 +10,8 @@ import {WebSocketReconnectPacket} from './packet/web-socket-reconnect-packet';
 import {WebSocketStatusPacket} from './packet/web-socket-status-packet';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {map} from 'rxjs/operators';
+import {BotVersion} from '../structures/botVersion';
+import {VersionRequest} from './packet/version-request';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,10 @@ export class DashboardService implements CanActivate {
     webSocketService.observable('BotStatePacket').subscribe(state => {
       this.running = state.state === 'RUNNING';
     });
+  }
+
+  getVersion(): Observable<BotVersion> {
+    return this.webSocketService.observable('BotVersion', new VersionRequest());
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> |

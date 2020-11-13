@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col-xl-2 flex-between">
+    <span></span>
+    <mat-form-field>
+      <mat-label>Start</mat-label>
+      <input matInput placeholder="Pick Date" [matDatepicker]="start" [formControl]="globalStart">
+      <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+      <mat-datepicker #start></mat-datepicker>
+    </mat-form-field>
+    <span></span>
+  </div>
+  <div class="col-xl-2 offset-xl-8 flex-between">
+    <span></span>
+    <mat-form-field>
+      <mat-label>Ende</mat-label>
+      <input matInput placeholder="Pick Date" [matDatepicker]="end" [formControl]="globalEnd">
+      <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+      <mat-datepicker #end></mat-datepicker>
+    </mat-form-field>
+    <span></span>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xl-6">
+    <mat-card class="mat-elevation-z6">
+      <h2>Abschickzeiträume</h2>
+      <mat-selection-list [multiple]="false">
+        <mat-list-option *ngFor="let frame of sendFrames" [value]="frame">
+          <div class="flex-between">
+            <span>
+              {{display(frame)}}
+            </span>
+            <span>
+              <button mat-mini-fab (click)="delSendFrame(frame)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </span>
+          </div>
+        </mat-list-option>
+        <mat-list-option *ngIf="sendFrames.length===0">
+          <div class="flex-between">
+            <span></span>
+            <span style="color: red">Keine Abschickzeiträume ausgewählt.</span>
+            <span></span>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card>
+  </div>
+  <div class="col-xl-6">
+    <mat-card class="mat-elevation-z6">
+      <h2>Ankunftzeiträume</h2>
+      <mat-selection-list [multiple]="false">
+        <mat-list-option *ngFor="let frame of arrivalFrames" [value]="frame">
+          <div class="flex-between">
+            <span>
+              {{display(frame)}}
+            </span>
+            <span>
+              <button mat-mini-fab (click)="delArrivalFrame(frame)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </span>
+          </div>
+        </mat-list-option>
+        <mat-list-option *ngIf="arrivalFrames.length===0">
+          <div class="flex-between">
+            <span></span>
+            <span style="color: red">Keine Ankunftzeiträume ausgewählt.</span>
+            <span></span>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xl-9">
+    <ngx-slider [formControl]="sliderControl" [value]="8" [highValue]="23"
+                [options]="options"></ngx-slider>
+  </div>
+  <div class="col-xl-3">
+    <mat-card class="mat-elevation-z6">
+      <div class="row">
+        <div class="col-xl-12">
+          <mat-form-field class="w-100">
+            <mat-label>Datum</mat-label>
+            <input matInput placeholder="Pick Date" [matDatepicker]="date"
+                   [formControl]="dateControl">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-xl-12">
+          <mat-form-field class="w-100">
+            <mat-select [formControl]="typeControl">
+              <mat-option [value]="false">Abschickzeitraum</mat-option>
+              <mat-option [value]="true">Ankunftszeitraum</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-sm-6 flex-between">
+          <span></span>
+          <button mat-raised-button color="accent" (click)="addDaily()">
+            Täglich hinzufügen.
+          </button>
+          <span></span>
+        </div>
+        <div class="col-sm-6 flex-between">
+          <span></span>
+          <button mat-raised-button color="accent" (click)="add()">
+            Für Datum hinzufügen.
+          </button>
+          <span></span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

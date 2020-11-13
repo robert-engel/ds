@@ -1,50 +1,95 @@
-<mat-table [dataSource]="rows" class="w-100">
-  <ng-container matColumnDef="select">
-    <mat-header-cell mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()">
-      </mat-checkbox>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(row) : null"
-                    [checked]="selection.isSelected(row)">
-      </mat-checkbox>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="available">
-    <mat-header-cell *matHeaderCellDef>Mögliche Fakes</mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <span class="mobile-label">Mögliche Fakes:</span>
-      {{element.potential}}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="village">
-    <mat-header-cell *matHeaderCellDef>Dorf</mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <span class="mobile-label">Dorf:</span>
-      <app-village-render [value]="element.village"></app-village-render>
-    </mat-cell>
-  </ng-container>
-  <ng-container *ngFor="let unit of units" [matColumnDef]="unit">
-    <mat-header-cell *matHeaderCellDef>
-      <app-unit-render [value]="unit"></app-unit-render>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <span class="mobile-label"><app-unit-render [value]="unit"></app-unit-render></span>
-      {{element.units[unit]}}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="plan">
-    <mat-header-cell *matHeaderCellDef> Zeit</mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <span class="mobile-label">Zeit:</span>
-      <mat-form-field>
-        <input matInput type="text">
-      </mat-form-field>
-    </mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="cols; sticky: true"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: cols;"></mat-row>
-</mat-table>
+<ng-container *ngIf="!selector">
+  Input fehlt.
+</ng-container>
+<div *ngIf="selector" class="row flex-column-reverse flex-xl-row mt-2">
+  <div *ngIf="selector.length===0" class="col-xl-9">
+    <h2>Keine Dörfer vorhanden.</h2>
+  </div>
+  <div *ngIf="selector.length>0" class="col-xl-9">
+    <form [formGroup]="form">
+      <mat-card class="mat-elevation-z6">
+        <table mat-table [dataSource]="selector" class="w-100">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="village">
+            <th mat-header-cell *matHeaderCellDef>Dorf</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="mobile-label">Dorf:</span>
+              <app-village-render [value]="element.village"></app-village-render>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="plan">
+            <th mat-header-cell *matHeaderCellDef> Fakes</th>
+            <td mat-cell *matCellDef="let element">
+              <input matInput type="number" min="0" [max]="element.potential"
+                     [formControlName]="element.village.id" size="5">
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="cols; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: cols;"></tr>
+        </table>
+      </mat-card>
+    </form>
+  </div>
+  <div class="col-xl-3">
+    <div class="row mb-3">
+      <div class="col-xl-12">
+        <mat-card class="mat-elevation-z6">
+          <h3>Für gewählte:</h3>
+          <hr>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-md-8">
+                <mat-form-field>
+                  <mat-label>Anzahl Fakes</mat-label>
+                  <input matInput type="number" min="0" [formControl]="setterForm">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <button color="accent" mat-raised-button (click)="setSelected(setterForm.value)">
+                  Setzen
+                </button>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-6 flex-between">
+                <span></span>
+                <button mat-mini-fab (click)="decreaseSelected()">
+                  <mat-icon>exposure_neg_1</mat-icon>
+                </button>
+                <span></span>
+              </div>
+              <div class="col-sm-6 flex-between">
+                <span></span>
+                <button mat-mini-fab (click)="increaseSelected()">
+                  <mat-icon>exposure_plus_1</mat-icon>
+                </button>
+                <span></span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <mat-card class="mat-elevation-z6">
+          {{count(form)}} Fakes gewählt.
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

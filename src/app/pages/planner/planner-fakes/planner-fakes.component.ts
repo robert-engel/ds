@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {PlannerService} from '../../../service/planner/planner.service';
-import {FakeSelector} from '../../../service/structures/fake-selector';
 
 @Component({
   selector: 'app-planner-fakes',
@@ -9,23 +7,10 @@ import {FakeSelector} from '../../../service/structures/fake-selector';
 })
 export class PlannerFakesComponent implements OnInit {
 
-  loading = false;
-  selector: FakeSelector[];
-
-  constructor(
-    private planner: PlannerService,
-  ) {
+  constructor() {
   }
 
   ngOnInit(): void {
-  }
-
-  load(): void {
-    this.loading = true;
-    this.planner.getFakeSelector().subscribe(sel => {
-      this.selector = sel;
-      this.loading = false;
-    });
   }
 
 }

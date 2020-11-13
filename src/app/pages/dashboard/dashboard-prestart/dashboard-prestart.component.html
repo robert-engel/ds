@@ -9,8 +9,23 @@
       </p>
       <button *ngIf="gameData" color="primary" mat-raised-button (click)="start()">Bot Starten.
       </button>
-      <button *ngIf="!gameData" color="primary" mat-raised-button (click)="refresh()">Refresh.
+      <button class="ml-3" color="primary" mat-raised-button (click)="refresh()">Refresh.
       </button>
+    </mat-card>
+  </div>
+  <div *ngIf="version" class="col-xl-6">
+    <mat-card>
+      <mat-card-header class="no-margin">
+        <mat-card-title>{{version.name}}</mat-card-title>
+        <mat-card-subtitle>
+          Version {{version.tag}} veröffentlicht {{version.published}}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <markdown>
+          {{version.body}}
+        </markdown>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>

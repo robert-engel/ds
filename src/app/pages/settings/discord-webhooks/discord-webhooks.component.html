@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-xl-6">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="submit(form.value)">
+          <div class="form-group row">
+            <label for="event" class="label col-sm-3 col-form-label">Event</label>
+            <div class="col-sm-9">
+              <mat-form-field class="w-100">
+                <mat-label>Event</mat-label>
+                <mat-select id="event" formControlName="ordinal">
+                  <mat-option *ngFor="let opt of possible" [value]="opt">{{opt.name}}</mat-option>
+                </mat-select>
+                <mat-hint *ngIf="selected">
+                  Variablen:
+                  <ng-container *ngFor="let field of selected.fields">
+                    ${{'{'}}{{field}}}
+                  </ng-container>
+                  ${{'{'}}world} ${{'{'}}account}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="template" class="label col-sm-3 col-form-label">Template</label>
+            <div class="col-sm-9">
+              <mat-form-field class="w-100">
+                <input id="template" matInput placeholder="Template" formControlName="template"
+                       matBadge="i">
+                <mat-hint>
+                  Nachricht die bei ausgewähltem Event gesendet werden soll.<br>
+                  Variablen können so eingesetzt werden: <i>${{'{'}}variablenname}</i>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="username" class="label col-sm-3 col-form-label">Username</label>
+            <div class="col-sm-9">
+              <mat-form-field class="w-100">
+                <input id="username" matInput placeholder="Username" formControlName="username">
+                <mat-hint>Nutzername unter welchem die Nachricht gesendet wird.</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="url" class="label col-sm-3 col-form-label">URL</label>
+            <div class="col-sm-9">
+              <mat-form-field class="w-100">
+                <input type="url" id="url" matInput
+                       placeholder="https://discordapp.com/api/webhooks/..." formControlName="url">
+                <mat-hint>Discord-Webhook URL</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button [disabled]="!form.valid" type="submit" mat-raised-button color="primary">
+                Hinzufügen.
+              </button>
+              <button *ngIf="editEntity" class="ml-2" mat-raised-button color="warn"
+                      (click)="delete(editEntity.id)">
+                Löschen
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-xl-6">
+    <mat-card *ngIf="setup.length > 0">
+      <mat-nav-list>
+        <a *ngFor="let hook of setup" mat-list-item (click)="edit(hook)">
+          <span mat-line>{{hook.webhook}}</span>
+          <span mat-line>{{hook.template}}</span>
+        </a>
+      </mat-nav-list>
+    </mat-card>
+  </div>
+</div>

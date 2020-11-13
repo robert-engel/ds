@@ -19,6 +19,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
 import {ThemeModule} from '../../theme/theme.module';
+import {MarkdownModule} from 'ngx-markdown';
 
 @NgModule({
   declarations: [DashboardComponent, DashboardPrestartComponent, DashboardRunningComponent, TaskmanagerComponent, DriverComponent, FeatureToggleComponent, ErrorLogComponent],
@@ -35,7 +36,8 @@ import {ThemeModule} from '../../theme/theme.module';
     MatSlideToggleModule,
     ReactiveFormsModule,
     MatTableModule,
-    ThemeModule
+    ThemeModule,
+    MarkdownModule
   ]
 })
 export class DashboardModule {

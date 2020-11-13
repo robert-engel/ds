@@ -1,34 +1,19 @@
 <mat-card>
   <div class="row mb-3">
     <div class="col-xl-12">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Fake-Template</mat-panel-title>
-        </mat-expansion-panel-header>
+      <mat-card class="mat-elevation-z6">
+        <h2>Fake-Template</h2>
         <app-fake-selector-template></app-fake-selector-template>
-      </mat-expansion-panel>
+      </mat-card>
     </div>
   </div>
-  <div *ngIf="loading" class="row mb-3">
-    <div class="col-xl-12 flex-between">
-      <span></span>
-      <mat-spinner></mat-spinner>
-      <span></span>
-    </div>
-  </div>
-  <div *ngIf="!loading" class="row mb-3">
+  <div class="row">
     <div class="col-xl-12">
-      <button mat-raised-button color="primary" (click)="load()">
-        Mögliche Fakes laden.
-      </button>
-    </div>
-  </div>
-  <div *ngIf="selector" class="row mb-3">
-    <div *ngIf="selector.length>0" class="col-xl-12">
-      <app-fake-selector-table [rows]="selector"></app-fake-selector-table>
-    </div>
-    <div *ngIf="selector.length===0" class="col-xl-12">
-      <h2>Keine Fakes möglich.</h2>
+      <a [routerLink]="['/planner/fake/plan']">
+        <button mat-raised-button color="primary">
+          Fakes planen.
+        </button>
+      </a>
     </div>
   </div>
 </mat-card>

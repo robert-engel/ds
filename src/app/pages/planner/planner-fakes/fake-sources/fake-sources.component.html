@@ -1,0 +1,11 @@
+<div class="row">
+  <div *ngIf="loading" class="col-xl-12 flex-between">
+    <span></span>
+    <mat-spinner></mat-spinner>
+    <span></span>
+  </div>
+  <div *ngIf="!loading && selector" class="col-xl-12">
+    <app-fake-selector-table [selector]="selector" (valueChange)="valueChange.emit($event)">
+    </app-fake-selector-table>
+  </div>
+</div>

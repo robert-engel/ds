@@ -2,6 +2,10 @@ a {
   color: inherit;
 }
 
+.red {
+  color: red;
+}
+
 .mat-header-cell {
   flex-direction: column;
   justify-content: center;
@@ -9,14 +13,14 @@ a {
 
 .mat-cell {
   text-align: center;
-  justify-content:center;
+  justify-content: center;
 }
 
 .mobile-label {
   display: none;
 }
 
-@media(max-width: 900px) {
+@media (max-width: 900px) {
   .mobile-label {
     width: 80px;
     display: inline-block;

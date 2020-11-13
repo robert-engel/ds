@@ -17,6 +17,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import localeDe from '@angular/common/locales/de';
 import {registerLocaleData} from '@angular/common';
 import {ToastrModule} from 'ngx-toastr';
+import {MarkdownModule} from 'ngx-markdown';
 
 registerLocaleData(localeDe);
 
@@ -25,6 +26,7 @@ registerLocaleData(localeDe);
     AppComponent,
   ],
   imports: [
+    MarkdownModule.forRoot(),
     DashboardModule,
     BrowserModule,
     AppRoutingModule,
