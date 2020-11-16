@@ -36,8 +36,12 @@ export class DiscordWebhooksComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.form.get('ordinal').valueChanges.subscribe(value => {
+    this.form.get('ordinal').valueChanges.subscribe((value: DiscordWebhook) => {
       this.selected = value;
+      this.form.patchValue({
+        username: value.username,
+        template: value.template,
+      }, {emitEvent: false});
     });
     this.discord.getPossible().pipe(takeUntil(this.unsub$)).subscribe(data => {
       this.possible = data;
@@ -77,7 +81,7 @@ export class DiscordWebhooksComponent implements OnInit, OnDestroy {
       template: entity.template,
       username: entity.username,
       url: entity.url,
-    });
+    }, {emitEvent: false});
   }
 
   ngOnDestroy(): void {
