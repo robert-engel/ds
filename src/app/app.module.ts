@@ -18,6 +18,8 @@ import localeDe from '@angular/common/locales/de';
 import {registerLocaleData} from '@angular/common';
 import {ToastrModule} from 'ngx-toastr';
 import {MarkdownModule} from 'ngx-markdown';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {AdminInterceptor} from './pages/admin/admin.interceptor';
 
 registerLocaleData(localeDe);
 
@@ -40,12 +42,19 @@ registerLocaleData(localeDe);
     NgbModule,
     ThemeModule,
     MatSnackBarModule,
+    HttpClientModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       timeOut: 60000,
     }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AdminInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

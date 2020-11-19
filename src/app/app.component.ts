@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {MENU_ITEMS, MENU_ITEMS_USER} from './pages-menu';
 import {DashboardService} from './service/dashboard/dashboard.service';
+import {AdminService} from './pages/admin/admin.service';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private dashboardService: DashboardService,
+    private admin: AdminService,
   ) {
   }
 

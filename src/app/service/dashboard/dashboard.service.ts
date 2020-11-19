@@ -9,9 +9,10 @@ import {RefreshGameDataPacket} from './packet/refresh-game-data-packet';
 import {WebSocketReconnectPacket} from './packet/web-socket-reconnect-packet';
 import {WebSocketStatusPacket} from './packet/web-socket-status-packet';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {map} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
 import {BotVersion} from '../structures/botVersion';
 import {VersionRequest} from './packet/version-request';
+import {ValidUntilRequest} from './packet/valid-until-request';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,11 @@ export class DashboardService implements CanActivate {
     webSocketService.observable('BotStatePacket').subscribe(state => {
       this.running = state.state === 'RUNNING';
     });
+  }
+
+  getValidUntil(): Observable<number> {
+    return this.webSocketService.observable('ValidUntilPacket', new ValidUntilRequest())
+    .pipe(first(), map(resp => resp.validUntil));
   }
 
   getVersion(): Observable<BotVersion> {

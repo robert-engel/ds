@@ -16,10 +16,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
+import { RausstellRetimeComponent } from './rausstell-retime/rausstell-retime.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 
 @NgModule({
-  declarations: [RausstellComponent, RausstellHomeComponent, RausstellVillagesComponent, RausstellIncsComponent],
+  declarations: [RausstellComponent, RausstellHomeComponent, RausstellVillagesComponent, RausstellIncsComponent, RausstellRetimeComponent],
   imports: [
     CommonModule,
     RausstellRoutingModule,
@@ -32,7 +37,13 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     MatTableModule,
-    MatIconModule
-  ]
+    MatIconModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatSelectModule
+  ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
+  ],
 })
 export class RausstellModule { }

@@ -62,6 +62,7 @@ export class DiscordWebhooksComponent implements OnInit, OnDestroy {
 
   delete(id: number): void {
     this.discord.delete(id);
+    this.editEntity = undefined;
   }
 
   submit(data): void {

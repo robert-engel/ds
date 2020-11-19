@@ -1,4 +1,12 @@
-<mat-toolbar color="primary">Menu</mat-toolbar>
-<mat-nav-list>
-  <a *ngFor="let item of items" mat-list-item [routerLink]="item.link">{{item.title}}</a>
-</mat-nav-list>
+<div class="outside">
+  <mat-toolbar color="primary">Menu</mat-toolbar>
+  <mat-nav-list>
+    <a *ngFor="let item of items" mat-list-item [routerLink]="item.link">{{item.title}}</a>
+  </mat-nav-list>
+  <mat-nav-list *ngIf="isAdmin" class="bottom">
+    <a mat-list-item [routerLink]="['admin', 'dashboard']">Admin</a>
+  </mat-nav-list>
+  <div *ngIf="until" class="bottom valid">
+    Account freigeschaltet bis:<br> {{until}}
+  </div>
+</div>

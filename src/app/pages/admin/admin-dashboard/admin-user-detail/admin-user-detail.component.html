@@ -1,0 +1,43 @@
+<div *ngIf="!user" class="row">
+  <div class="col-xl-4 offset-xl-4">
+    <mat-card class="flex-between">
+      <span></span>
+      <span>User konnte nicht gefunden werden.</span>
+      <span></span>
+    </mat-card>
+  </div>
+</div>
+<div *ngIf="user" class="row">
+  <div class="col-xl-3">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <span *ngIf="!edit" (dblclick)="edit=true">
+            {{user.name}}
+          </span>
+          <mat-form-field *ngIf="edit">
+            <mat-label>Name</mat-label>
+            <input matInput [formControl]="form">
+          </mat-form-field>
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{user.uuid}}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        Gültig bis: {{getValidUntil(user.validUntil)}}
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="incrementWeek()">+1 Woche</button>
+        <button mat-button (click)="incrementMonth()">+1 Monat</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div *ngIf="user" class="col-xl-5">
+    <app-admin-logins [user]="user"></app-admin-logins>
+  </div>
+  <div *ngIf="user" class="col-xl-4">
+    <app-admin-downloads [user]="user"></app-admin-downloads>
+  </div>
+</div>
+

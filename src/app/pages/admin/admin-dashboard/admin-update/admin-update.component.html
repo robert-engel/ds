@@ -1,0 +1,28 @@
+<mat-card>
+  <div class="row">
+    <div *ngIf="loading" class="col-xl-12 flex-between">
+      <span></span>
+      <mat-spinner></mat-spinner>
+      <span></span>
+    </div>
+  </div>
+  <div *ngIf="!loading" class="col-xl-12">
+    <ng-container *ngFor="let release of releases" class="flex-between">
+      <div>
+        <div>
+          <h1>{{release.name}}</h1>
+          <h4>{{release.tag}}</h4>
+          <markdown>
+            {{release.body}}
+          </markdown>
+        </div>
+        <button mat-mini-fab (click)="update(release)">
+          <mat-icon>
+            system_update
+          </mat-icon>
+        </button>
+      </div>
+      <hr>
+    </ng-container>
+  </div>
+</mat-card>

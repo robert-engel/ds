@@ -20,6 +20,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
 import {ThemeModule} from '../../theme/theme.module';
 import {MarkdownModule} from 'ngx-markdown';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [DashboardComponent, DashboardPrestartComponent, DashboardRunningComponent, TaskmanagerComponent, DriverComponent, FeatureToggleComponent, ErrorLogComponent],
@@ -37,7 +38,8 @@ import {MarkdownModule} from 'ngx-markdown';
     ReactiveFormsModule,
     MatTableModule,
     ThemeModule,
-    MarkdownModule
+    MarkdownModule,
+    MatBadgeModule
   ]
 })
 export class DashboardModule {

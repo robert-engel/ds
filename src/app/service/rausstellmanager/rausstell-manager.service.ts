@@ -17,6 +17,7 @@ import {IgnoreVillageRequest} from './packet/ignore-village-request';
 import {UnignoreVillageRequest} from './packet/unignore-village-request';
 import {UnignoreIncRequest} from './packet/unignore-inc-request';
 import {SetRausstellTroopTemplateRequest} from './packet/set-rausstell-troop-template-request';
+import {AntiRetimeRequest} from './packet/anti-retime-request';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,10 @@ import {SetRausstellTroopTemplateRequest} from './packet/set-rausstell-troop-tem
 export class RausstellManagerService {
 
   constructor(private websocketService: WebsocketService) {
+  }
+
+  antiRetime(time: number, village: number, units: any): void {
+    this.websocketService.sendData(new AntiRetimeRequest(time, village, units));
   }
 
   status(): Observable<EnabledStatus> {
