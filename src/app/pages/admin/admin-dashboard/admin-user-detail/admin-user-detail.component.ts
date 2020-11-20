@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AdminService} from '../../admin.service';
 import {User} from '../../structures/user';
 import {debounceTime, switchMap} from 'rxjs/operators';
@@ -21,6 +21,7 @@ export class AdminUserDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private admin: AdminService,
+    private router: Router,
   ) {
   }
 
@@ -33,6 +34,12 @@ export class AdminUserDetailComponent implements OnInit {
     });
     this.form.valueChanges.pipe(debounceTime(1000)).subscribe(value => {
       this.admin.setName(this.user.id, value).subscribe();
+    });
+  }
+
+  delete(): void {
+    this.admin.deleteUser(this.user.id).subscribe(() => {
+      this.router.navigate(['admin', 'dashboard']);
     });
   }
 

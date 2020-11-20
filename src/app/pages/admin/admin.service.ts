@@ -18,6 +18,10 @@ export class AdminService implements CanActivate {
   ) {
   }
 
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>('https://tw.robertengel.io/admin/user/users?id=' + id);
+  }
+
   incrementValid(id: number, weeks: number, months: number): Observable<User> {
     return this.http.put<User>(
       'https://tw.robertengel.io/admin/user/users/' + id + '/valid/increment?weeks=' + weeks + '&months=' + months,

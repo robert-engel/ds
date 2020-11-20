@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {CommandType} from '../../../service/structures/command-type';
 
 import * as moment from 'moment';
@@ -36,6 +36,9 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
   disabled = false;
   loading = false;
 
+  timerForm = new FormControl();
+  timerLogics: string[];
+
   constructor(
     private fb: FormBuilder,
     private commandService: CommandService,
@@ -53,7 +56,6 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
         if (Array.isArray(ids) === false) {
           ids = [ids];
         }
-        console.log(ids);
         if (ids.length === 1) {
           this.villageService
           .byId(parseInt(ids[0], 10))
@@ -108,6 +110,13 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
           timeOut: 7000,
         }
       );
+    });
+    this.commandService.getTimerLogic().pipe(takeUntil(this.unsub$)).subscribe(resp => {
+      this.timerLogics = resp.available;
+      this.timerForm.setValue(resp.timerLogic, {emitEvent: false});
+    });
+    this.timerForm.valueChanges.subscribe(value => {
+      this.commandService.setTimerLogic(value);
     });
   }
 

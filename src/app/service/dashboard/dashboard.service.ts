@@ -32,7 +32,7 @@ export class DashboardService implements CanActivate {
 
   getValidUntil(): Observable<number> {
     return this.webSocketService.observable('ValidUntilPacket', new ValidUntilRequest())
-    .pipe(first(), map(resp => resp.validUntil));
+    .pipe(map(resp => resp.validUntil));
   }
 
   getVersion(): Observable<BotVersion> {

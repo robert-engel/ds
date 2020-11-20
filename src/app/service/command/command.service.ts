@@ -27,6 +27,9 @@ import {EditStandardTroopTemplateRequest} from './packet/edit-standard-troop-tem
 import {DeleteStandardTroopTemplateRequest} from './packet/delete-standard-troop-template-request';
 import {ExportWorkbenchRequest} from './packet/export-workbench-request';
 import {ImportWorkbenchFinish} from '../structures/import-workbench-finish';
+import {TimerLogicResponse} from './structures/timer-logic-response';
+import {GetTimerLogicRequest} from './packet/get-timer-logic-request';
+import {SetTimerLogicRequest} from './packet/set-timer-logic-request';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +45,14 @@ export class CommandService {
     .pipe(shareReplay(1));
     this.editTaskObservable.subscribe();
     this.editTaskSubject.next(undefined);
+  }
+
+  getTimerLogic(): Observable<TimerLogicResponse> {
+    return this.websocket.observable('TimerLogicResponse', new GetTimerLogicRequest());
+  }
+
+  setTimerLogic(logic: string): void {
+    this.websocket.sendData(new SetTimerLogicRequest(logic));
   }
 
   importWorkbenchStart(): Observable<number> {
