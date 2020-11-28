@@ -4,6 +4,7 @@ import {DashboardService} from '../../../service/dashboard/dashboard.service';
 import {takeUntil} from 'rxjs/operators';
 import {IncManagerService} from '../../../service/incmanager/inc-manager.service';
 import {RausstellManagerService} from '../../../service/rausstellmanager/rausstell-manager.service';
+import {ResmoverService} from '../../../service/resmover/resmover.service';
 
 @Component({
   selector: 'app-dashboard-running',
@@ -18,11 +19,13 @@ export class DashboardRunningComponent implements OnInit, OnDestroy {
   farm = false;
   inc = false;
   rausstell = false;
+  resmover = false;
 
   constructor(
     private dashboardService: DashboardService,
     private incmanagerService: IncManagerService,
     private rausstellService: RausstellManagerService,
+    private resmoverService: ResmoverService,
   ) {
   }
 
@@ -40,6 +43,13 @@ export class DashboardRunningComponent implements OnInit, OnDestroy {
     this.rausstellService.status().pipe(takeUntil(this.unsub$)).subscribe(status => {
       this.rausstell = status.enabled;
     });
+    this.resmoverService.config(this.unsub$).subscribe(config => {
+      this.resmover = config.enabled;
+    });
+  }
+
+  resmoverToggle(value: boolean): void {
+    this.resmoverService.setEnabled(!value);
   }
 
   websocketToggle(value: boolean): void {

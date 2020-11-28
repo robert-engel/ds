@@ -11,6 +11,11 @@ const routes: Routes = [
     .then(m => m.AdminModule),
   },
   {
+    path: 'resmover',
+    loadChildren: () => import('./pages/resmover/resmover.module')
+    .then(m => m.ResmoverModule),
+  },
+  {
     path: 'command',
     canActivate: [DashboardService],
     loadChildren: () => import('./pages/command/command.module')

@@ -29,6 +29,10 @@ export const MENU_ITEMS_USER: Menu[] = [
     title: 'Rausstell Manager',
     link: '/rausstell',
   },
+  {
+    title: 'Res Mover',
+    link: '/resmover',
+  },
   /*{
     title: 'Kata',
     link: '/catas',

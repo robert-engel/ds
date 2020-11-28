@@ -158,6 +158,14 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
     }
   }
 
+  tooltip(logic: string): string | undefined {
+    switch (logic) {
+      case 'HTTP':
+        return 'Kann verwendet werden um Trains zu schicken.';
+    }
+    return undefined;
+  }
+
   ngOnDestroy(): void {
     this.unsub$.next();
     this.unsub$.complete();

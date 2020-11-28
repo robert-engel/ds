@@ -1,0 +1,82 @@
+<mat-card>
+  <h1>Resource Mover</h1>
+  <hr>
+  <mat-card-content>
+    <div class="row">
+      <div class="col-xl-3">
+        <h3>Mindest Rohstoffe</h3>
+      </div>
+      <div class="col-xl-9">
+        <form [formGroup]="minResources">
+          <div class="row">
+            <div class="col-xl-4">
+              <mat-form-field>
+                <mat-label>Holz</mat-label>
+                <input matInput type="number" formControlName="wood">
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4">
+              <mat-form-field>
+                <mat-label>Lehm</mat-label>
+                <input matInput type="number" formControlName="stone">
+              </mat-form-field>
+            </div>
+            <div class="col-xl-4">
+              <mat-form-field>
+                <mat-label>Eisen</mat-label>
+                <input matInput type="number" formControlName="iron">
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-2">
+        <h3>Max Rohstoffe(%)</h3>
+      </div>
+      <div class="col-xl-1">
+        {{formatLabelPercent(maxResources.value)}}
+      </div>
+      <div class="col-xl-9">
+        <mat-slider [displayWith]="formatLabelPercent" [thumbLabel]="true" class="w-100" min="10"
+                    max="99"
+                    [formControl]="maxResources">
+        </mat-slider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-2">
+        <h3>Max Entfernung</h3>
+      </div>
+      <div class="col-xl-1">
+        {{maxDistance.value}} Felder
+      </div>
+      <div class="col-xl-9">
+        <mat-slider [thumbLabel]="true" class="w-100" min="1" max="100" [formControl]="maxDistance">
+        </mat-slider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-2">
+        <h3>Interval</h3>
+      </div>
+      <div class="col-xl-1">
+        {{formatLabelInterval(interval.value)}}
+      </div>
+      <div class="col-xl-9">
+        <mat-slider [displayWith]="formatLabelInterval" [thumbLabel]="true" class="w-100" min="30"
+                    max="14400"
+                    [formControl]="interval">
+        </mat-slider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="offset-xl-2 col-xl-10">
+        <button mat-raised-button color="primary" (click)="edit()" [disabled]="disabled">
+          Speichern
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

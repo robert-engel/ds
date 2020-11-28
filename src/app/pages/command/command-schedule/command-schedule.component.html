@@ -45,8 +45,12 @@
               <mat-form-field>
                 <mat-label>Timer Logik</mat-label>
                 <mat-select [formControl]="timerForm">
+                  <mat-select-trigger>{{timerForm.value | titlecase}}</mat-select-trigger>
                   <mat-option *ngFor="let logic of timerLogics" [value]="logic">
-                    {{logic | titlecase}}
+                    <div class="flex-between">
+                      <span>{{logic | titlecase}}</span>
+                      <mat-icon *ngIf="tooltip(logic)" [matTooltip]="tooltip(logic)">info</mat-icon>
+                    </div>
                   </mat-option>
                 </mat-select>
               </mat-form-field>
