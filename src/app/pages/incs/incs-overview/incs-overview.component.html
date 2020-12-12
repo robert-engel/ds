@@ -71,7 +71,7 @@
       <mat-header-cell *matHeaderCellDef>Ankunft</mat-header-cell>
       <mat-cell *matCellDef="let element">
         <span class="mobile-label">Ankunft:</span>
-        {{element.arrival}}
+        {{element.arrival.display}}<small>:{{element.arrival.ms}}</small>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="remaining">

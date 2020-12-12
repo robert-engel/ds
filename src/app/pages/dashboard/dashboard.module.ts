@@ -21,9 +21,12 @@ import {MatTableModule} from '@angular/material/table';
 import {ThemeModule} from '../../theme/theme.module';
 import {MarkdownModule} from 'ngx-markdown';
 import {MatBadgeModule} from '@angular/material/badge';
+import { FeatureToggleNumberComponent } from './dashboard-running/feature-toggle-number/feature-toggle-number.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
-  declarations: [DashboardComponent, DashboardPrestartComponent, DashboardRunningComponent, TaskmanagerComponent, DriverComponent, FeatureToggleComponent, ErrorLogComponent],
+  declarations: [DashboardComponent, DashboardPrestartComponent, DashboardRunningComponent, TaskmanagerComponent, DriverComponent, FeatureToggleComponent, ErrorLogComponent, FeatureToggleNumberComponent],
   imports: [
     CommonModule,
     MatGridListModule,
@@ -39,7 +42,9 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatTableModule,
     ThemeModule,
     MarkdownModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class DashboardModule {

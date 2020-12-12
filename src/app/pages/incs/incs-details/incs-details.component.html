@@ -39,10 +39,10 @@
               Spieler: {{inc.player.name}}
             </div>
             <div class="col-xl-2">
-              Ankunft: {{inc.arrival}}
+              Ankunft: {{inc.arrival.display}}<small>:{{inc.arrival.ms}}</small>
             </div>
             <div class="col-xl-2">
-              Rückkehr: {{inc.return}}
+              Rückkehr: {{inc.return.display}}
             </div>
             <div class="col-xl-1">
               Verbleibend: {{inc.remaining * 1000 | hms}}
@@ -53,7 +53,7 @@
       <div class="col-xl-3">
         <div class="row">
           <div class="col-md-12">
-            <button [routerLink]="['/planner/command', inc.target.id, inc.time, {type: 'SUPPORT'}]"
+            <button [routerLink]="['/planner/command', inc.target.id, inc.arrival.timestamp, {type: 'SUPPORT'}]"
                     mat-raised-button
                     class="w-100 mat-elevation-z6" color="accent">
               DEFF planen.
@@ -62,7 +62,16 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <button [routerLink]="['/planner/command', inc.target.id, inc.time, {type: 'ATTACK'}]"
+            <button
+              [routerLink]="['/incs/cancel', {village: inc.target.id, time: inc.arrival.timestamp}]"
+              mat-raised-button class="w-100 mat-elevation-z6 mt-2" color="accent">
+              Eigendeff tabben.
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button [routerLink]="['/planner/command', inc.target.id, inc.arrival.timestamp, {type: 'ATTACK'}]"
                     mat-raised-button class="w-100 mat-elevation-z6 mt-2" color="warn">
               Cleaner planen.
             </button>
@@ -71,7 +80,7 @@
         <div class="row">
           <div class="col-md-12">
             <button
-              [routerLink]="['/planner/command', inc.origin.id, inc.returnTime, {type: 'ATTACK'}]"
+              [routerLink]="['/planner/command', inc.origin.id, inc.return.timestamp, {type: 'ATTACK'}]"
               mat-raised-button class="w-100 mat-elevation-z6 mt-2" color="warn">
               Retime planen.
             </button>

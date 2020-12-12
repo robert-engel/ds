@@ -30,6 +30,10 @@ import {ImportWorkbenchFinish} from '../structures/import-workbench-finish';
 import {TimerLogicResponse} from './structures/timer-logic-response';
 import {GetTimerLogicRequest} from './packet/get-timer-logic-request';
 import {SetTimerLogicRequest} from './packet/set-timer-logic-request';
+import {CancelTabberRequest} from './packet/cancel-tabber-request';
+import {PlannedCancelTab} from './structures/planned-cancel-tab';
+import {GetPlannedCancelTabsRequest} from './packet/get-planned-cancel-tabs-request';
+import {CancelPlannedTabRequest} from './packet/cancel-planned-tab-request';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +49,27 @@ export class CommandService {
     .pipe(shareReplay(1));
     this.editTaskObservable.subscribe();
     this.editTaskSubject.next(undefined);
+  }
+
+  cancelTab(village: number, troops: any, second: number, msStart: number, msEnd: number): void {
+    this.websocket.sendData(new CancelTabberRequest(village, troops, second, msStart, msEnd));
+  }
+
+  getCancelTabs(): Observable<PlannedCancelTab[]> {
+    return this.websocket.observable('ListPlannedCancelTabsResponse', new GetPlannedCancelTabsRequest());
+  }
+
+  cancelPlannedCancelTab(id: number): void {
+    this.websocket.sendData(new CancelPlannedTabRequest(id));
+  }
+
+  addedPlansEvents(): Observable<PlannedCancelTab> {
+    return this.websocket.observable('AddedPlannedTabPacket');
+  }
+
+  cancelPlansEvents(): Observable<number> {
+    return this.websocket.observable('CanceledPlannedTabPacket')
+    .pipe(map(resp => resp.id));
   }
 
   getTimerLogic(): Observable<TimerLogicResponse> {

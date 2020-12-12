@@ -14,12 +14,19 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {ReactiveFormsModule} from '@angular/forms';
-import { IncsDetailsComponent } from './incs-details/incs-details.component';
+import {IncsDetailsComponent} from './incs-details/incs-details.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {IncsCancelTabComponent} from './incs-cancel-tab/incs-cancel-tab.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {MatInputModule} from '@angular/material/input';
+import { IncsCancelTabScheduleComponent } from './incs-cancel-tab/incs-cancel-tab-schedule/incs-cancel-tab-schedule.component';
+import { IncsCancelTabListComponent } from './incs-cancel-tab/incs-cancel-tab-list/incs-cancel-tab-list.component';
 
 
 @NgModule({
-  declarations: [IncsComponent, IncsOverviewComponent, IncsDetailsComponent],
+  declarations: [IncsComponent, IncsOverviewComponent, IncsDetailsComponent, IncsCancelTabComponent, IncsCancelTabScheduleComponent, IncsCancelTabListComponent],
   imports: [
     CommonModule,
     IncsRoutingModule,
@@ -34,7 +41,13 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatSelectModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-  ]
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatInputModule,
+  ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
+  ],
 })
 export class IncsModule {
 }

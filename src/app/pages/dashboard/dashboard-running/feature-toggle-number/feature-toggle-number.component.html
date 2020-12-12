@@ -1,0 +1,31 @@
+<mat-card (click)="click()" [ngClass]="{'on' : on}">
+  <div class="icon-container flex-between">
+    <span></span>
+    <button type="button" [disabled]="!on" mat-mini-fab>
+      <mat-icon>{{icon}}</mat-icon>
+    </button>
+    <span></span>
+  </div>
+  <div class="details flex-between no-click">
+    <span></span>
+    <h1 style="margin: 0">{{ title }}</h1>
+    <span></span>
+  </div>
+  <div class="toggle flex-between">
+    <span></span>
+    <div>
+      <div>
+        <mat-form-field class="w-75">
+          <mat-label>Delay</mat-label>
+          <input type="number" matInput [formControl]="numberControl"
+                 (click)="$event.stopPropagation()" (change)="numberChange($event)">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-slide-toggle (change)="change($event)" (click)="tClick($event)"
+                          [formControl]="control"></mat-slide-toggle>
+      </div>
+    </div>
+    <span></span>
+  </div>
+</mat-card>

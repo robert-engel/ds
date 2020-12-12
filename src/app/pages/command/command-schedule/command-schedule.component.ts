@@ -104,7 +104,7 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
     });
     this.commandService.addCommandEvents().pipe(takeUntil(this.unsub$)).subscribe(command => {
       this.toastr.success(
-        `Von ${command.from.search} nach ${command.to.search}. Ankunft: ${command.arrivalTime}`,
+        `Von ${command.from.search} nach ${command.to.search}. Ankunft: ${command.arrivalTime.display}`,
         command.commandType,
         {
           timeOut: 7000,

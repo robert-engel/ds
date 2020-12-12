@@ -21,6 +21,11 @@
         <app-feature-toggle [on]="resmover" title="Res Mover"
                             (toggle)="resmoverToggle($event)"></app-feature-toggle>
       </div>
+      <div *ngIf="reLoginConfig" class="col-md-12 gap-bottom">
+        <app-feature-toggle-number [num]="reLoginConfig.delay" [on]="reLoginConfig.enabled" title="Re-Login"
+                                   (toggle)="reLoginToggle($event)"
+                                   (number)="reLoginDelay($event)"></app-feature-toggle-number>
+      </div>
     </div>
   </div>
   <div class="col-xl-9">

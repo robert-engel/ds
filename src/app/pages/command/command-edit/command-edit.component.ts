@@ -65,7 +65,7 @@ export class CommandEditComponent implements OnInit, OnDestroy {
         return;
       }
       this.taskId = task.id;
-      this.title = `Bearbeiten von Task ${task.commandType} ${task.sendTime}`;
+      this.title = `Bearbeiten von Task ${task.commandType} ${task.sendTime.display}`;
       this.fromForm.setValue(task.from);
       this.toForm.setValue(task.to);
       this.unitsForm.setValue(task.units);

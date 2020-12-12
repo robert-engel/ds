@@ -69,11 +69,11 @@
           </ng-container>
           <ng-container matColumnDef="sendTime">
             <th mat-header-cell *matHeaderCellDef> Abschickzeit</th>
-            <td mat-cell *matCellDef="let element"> {{element.sendTime}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.sendTime.display}} </td>
           </ng-container>
           <ng-container matColumnDef="arrivalTime">
             <th mat-header-cell *matHeaderCellDef> Ankunftszeit</th>
-            <td mat-cell *matCellDef="let element"> {{element.arrivalTime}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.arrivalTime.display}}<small>:{{element.arrivalTime.ms}}</small> </td>
           </ng-container>
           <ng-container matColumnDef="remainingDelay">
             <th mat-header-cell *matHeaderCellDef> Verbleibend</th>

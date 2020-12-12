@@ -1,5 +1,6 @@
 import {Village} from './village';
 import {Player} from './player';
+import {LocalDateTime} from './local-date-time';
 
 export interface IncomingEntity {
   remaining: number;
@@ -10,8 +11,6 @@ export interface IncomingEntity {
   target: Village;
   origin: Village;
   player: Player;
-  arrival: string;
-  time: number;
-  returnTime: number;
-  return: string;
+  arrival: LocalDateTime;
+  return: LocalDateTime;
 }
