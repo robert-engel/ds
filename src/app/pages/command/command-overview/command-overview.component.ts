@@ -10,6 +10,8 @@ import {Clipboard} from '@angular/cdk/clipboard';
 import {Router} from '@angular/router';
 import {SelectionModel} from '@angular/cdk/collections';
 import {WebsocketService} from '../../../service/websocket.service';
+import {MatDialog} from '@angular/material/dialog';
+import {CommandEditComponent} from '../command-edit/command-edit.component';
 
 @Component({
   selector: 'app-command-overview',
@@ -45,6 +47,7 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     private clipboard: Clipboard,
     private router: Router,
     private web: WebsocketService,
+    public dialog: MatDialog,
   ) {
   }
 
@@ -101,7 +104,8 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
 
   editTask(task: CommandTask): void {
     this.commandService.setEditTask(task);
-    this.router.navigate(['/command/edit/' + task.id]);
+    // this.router.navigate(['/command/edit/' + task.id]);
+    this.dialog.open(CommandEditComponent);
   }
 
   pageUpdate(event: PageEvent): void {
