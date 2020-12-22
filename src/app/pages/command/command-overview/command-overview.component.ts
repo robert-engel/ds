@@ -4,7 +4,7 @@ import {CommandService} from '../../../service/command/command.service';
 import {interval, Subject} from 'rxjs';
 import {CommandListResponse} from '../../../service/structures/command-list-response';
 import {takeUntil} from 'rxjs/operators';
-import {PageEvent} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {Router} from '@angular/router';
@@ -104,8 +104,17 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
 
   editTask(task: CommandTask): void {
     this.commandService.setEditTask(task);
-    // this.router.navigate(['/command/edit/' + task.id]);
     this.dialog.open(CommandEditComponent);
+  }
+
+  refresh(paginator: MatPaginator): void {
+    this.isLoadingResults = true;
+    setTimeout(() => {
+      this.commandService.getCommandList(paginator.pageSize, paginator.pageIndex * paginator.pageSize).subscribe(resp => {
+        this.tasks = resp;
+        this.isLoadingResults = false;
+      });
+    }, 100);
   }
 
   pageUpdate(event: PageEvent): void {
@@ -118,8 +127,9 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  delete(task: CommandTask): void {
+  delete(task: CommandTask, paginator: MatPaginator): void {
     this.commandService.removeCommand(task.id);
+    this.refresh(paginator);
   }
 
   exportWorkbench(): void {
@@ -128,11 +138,12 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteSelected(): void {
+  deleteSelected(paginator: MatPaginator): void {
     this.selection.selected.forEach(value => {
       this.selection.deselect(value);
       this.commandService.removeCommand(value.id);
     });
+    this.refresh(paginator);
   }
 
   ngOnDestroy(): void {

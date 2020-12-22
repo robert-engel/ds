@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import {StandardTroopTemplate} from '../../../service/structures/standard-troop-template';
 import {WebsocketService} from '../../../service/websocket.service';
 import {CommandService} from '../../../service/command/command.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
@@ -35,6 +35,9 @@ export class CommandEditComponent implements OnInit, OnDestroy {
     date: moment(),
     time: moment().format('HH:mm:ss:SSS'),
   });
+  timerForm = new FormControl();
+
+  timerLogics: string[];
 
   templates: StandardTroopTemplate[];
 
@@ -46,7 +49,6 @@ export class CommandEditComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private web: WebsocketService,
     private command: CommandService,
-    private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
   ) {
@@ -58,6 +60,9 @@ export class CommandEditComponent implements OnInit, OnDestroy {
     });
     this.command.getTroopTemplates().subscribe(templates => {
       this.templates = templates;
+    });
+    this.command.getTimerLogic().pipe(takeUntil(this.unsub$)).subscribe(resp => {
+      this.timerLogics = resp.available;
     });
     this.command.getEditTask().pipe(takeUntil(this.unsub$)).subscribe(task => {
       if (!task) {
@@ -72,6 +77,7 @@ export class CommandEditComponent implements OnInit, OnDestroy {
       this.unitForm.setValue(task.unit);
       this.templateForm.setValue('custom');
       this.commandTypeForm.setValue(task.commandType);
+      this.timerForm.setValue(task.timer.toUpperCase());
       this.command.getEditTimes(task.id).subscribe(timings => {
         this.sendDateTimeForm.setValue({
           date: moment(timings.sendTime),
@@ -84,6 +90,9 @@ export class CommandEditComponent implements OnInit, OnDestroy {
       });
     });
     this.command.editCommandsEvents().pipe(takeUntil(this.unsub$)).subscribe(command => {
+      if (command.id === this.taskId) {
+        this.command.setEditTask(command);
+      }
       this.toastr.success(
         `Erfolgreich bearbeitet.`,
         undefined,
@@ -91,9 +100,6 @@ export class CommandEditComponent implements OnInit, OnDestroy {
           timeOut: 7000,
         }
       );
-    });
-    this.route.params.pipe(takeUntil(this.unsub$)).subscribe(params => {
-      // TODO
     });
   }
 
@@ -107,6 +113,12 @@ export class CommandEditComponent implements OnInit, OnDestroy {
     this.disabled = true;
     setTimeout(() => this.disabled = false, 1500);
     this.command.editTarget(this.taskId, data.id);
+  }
+
+  updateTimer(data): void {
+    this.disabled = true;
+    setTimeout(() => this.disabled = false, 1500);
+    this.command.editTimer(this.taskId, data);
   }
 
   updateUnits(template, units): void {

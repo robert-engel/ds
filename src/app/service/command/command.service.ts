@@ -34,6 +34,7 @@ import {CancelTabberRequest} from './packet/cancel-tabber-request';
 import {PlannedCancelTab} from './structures/planned-cancel-tab';
 import {GetPlannedCancelTabsRequest} from './packet/get-planned-cancel-tabs-request';
 import {CancelPlannedTabRequest} from './packet/cancel-planned-tab-request';
+import {EditCommandTimerRequest} from './packet/edit-command-timer-request';
 
 @Injectable({
   providedIn: 'root'
@@ -189,6 +190,10 @@ export class CommandService {
 
   editArrival(id: number, arrival: number): void {
     this.websocket.sendData(new EditCommandArrivalTimeRequest(id, arrival));
+  }
+
+  editTimer(id: number, timer: string): void {
+    this.websocket.sendData(new EditCommandTimerRequest(id, timer));
   }
 
   editSendTime(id: number, sendTime: number): void {

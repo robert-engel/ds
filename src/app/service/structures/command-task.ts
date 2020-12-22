@@ -10,6 +10,7 @@ export interface CommandTask {
   sendTime: LocalDateTime;
   arrivalTime: LocalDateTime;
   commandType: CommandType;
+  timer: string;
   unit: string;
   remainingDelay: number;
 }

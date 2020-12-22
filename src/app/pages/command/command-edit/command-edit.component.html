@@ -1,147 +1,168 @@
+<mat-card-title>
+  {{title}}
+</mat-card-title>
 
-  <mat-card-title>
-    {{title}}
-  </mat-card-title>
-
-  <div class="form-group row">
-    <label class="label col-sm-1 col-form-label">Herkunft</label>
-    <div class="col-xl-8">
-      <app-village-input [formControl]="fromForm"></app-village-input>
-    </div>
-    <div class="col-xl-3">
-      <button [disabled]="!fromForm.valid || disabled" type="submit" mat-raised-button
-              color="primary"
-              (click)="updateFrom(fromForm.value)">
-        Herkunft Aktualisieren
-      </button>
-    </div>
+<div class="form-group row">
+  <label class="label col-sm-1 col-form-label">Herkunft</label>
+  <div class="col-xl-8">
+    <app-village-input [formControl]="fromForm"></app-village-input>
   </div>
-  <div class="form-group row">
-    <label class="label col-xl-1 col-form-label">Ziel</label>
-    <div class="col-xl-8">
-      <app-village-input [formControl]="toForm"></app-village-input>
-    </div>
-    <div class="col-xl-3">
-      <button [disabled]="!toForm.valid || disabled" type="submit" mat-raised-button color="primary"
-              (click)="updateTo(toForm.value)">
-        Ziel Aktualisieren
-      </button>
-    </div>
+  <div class="col-xl-3">
+    <button [disabled]="!fromForm.valid || disabled" type="submit" mat-raised-button
+            color="primary"
+            (click)="updateFrom(fromForm.value)">
+      Herkunft Aktualisieren
+    </button>
   </div>
-  <form [formGroup]="sendDateTimeForm"
-        (ngSubmit)="updateSendTime(sendDateTimeForm.value)">
-    <div class="form-group row">
-      <label class="label col-xl-1 col-form-label">Abschickzeit</label>
-      <div class="col-xl-8">
-        <mat-form-field>
-          <mat-label>Datum</mat-label>
-          <input matInput placeholder="Pick Date" [matDatepicker]="picker" formControlName="date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput maxlength="12" formControlName="time"/>
-        </mat-form-field>
-      </div>
-      <div class="col-xl-3">
-        <button [disabled]="!sendDateTimeForm.valid || disabled" type="submit" mat-raised-button
-                color="primary">
-          Abschickzeit aktualisieren
-        </button>
-      </div>
-    </div>
-  </form>
-  <form [formGroup]="arrivalDateTimeForm"
-        (ngSubmit)="updateArrivalTime(arrivalDateTimeForm.value)">
-    <div class="form-group row">
-      <label class="label col-xl-1 col-form-label">Ankunft</label>
-      <div class="col-xl-8">
-        <mat-form-field>
-          <mat-label>Datum</mat-label>
-          <input matInput placeholder="Pick Date" [matDatepicker]="arrivalpicker"
-                 formControlName="date">
-          <mat-datepicker-toggle matSuffix [for]="arrivalpicker"></mat-datepicker-toggle>
-          <mat-datepicker #arrivalpicker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput maxlength="12" formControlName="time"/>
-        </mat-form-field>
-      </div>
-      <div class="col-xl-3">
-        <button [disabled]="!arrivalDateTimeForm.valid || disabled" type="submit" mat-raised-button
-                color="primary">
-          Ankunftszeit aktualisieren
-        </button>
-      </div>
-    </div>
-  </form>
+</div>
+<div class="form-group row">
+  <label class="label col-xl-1 col-form-label">Ziel</label>
+  <div class="col-xl-8">
+    <app-village-input [formControl]="toForm"></app-village-input>
+  </div>
+  <div class="col-xl-3">
+    <button [disabled]="!toForm.valid || disabled" type="submit" mat-raised-button color="primary"
+            (click)="updateTo(toForm.value)">
+      Ziel Aktualisieren
+    </button>
+  </div>
+</div>
+<div class="form-group row">
+  <label class="label col-xl-1 col-form-label">Timer</label>
+  <div class="col-xl-8">
+    <mat-form-field>
+      <mat-label>Timer Logik</mat-label>
+      <mat-select [formControl]="timerForm">
+        <mat-select-trigger>{{timerForm.value | titlecase}}</mat-select-trigger>
+        <mat-option *ngFor="let logic of timerLogics" [value]="logic">
+          <div class="flex-between">
+            <span>{{logic | titlecase}}</span>
+          </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-xl-3">
+    <button [disabled]="!timerForm.valid || disabled" type="submit" mat-raised-button
+            color="primary" (click)="updateTimer(timerForm.value)">
+      Timer Logik Aktualisieren
+    </button>
+  </div>
+</div>
+<form [formGroup]="sendDateTimeForm"
+      (ngSubmit)="updateSendTime(sendDateTimeForm.value)">
   <div class="form-group row">
-    <label for="unit" class="label col-xl-1 col-form-label">Einheit</label>
+    <label class="label col-xl-1 col-form-label">Abschickzeit</label>
     <div class="col-xl-8">
-      <mat-form-field class="example-full-width">
-        <mat-label>Einheit</mat-label>
-        <mat-select id="unit" [formControl]="unitForm">
-          <mat-select-trigger>
-            <app-unit-render [value]="unitForm.value"></app-unit-render>
-          </mat-select-trigger>
-          <mat-option *ngFor="let unit of units" [value]="unit">
-            <app-unit-render [value]="unit"></app-unit-render>
-          </mat-option>
-        </mat-select>
+      <mat-form-field>
+        <mat-label>Datum</mat-label>
+        <input matInput placeholder="Pick Date" [matDatepicker]="picker" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="ml-2">
+        <input matInput maxlength="12" formControlName="time"/>
       </mat-form-field>
     </div>
     <div class="col-xl-3">
-      <button [disabled]="!unitForm.valid || disabled" type="submit" mat-raised-button
-              color="primary"
-              (click)="updateUnit(unitForm.value)">
-        Einheit Aktualisieren
+      <button [disabled]="!sendDateTimeForm.valid || disabled" type="submit" mat-raised-button
+              color="primary">
+        Abschickzeit aktualisieren
       </button>
     </div>
   </div>
+</form>
+<form [formGroup]="arrivalDateTimeForm"
+      (ngSubmit)="updateArrivalTime(arrivalDateTimeForm.value)">
   <div class="form-group row">
-    <label class="label col-xl-1 col-form-label">Einheiten</label>
+    <label class="label col-xl-1 col-form-label">Ankunft</label>
     <div class="col-xl-8">
-      <mat-form-field class="full-width">
-        <mat-label>Standard Angriff</mat-label>
-        <mat-select id="template" [formControl]="templateForm">
-          <mat-option *ngFor="let template of templates" [value]="template.id">
-            {{template.name}}
-          </mat-option>
-          <mat-option value="custom">
-            Custom
-          </mat-option>
-        </mat-select>
+      <mat-form-field>
+        <mat-label>Datum</mat-label>
+        <input matInput placeholder="Pick Date" [matDatepicker]="arrivalpicker"
+               formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="arrivalpicker"></mat-datepicker-toggle>
+        <mat-datepicker #arrivalpicker></mat-datepicker>
       </mat-form-field>
-      <br>
-      <ng-container *ngIf="templateForm.value === 'custom'" class="full-width">
-        <app-units-input required id="units" [formControl]="unitsForm"></app-units-input>
-      </ng-container>
-    </div>
-    <div class="col-xl-3">
-      <button [disabled]="!unitsForm.valid || disabled" type="submit" mat-raised-button
-              color="primary"
-              (click)="updateUnits(templateForm.value, unitsForm.value)">
-        Einheiten Aktualisieren
-      </button>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="commandType" class="label col-xl-1 col-form-label">Befehlstyp</label>
-    <div class="col-xl-8">
-      <mat-form-field class="example-full-width">
-        <mat-label>Befehlstyp</mat-label>
-        <mat-select id="commandType" [formControl]="commandTypeForm">
-          <mat-option value="ATTACK">Angriff</mat-option>
-          <mat-option value="SUPPORT">Unterstützung</mat-option>
-        </mat-select>
+      <mat-form-field class="ml-2">
+        <input matInput maxlength="12" formControlName="time"/>
       </mat-form-field>
     </div>
     <div class="col-xl-3">
-      <button [disabled]="!commandTypeForm.valid || disabled" type="submit" mat-raised-button
-              color="primary"
-              (click)="updateCommandType(commandTypeForm.value)">
-        Befehlstyp Aktualisieren
+      <button [disabled]="!arrivalDateTimeForm.valid || disabled" type="submit" mat-raised-button
+              color="primary">
+        Ankunftszeit aktualisieren
       </button>
     </div>
   </div>
+</form>
+<div class="form-group row">
+  <label for="unit" class="label col-xl-1 col-form-label">Einheit</label>
+  <div class="col-xl-8">
+    <mat-form-field class="example-full-width">
+      <mat-label>Einheit</mat-label>
+      <mat-select id="unit" [formControl]="unitForm">
+        <mat-select-trigger>
+          <app-unit-render [value]="unitForm.value"></app-unit-render>
+        </mat-select-trigger>
+        <mat-option *ngFor="let unit of units" [value]="unit">
+          <app-unit-render [value]="unit"></app-unit-render>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-xl-3">
+    <button [disabled]="!unitForm.valid || disabled" type="submit" mat-raised-button
+            color="primary"
+            (click)="updateUnit(unitForm.value)">
+      Einheit Aktualisieren
+    </button>
+  </div>
+</div>
+<div class="form-group row">
+  <label class="label col-xl-1 col-form-label">Einheiten</label>
+  <div class="col-xl-8">
+    <mat-form-field class="full-width">
+      <mat-label>Standard Angriff</mat-label>
+      <mat-select id="template" [formControl]="templateForm">
+        <mat-option *ngFor="let template of templates" [value]="template.id">
+          {{template.name}}
+        </mat-option>
+        <mat-option value="custom">
+          Custom
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <ng-container *ngIf="templateForm.value === 'custom'" class="full-width">
+      <app-units-input required id="units" [formControl]="unitsForm"></app-units-input>
+    </ng-container>
+  </div>
+  <div class="col-xl-3">
+    <button [disabled]="!unitsForm.valid || disabled" type="submit" mat-raised-button
+            color="primary"
+            (click)="updateUnits(templateForm.value, unitsForm.value)">
+      Einheiten Aktualisieren
+    </button>
+  </div>
+</div>
+<div class="form-group row">
+  <label for="commandType" class="label col-xl-1 col-form-label">Befehlstyp</label>
+  <div class="col-xl-8">
+    <mat-form-field class="example-full-width">
+      <mat-label>Befehlstyp</mat-label>
+      <mat-select id="commandType" [formControl]="commandTypeForm">
+        <mat-option value="ATTACK">Angriff</mat-option>
+        <mat-option value="SUPPORT">Unterstützung</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-xl-3">
+    <button [disabled]="!commandTypeForm.valid || disabled" type="submit" mat-raised-button
+            color="primary"
+            (click)="updateCommandType(commandTypeForm.value)">
+      Befehlstyp Aktualisieren
+    </button>
+  </div>
+</div>
 

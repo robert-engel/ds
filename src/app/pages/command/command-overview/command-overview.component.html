@@ -1,6 +1,6 @@
 <mat-card>
-  <ng-container *ngIf="!isLoadingResults && tasks && tasks.tasks.length === 0">Keine Tasks
-    vorhanden.
+  <ng-container *ngIf="!isLoadingResults && tasks && tasks.tasks.length === 0">
+    Keine Tasks vorhanden.
   </ng-container>
   <ng-container *ngIf="isLoadingResults || (tasks && tasks.tasks.length > 0)">
     <div class="row">
@@ -8,12 +8,16 @@
         <span></span>
         <span>
           <button *ngIf="selection.hasValue()" mat-icon-button matTooltip="Ausgewählte löschen."
-                  (click)="deleteSelected()">
+                  (click)="deleteSelected(paginator)">
             <mat-icon>delete</mat-icon>
           </button>
           <button mat-icon-button matTooltip="Als Workbench Plan exportieren."
                   (click)="exportWorkbench()">
             <mat-icon>import_export</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Refresh."
+                  (click)="refresh(paginator)">
+            <mat-icon>refresh</mat-icon>
           </button>
         </span>
       </div>
@@ -105,7 +109,7 @@
                   <button class="ml-2" (click)="editTask(element)" mat-raised-button color="primary">
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button class="ml-2" (click)="delete(element)" mat-raised-button color="warn">
+                  <button class="ml-2" (click)="delete(element, paginator)" mat-raised-button color="warn">
                     <mat-icon>delete_forever</mat-icon>
                   </button>
                 </div>
@@ -123,7 +127,7 @@
               class="example-detail-row"></tr>
         </table>
       </div>
-      <mat-paginator (page)="pageUpdate($event)" [length]="tasks.count" [pageSize]="10"
+      <mat-paginator #paginator (page)="pageUpdate($event)" [length]="tasks.count" [pageSize]="10"
                      [pageSizeOptions]="[10, 50, 100, 250]"></mat-paginator>
     </div>
   </ng-container>

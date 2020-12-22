@@ -9,7 +9,7 @@ import {RefreshGameDataPacket} from './packet/refresh-game-data-packet';
 import {WebSocketReconnectPacket} from './packet/web-socket-reconnect-packet';
 import {WebSocketStatusPacket} from './packet/web-socket-status-packet';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {first, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {BotVersion} from '../structures/botVersion';
 import {VersionRequest} from './packet/version-request';
 import {ValidUntilRequest} from './packet/valid-until-request';
@@ -64,6 +64,7 @@ export class DashboardService implements CanActivate {
 
   stop(): void {
     this.webSocketService.sendData(new StopBotPacket());
+    this.running = false;
   }
 
   websocketConnects(): Observable<any> {

@@ -9,10 +9,6 @@ export const MENU_ITEMS: Menu[] = [
 
 export const MENU_ITEMS_USER: Menu[] = [
   ...MENU_ITEMS,
-  /*{
-    title: 'Farm Manager',
-    link: '/farmmanager',
-  },*/
   {
     title: 'Incs',
     link: '/incs',
@@ -41,4 +37,8 @@ export const MENU_ITEMS_USER: Menu[] = [
     title: 'Auto Builder',
     link: '/autobuilder',
   },*/
+  {
+    title: 'Farmbot',
+    link: '/farm',
+  },
 ];

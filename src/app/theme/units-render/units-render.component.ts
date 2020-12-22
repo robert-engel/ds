@@ -9,7 +9,9 @@ import {WebsocketService} from '../../service/websocket.service';
 export class UnitsRenderComponent implements OnInit {
 
   @Input()
-  value;
+  value: any;
+  @Input()
+  excludeUnits: string[] = [];
   units: string[];
   imagebase: string;
 
@@ -19,6 +21,9 @@ export class UnitsRenderComponent implements OnInit {
   ngOnInit(): void {
     this.web.infoObservable.subscribe(info => {
       this.units = info.units;
+      this.units = this.units.filter(value => {
+        return !this.excludeUnits.includes(value);
+      });
       this.imagebase = info.imageBase;
     });
   }

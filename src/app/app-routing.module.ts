@@ -6,6 +6,11 @@ import {environment} from '../environments/environment';
 
 const routes: Routes = [
   {
+    path: 'farm',
+    loadChildren: () => import('./pages/farm/farm.module')
+    .then(m => m.FarmModule),
+  },
+  {
     path: 'admin',
     loadChildren: () => import('./pages/admin/admin.module')
     .then(m => m.AdminModule),

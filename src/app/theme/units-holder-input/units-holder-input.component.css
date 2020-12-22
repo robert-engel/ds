@@ -1,0 +1,18 @@
+.full-width {
+  width: 99%;
+}
+
+.pad {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+div.spread {
+  display:table;
+  width: 100%;
+  table-layout: fixed;
+}
+div.spread span {
+  display:table-cell;
+  text-align:center;
+}

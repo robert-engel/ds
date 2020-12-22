@@ -19,6 +19,7 @@ import {VillageInputComponent} from './village-input/village-input.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatMenuModule} from '@angular/material/menu';
 import { HmsPipe } from './hms.pipe';
+import { UnitsHolderInputComponent } from './units-holder-input/units-holder-input.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { HmsPipe } from './hms.pipe';
     VillageRenderComponent,
     UnitsInputComponent,
     VillageInputComponent,
-    HmsPipe
+    HmsPipe,
+    UnitsHolderInputComponent
   ],
   exports: [
     HeaderComponent,
@@ -41,7 +43,8 @@ import { HmsPipe } from './hms.pipe';
     UnitsInputComponent,
     UnitsRenderComponent,
     VillageInputComponent,
-    HmsPipe
+    HmsPipe,
+    UnitsHolderInputComponent
   ],
   imports: [
     CommonModule,
