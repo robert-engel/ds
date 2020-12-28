@@ -1,0 +1,62 @@
+import {Injectable} from '@angular/core';
+import {WebsocketService} from '../websocket.service';
+import {Observable} from 'rxjs';
+import {filter, first, map, takeUntil} from 'rxjs/operators';
+import {FarmRoute} from './structures/farm-route';
+import {ListFarmRouteRequest} from './packet/list-farm-route-request';
+import {AddFarmRouteRequest} from './packet/add-farm-route-request';
+import {DeleteFarmRouteRequest} from './packet/delete-farm-route-request';
+import {EditFarmRouteRequest} from './packet/edit-farm-route-request';
+import {FarmTaskEnabled} from '../farm/structures/farm-task-enabled';
+import {FarmRouteSetEnabledRequest} from './packet/farm-route-set-enabled-request';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FarmRouteService {
+
+  constructor(private websocketService: WebsocketService) {
+  }
+
+  list(unsub: Observable<void>): Observable<FarmRoute[]> {
+    return this.websocketService.observable(
+      'ListFarmRouteResponse',
+      new ListFarmRouteRequest()
+    ).pipe(takeUntil(unsub));
+  }
+
+  addEntity(source: number, target: number, troops: any, timerInterval: number): Observable<FarmRoute> {
+    return this.websocketService.observable(
+      'AddFarmRouteResponse',
+      new AddFarmRouteRequest(source, target, troops, timerInterval)
+    ).pipe(first());
+  }
+
+  deleteEntity(id: number): Observable<number> {
+    return this.websocketService.observable(
+      'DeleteFarmRouteResponse',
+      new DeleteFarmRouteRequest(id)
+    ).pipe(
+      filter(resp => resp.id === id),
+      first(),
+      map(resp => resp.id),
+    );
+  }
+
+  editEntity(id: number, source: number, target: number, troops: any, timerInterval: number): Observable<FarmRoute> {
+    return this.websocketService.observable(
+      'EditFarmRouteResponse',
+      new EditFarmRouteRequest(id, source, target, troops, timerInterval)
+    ).pipe(first());
+  }
+
+  setTaskEnabled(id: number, enabled: boolean): Observable<FarmTaskEnabled> {
+    return this.websocketService.observable(
+      'FarmRouteSetEnabledResponse',
+      new FarmRouteSetEnabledRequest(id, enabled)
+    ).pipe(
+      filter(resp => resp.id === id),
+      first()
+    );
+  }
+}

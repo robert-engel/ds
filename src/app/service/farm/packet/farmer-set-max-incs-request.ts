@@ -9,6 +9,6 @@ export class FarmerSetMaxIncsRequest implements Packet {
   }
 
   getName(): string {
-    return 'io.robertengel.dsbot.feature.farm.ws.packet.incoming.FarmerSetMaxIncsRequest';
+    return 'io.robertengel.dsbot.feature.farm.assist.ws.packet.incoming.FarmerSetMaxIncsRequest';
   }
 }

@@ -15,6 +15,6 @@ export class AddFarmEntityRequest implements Packet {
   }
 
   getName(): string {
-    return 'io.robertengel.dsbot.feature.farm.ws.packet.incoming.AddFarmEntityRequest';
+    return 'io.robertengel.dsbot.feature.farm.assist.ws.packet.incoming.AddFarmEntityRequest';
   }
 }

@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-xl-12">
+    <form [formGroup]="form" (ngSubmit)="submit(form.value)">
+      <div class="form-group row">
+        <div class="col-xl-12">
+          <app-village-input label="Herkunft" formControlName="source"></app-village-input>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xl-12">
+          <app-village-input label="Ziel" formControlName="target"></app-village-input>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xl-3">
+          <label for="timerInterval">Interval (Minuten)</label>
+        </div>
+        <div class="col-xl-9">
+          <mat-slider class="w-100" id="timerInterval" formControlName="timerInterval" min="1"
+                      max="120" thumbLabel="true"></mat-slider>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2">
+          <label> Einheiten </label>
+        </div>
+        <div class="col-xl-12">
+          <app-units-input formControlName="troops"></app-units-input>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xl-12 flex-between">
+          <span></span>
+          <button [disabled]="!form.valid || form.disabled" type="submit" mat-raised-button
+                  color="primary">
+            Hinzufügen
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

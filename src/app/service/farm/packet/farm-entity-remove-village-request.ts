@@ -11,6 +11,6 @@ export class FarmEntityRemoveVillageRequest implements Packet {
   }
 
   getName(): string {
-    return 'io.robertengel.dsbot.feature.farm.ws.packet.incoming.FarmEntityRemoveVillageRequest';
+    return 'io.robertengel.dsbot.feature.farm.assist.ws.packet.incoming.FarmEntityRemoveVillageRequest';
   }
 }

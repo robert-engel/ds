@@ -1,6 +1,6 @@
 import {Packet} from '../../packet/packet';
 
-export class FarmEntitySetEnabledRequest implements Packet {
+export class FarmRouteSetEnabledRequest implements Packet {
 
   id: number;
   enabled: boolean;
@@ -11,6 +11,6 @@ export class FarmEntitySetEnabledRequest implements Packet {
   }
 
   getName(): string {
-    return 'io.robertengel.dsbot.feature.farm.assist.ws.packet.incoming.FarmEntitySetEnabledRequest';
+    return 'io.robertengel.dsbot.feature.farm.route.ws.packet.incoming.FarmRouteSetEnabledRequest';
   }
 }

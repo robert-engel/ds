@@ -9,6 +9,6 @@ export class DeleteFarmEntityRequest implements Packet {
   }
 
   getName(): string {
-    return 'io.robertengel.dsbot.feature.farm.ws.packet.incoming.DeleteFarmEntityRequest';
+    return 'io.robertengel.dsbot.feature.farm.assist.ws.packet.incoming.DeleteFarmEntityRequest';
   }
 }
