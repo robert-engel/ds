@@ -15,10 +15,11 @@ import {MatBadgeModule} from '@angular/material/badge';
 import { DiscordWebhooksComponent } from './discord-webhooks/discord-webhooks.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
+import { BotIpComponent } from './bot-ip/bot-ip.component';
 
 
 @NgModule({
-  declarations: [SettingsComponent, TroopTemplateComponent, DiscordWebhooksComponent],
+  declarations: [SettingsComponent, TroopTemplateComponent, DiscordWebhooksComponent, BotIpComponent],
   imports: [
     CommonModule,
     SettingsRoutingModule,

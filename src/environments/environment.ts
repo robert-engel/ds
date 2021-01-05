@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  ws: 'ws://192.168.178.21:8888',
+  ws: '192.168.178.21',
 };
 
 /*

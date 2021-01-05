@@ -3,4 +3,6 @@
         [active]="activeLink === link"
         [routerLink]="[link.link]"> {{link.title}} </span>
 </nav>
-<router-outlet></router-outlet>
+<mat-card>
+  <router-outlet></router-outlet>
+</mat-card>

@@ -12,6 +12,8 @@ import {interval, Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {SelectionModel} from '@angular/cdk/collections';
+import {MatDialog} from '@angular/material/dialog';
+import {CommandScheduleComponent} from '../../command/command-schedule/command-schedule.component';
 
 @Component({
   selector: 'app-planner-command',
@@ -42,6 +44,7 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
     private villageService: VillageService,
     private planner: PlannerService,
     private web: WebsocketService,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -53,6 +56,18 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
     });
     this.setupRouteChangeListener();
     this.setupInterval();
+  }
+
+  openScheduler(sources: Village[], target: Village, type: string, unit: string, time: number): void {
+    this.dialog.open(CommandScheduleComponent, {
+      data: {
+        sources: sources,
+        target: target,
+        type: type,
+        unit: unit,
+        time: time,
+      }
+    });
   }
 
   private setupDisplayedUnits(): void {
@@ -89,8 +104,8 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectVillages(): string {
-    return JSON.stringify(this.selection.selected.map(sel => sel.village.id));
+  selectVillages(): Village[] {
+    return this.selection.selected.map(sel => sel.village);
   }
 
   private setupRouteChangeListener(): void {

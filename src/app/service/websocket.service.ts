@@ -1,26 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
-import {webSocket} from 'rxjs/webSocket';
-import {environment} from '../../environments/environment';
+import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 import {map, shareReplay} from 'rxjs/operators';
 import {ErrorResponse} from './structures/error-response';
 import {Packet} from './packet/packet';
 import {ToastrService} from 'ngx-toastr';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
 
-  private subject = webSocket({
-    url: environment.ws,
-    openObserver: {
-      next: () => this.connected = true
-    },
-    closeObserver: {
-      next: () => this.connected = false
-    }
-  });
+  private subject: WebSocketSubject<any>;
   private connected: boolean;
 
   /*imageBase: string;
@@ -32,10 +24,35 @@ export class WebsocketService {
   constructor(
     private toastr: ToastrService
   ) {
+    this.setupWebSocket();
     this.infoObservable = this.observable('InformationPacket').pipe(shareReplay(1));
     this.infoObservable.subscribe();
     this.errors().subscribe(error => {
       this.toastr.error(error.message);
+    });
+  }
+
+  setHost(host: string): void {
+    localStorage.setItem('tw.bot.host', host);
+  }
+
+  getHost(): string {
+    const host = localStorage.getItem('tw.bot.host');
+    if (host !== null) {
+      return host;
+    }
+    return environment.ws;
+  }
+
+  private setupWebSocket(): void {
+    this.subject = webSocket({
+      url: 'ws://' + this.getHost() + ':8888',
+      openObserver: {
+        next: () => this.connected = true
+      },
+      closeObserver: {
+        next: () => this.connected = false
+      }
     });
   }
 

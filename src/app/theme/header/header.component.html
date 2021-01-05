@@ -7,7 +7,7 @@
       <span></span>
     </div>
     <div>
-      <button *ngIf="running" type="button" mat-mini-fab [matMenuTriggerFor]="menu">
+      <button type="button" mat-mini-fab [matMenuTriggerFor]="menu">
         <mat-icon>settings</mat-icon>
       </button>
       <button *ngIf="connected" class="m-left" color="warn" type="button" mat-mini-fab
@@ -15,16 +15,22 @@
         <mat-icon>power_settings_new</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <a routerLink="/settings/discord">
+        <a *ngIf="running" routerLink="/settings/discord">
           <button mat-menu-item>
             <mat-icon>dialpad</mat-icon>
             <span>Discord Webhooks</span>
           </button>
         </a>
-        <a routerLink="/settings/troops">
+        <a *ngIf="running" routerLink="/settings/troops">
           <button mat-menu-item>
             <mat-icon>group</mat-icon>
             <span>Standard Angriffe</span>
+          </button>
+        </a>
+        <a routerLink="/settings/ip">
+          <button mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
+            <span>Bot IP-Addresse</span>
           </button>
         </a>
       </mat-menu>

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import {StandardTroopTemplate} from '../../../service/structures/standard-troop-template';
@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {CommandTask} from '../../../service/structures/command-task';
 
 @Component({
   selector: 'app-command-edit',
@@ -46,12 +48,14 @@ export class CommandEditComponent implements OnInit, OnDestroy {
   disabled = false;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: CommandTask,
+    public dialogRef: MatDialogRef<CommandEditComponent>,
     private fb: FormBuilder,
     private web: WebsocketService,
     private command: CommandService,
-    private router: Router,
     private toastr: ToastrService,
   ) {
+    this.setCommandTask(data);
   }
 
   ngOnInit(): void {
@@ -64,35 +68,7 @@ export class CommandEditComponent implements OnInit, OnDestroy {
     this.command.getTimerLogic().pipe(takeUntil(this.unsub$)).subscribe(resp => {
       this.timerLogics = resp.available;
     });
-    this.command.getEditTask().pipe(takeUntil(this.unsub$)).subscribe(task => {
-      if (!task) {
-        this.router.navigate(['/command']);
-        return;
-      }
-      this.taskId = task.id;
-      this.title = `Bearbeiten von Task ${task.commandType} ${task.sendTime.display}`;
-      this.fromForm.setValue(task.from);
-      this.toForm.setValue(task.to);
-      this.unitsForm.setValue(task.units);
-      this.unitForm.setValue(task.unit);
-      this.templateForm.setValue('custom');
-      this.commandTypeForm.setValue(task.commandType);
-      this.timerForm.setValue(task.timer.toUpperCase());
-      this.command.getEditTimes(task.id).subscribe(timings => {
-        this.sendDateTimeForm.setValue({
-          date: moment(timings.sendTime),
-          time: moment(timings.sendTime).format('HH:mm:ss:SSS'),
-        });
-        this.arrivalDateTimeForm.setValue({
-          date: moment(timings.arrivalTime),
-          time: moment(timings.arrivalTime).format('HH:mm:ss:SSS'),
-        });
-      });
-    });
     this.command.editCommandsEvents().pipe(takeUntil(this.unsub$)).subscribe(command => {
-      if (command.id === this.taskId) {
-        this.command.setEditTask(command);
-      }
       this.toastr.success(
         `Erfolgreich bearbeitet.`,
         undefined,
@@ -100,6 +76,31 @@ export class CommandEditComponent implements OnInit, OnDestroy {
           timeOut: 7000,
         }
       );
+      if (command.id === this.taskId) {
+        this.dialogRef.close(command);
+      }
+    });
+  }
+
+  private setCommandTask(task: CommandTask): void {
+    this.taskId = task.id;
+    this.title = `Bearbeiten von Task ${task.commandType} ${task.sendTime.display}`;
+    this.fromForm.setValue(task.from);
+    this.toForm.setValue(task.to);
+    this.unitsForm.setValue(task.units);
+    this.unitForm.setValue(task.unit);
+    this.templateForm.setValue('custom');
+    this.commandTypeForm.setValue(task.commandType);
+    this.timerForm.setValue(task.timer.toUpperCase());
+    this.command.getEditTimes(task.id).subscribe(timings => {
+      this.sendDateTimeForm.setValue({
+        date: moment(timings.sendTime),
+        time: moment(timings.sendTime).format('HH:mm:ss:SSS'),
+      });
+      this.arrivalDateTimeForm.setValue({
+        date: moment(timings.arrivalTime),
+        time: moment(timings.arrivalTime).format('HH:mm:ss:SSS'),
+      });
     });
   }
 

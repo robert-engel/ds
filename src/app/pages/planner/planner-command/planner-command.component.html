@@ -30,12 +30,10 @@
     <div class="col-xl-4 cen">
       <div *ngIf="selection.selected.length > 0">
         {{selection.selected.length}} Dörfer ausgewählt.
-        <a
-          [routerLink]="['/command/schedule', {source: selectVillages(), target: target.id, type: type, time: time.valueOf()}]">
-          <button mat-raised-button color="primary">
-            Für alle planen.
-          </button>
-        </a>
+        <button mat-raised-button color="primary"
+                (click)="openScheduler(selectVillages(), target, type, undefined, time.valueOf())">
+          Für alle planen.
+        </button>
       </div>
     </div>
   </div>
@@ -100,7 +98,7 @@
             <span class="mobile-label"><app-unit-render [value]="unit"></app-unit-render></span>
             <span [class.dis]="element.units[unit]===0"
                   [class.red]="element.units[unit]>0 && element.remaining[unit]===0"
-                  [routerLink]="['/command/schedule', {unit: unit, source: element.village.id, target: target.id, type: type, time: time.valueOf()}]">
+                  (click)="openScheduler([element.village], target, type, unit, time.valueOf())">
               {{element.units[unit]}}
             </span>
           </mat-cell>
@@ -109,7 +107,8 @@
           <mat-header-cell *matHeaderCellDef> Zeit</mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span class="mobile-label">Zeit:</span>
-            <span [class.red-color]="min(element.remaining) < 300">{{min(element.remaining) * 1000|hms}}</span>
+            <span [class.red-color]="min(element.remaining) < 300">{{min(element.remaining)
+            * 1000|hms}}</span>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="cols; sticky: true"></mat-header-row>

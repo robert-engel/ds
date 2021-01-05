@@ -1,20 +1,18 @@
-<mat-card>
-  <div class="form-group row">
-    <label for="time" class="label col-sm-1 col-form-label">Zeit</label>
-    <div class="col-sm-11">
-      <mat-form-field class="example-full-width">
-        <input autocomplete="off" autocapitalize="off" spellcheck="false" class="example-full-width"
-               id="time" matInput placeholder="Zeit" [formControl]="control">
-        <mat-hint>z.B. heute um 12:28:22:500</mat-hint>
-      </mat-form-field>
-    </div>
+<div class="form-group row">
+  <label for="time" class="label col-sm-1 col-form-label">Zeit</label>
+  <div class="col-sm-11">
+    <mat-form-field class="example-full-width">
+      <input autocomplete="off" autocapitalize="off" spellcheck="false" class="example-full-width"
+             id="time" matInput placeholder="Zeit" [formControl]="control">
+      <mat-hint>z.B. heute um 12:28:22:500</mat-hint>
+    </mat-form-field>
   </div>
-  <div class="form-group row">
-    <div class="offset-sm-1 col-sm-11">
-      <button [disabled]="control.invalid ||control.disabled" (click)="submit(control.value)"
-              mat-raised-button color="primary">
-        Timen
-      </button>
-    </div>
+</div>
+<div class="form-group row">
+  <div class="offset-sm-1 col-sm-11">
+    <button [disabled]="control.invalid ||control.disabled" (click)="submit(control.value)"
+            mat-raised-button color="primary">
+      Timen
+    </button>
   </div>
-</mat-card>
+</div>

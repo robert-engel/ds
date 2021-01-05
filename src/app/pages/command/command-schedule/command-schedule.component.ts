@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, Optional} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {CommandType} from '../../../service/structures/command-type';
 
@@ -9,8 +9,8 @@ import {WebsocketService} from '../../../service/websocket.service';
 import {Subject, timer} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
 import {takeUntil} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {VillageService} from '../../../service/village/village.service';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {ScheduleData} from '../../../service/command/structures/schedule-data';
 
 @Component({
   selector: 'app-command-schedule',
@@ -40,62 +40,29 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
   timerLogics: string[];
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ScheduleData | undefined,
     private fb: FormBuilder,
     private commandService: CommandService,
     private web: WebsocketService,
     private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private villageService: VillageService,
   ) {
+    if (data) {
+      if (data.sources.length === 1) {
+        this.form.get('from').setValue(data.sources[0]);
+      } else {
+        this.form.get('from').setValue(data.sources.map(value => value.id));
+      }
+      this.form.patchValue({
+        to: data.target,
+        unit: data.unit,
+        commandType: data.type,
+        date: moment(data.time),
+        time: moment(data.time).format('HH:mm:ss:SSS'),
+      });
+    }
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      if (params.has('source')) {
-        let ids = JSON.parse(params.get('source'));
-        if (Array.isArray(ids) === false) {
-          ids = [ids];
-        }
-        if (ids.length === 1) {
-          this.villageService
-          .byId(parseInt(ids[0], 10))
-          .subscribe(village => {
-            this.form.patchValue({
-              from: village,
-            });
-          });
-        } else {
-          this.form.patchValue({
-            from: ids,
-          });
-        }
-      }
-      if (params.has('target')) {
-        this.villageService
-        .byId(parseInt(params.get('target'), 10))
-        .subscribe(village => {
-          this.form.patchValue({
-            to: village,
-          });
-        });
-      }
-      if (params.has('unit')) {
-        this.form.patchValue({
-          unit: params.get('unit'),
-        });
-      }
-      if (params.has('type')) {
-        this.form.patchValue({
-          commandType: params.get('type'),
-        });
-      }
-      if (params.has('time')) {
-        this.form.patchValue({
-          date: moment(parseInt(params.get('time'), 10)),
-          time: moment(parseInt(params.get('time'), 10)).format('HH:mm:ss:SSS'),
-        });
-      }
-    });
     this.commandService.getTroopTemplates().subscribe(templates => {
       this.templates = templates;
     });
@@ -110,6 +77,26 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
           timeOut: 7000,
         }
       );
+    });
+    this.commandService.multiAddCommandEvents().pipe(takeUntil(this.unsub$)).subscribe(response => {
+      if (response.success > 0) {
+        this.toastr.success(
+          `${response.success} Befehle wurden hinzugefügt.`,
+          'Scheduled',
+          {
+            timeOut: 7000,
+          }
+        );
+      }
+      if (response.failed > 0) {
+        this.toastr.error(
+          `${response.failed} Befehle konnten nicht hinzugefügt werden.`,
+          'Fehler',
+          {
+            timeOut: 7000,
+          }
+        );
+      }
     });
     this.commandService.getTimerLogic().pipe(takeUntil(this.unsub$)).subscribe(resp => {
       this.timerLogics = resp.available;
@@ -144,24 +131,22 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
         data.template === 'custom' ? data.units : undefined,
       );
     } else {
-      data.from.forEach(id => {
-        this.commandService.addCommand(
-          id,
-          data.to.id,
-          data.unit,
-          data.commandType,
-          time.valueOf(),
-          data.template === 'custom' ? undefined : data.template,
-          data.template === 'custom' ? data.units : undefined,
-        );
-      });
+      this.commandService.addCommands(
+        data.from,
+        data.to.id,
+        data.unit,
+        data.commandType,
+        time.valueOf(),
+        data.template === 'custom' ? undefined : data.template,
+        data.template === 'custom' ? data.units : undefined,
+      );
     }
   }
 
   tooltip(logic: string): string | undefined {
     switch (logic) {
       case 'HTTP':
-        return 'Kann verwendet werden um Trains zu schicken.';
+        return 'Kann Befehle mit Pflichtabstand schicken.';
     }
     return undefined;
   }

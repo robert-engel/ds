@@ -23,6 +23,29 @@ export class PlannerCommandOpenComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.form.get('date').valueChanges.subscribe(date => {
+      sessionStorage.setItem('tw.interface.planner.command.date', date.valueOf());
+    });
+    this.form.get('time').valueChanges.subscribe(time => {
+      sessionStorage.setItem('tw.interface.planner.command.time', time);
+    });
+    this.form.get('target').valueChanges.subscribe(target => {
+      if (this.form.get('target').valid) {
+        localStorage.setItem('tw.interface.planner.command.target', JSON.stringify(target));
+      }
+    });
+    const localDate = sessionStorage.getItem('tw.interface.planner.command.date');
+    if (localDate !== null) {
+      this.form.get('date').setValue(moment(parseInt(localDate, 10)));
+    }
+    const localTime = sessionStorage.getItem('tw.interface.planner.command.time');
+    if (localTime !== null) {
+      this.form.get('time').setValue(localTime);
+    }
+    const localTarget = localStorage.getItem('tw.interface.planner.command.target');
+    if (localTarget !== null) {
+      this.form.get('target').setValue(JSON.parse(localTarget));
+    }
   }
 
   submit(data): void {

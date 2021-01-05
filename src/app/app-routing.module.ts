@@ -28,7 +28,6 @@ const routes: Routes = [
   },
   {
     path: 'settings',
-    canActivate: [DashboardService],
     loadChildren: () => import('./pages/settings/settings.module')
     .then(m => m.SettingsModule),
   },

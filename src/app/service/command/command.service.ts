@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {WebsocketService} from '../websocket.service';
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {CommandTask} from '../structures/command-task';
-import {filter, first, map, shareReplay} from 'rxjs/operators';
+import {filter, first, map} from 'rxjs/operators';
 import {CommandListResponse} from '../structures/command-list-response';
 import {CommandListRequest} from './packet/command-list-request';
 import {CommandEditTimes} from '../structures/command-edit-times';
@@ -35,21 +35,23 @@ import {PlannedCancelTab} from './structures/planned-cancel-tab';
 import {GetPlannedCancelTabsRequest} from './packet/get-planned-cancel-tabs-request';
 import {CancelPlannedTabRequest} from './packet/cancel-planned-tab-request';
 import {EditCommandTimerRequest} from './packet/edit-command-timer-request';
+import {MultiAddResponse} from './structures/multi-add-response';
+import {MultiAddCommandRequest} from './packet/multi-add-command-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommandService {
 
-  editTaskObservable: Observable<CommandTask>;
-  editTaskSubject: Subject<CommandTask> = new Subject<CommandTask>();
-
   constructor(private websocket: WebsocketService) {
-    this.editTaskObservable = this.editTaskSubject
-    .asObservable()
-    .pipe(shareReplay(1));
-    this.editTaskObservable.subscribe();
-    this.editTaskSubject.next(undefined);
+  }
+
+  setOverviewRemove(should: boolean): void {
+    localStorage.setItem('tw.interface.command.overview.remove', String(should));
+  }
+
+  shouldOverviewRemove(): boolean {
+    return localStorage.getItem('tw.interface.command.overview.remove') === 'true';
   }
 
   cancelTab(village: number, troops: any, second: number, msStart: number, msEnd: number): void {
@@ -94,14 +96,6 @@ export class CommandService {
     return this.websocket.observable('ImportWorkbenchFinishEvent');
   }
 
-  getEditTask(): Observable<CommandTask> {
-    return this.editTaskObservable;
-  }
-
-  setEditTask(task: CommandTask): void {
-    this.editTaskSubject.next(task);
-  }
-
   getTroopTemplates(): Observable<StandardTroopTemplate[]> {
     return this.websocket.observable('StandardTroopTemplateListResponse', new GetStandardTemplateListRequest())
     .pipe(first(), map(resp => resp.templates));
@@ -135,6 +129,10 @@ export class CommandService {
     return this.websocket.observable('AddCommandEvent');
   }
 
+  multiAddCommandEvents(): Observable<MultiAddResponse> {
+    return this.websocket.observable('MultiAddCommandEvent');
+  }
+
   editCommandsEvents(): Observable<CommandTask> {
     return this.websocket.observable('EditCommandEvent');
   }
@@ -147,8 +145,8 @@ export class CommandService {
     this.websocket.sendData(new SimpleTimerRequest(time));
   }
 
-  importWorkbench(plan: string): number {
-    const req = new ImportWorkbenchRequest(plan);
+  importWorkbench(plan: string, cataTarget: string): number {
+    const req = new ImportWorkbenchRequest(plan, cataTarget);
     this.websocket.sendData(req);
     return req.id;
   }
@@ -166,6 +164,18 @@ export class CommandService {
   addCommand(source: number, target: number, slowestUnit: number, commandType: CommandType, arrival: number, template: number,
              troops: object): void {
     this.websocket.sendData(new AddCommandRequest(source, target, slowestUnit, commandType, arrival, template, troops));
+  }
+
+  addCommands(
+    sources: number[],
+    target: number,
+    slowestUnit: number,
+    commandType: CommandType,
+    arrival: number,
+    template: number,
+    troops: object
+  ): void {
+    this.websocket.sendData(new MultiAddCommandRequest(sources, target, slowestUnit, commandType, arrival, template, troops));
   }
 
   removeCommand(id: number): void {

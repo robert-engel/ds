@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommandTask} from '../../../service/structures/command-task';
 import {CommandService} from '../../../service/command/command.service';
 import {interval, Subject} from 'rxjs';
@@ -12,6 +12,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {WebsocketService} from '../../../service/websocket.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CommandEditComponent} from '../command-edit/command-edit.component';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-command-overview',
@@ -26,6 +27,8 @@ import {CommandEditComponent} from '../command-edit/command-edit.component';
   ],
 })
 export class CommandOverviewComponent implements OnInit, OnDestroy {
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   private unsub$ = new Subject<void>();
 
@@ -42,6 +45,9 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
 
   selection = new SelectionModel<CommandTask>(true, []);
 
+  removeControl = new FormControl(false);
+  private shouldReload = false;
+
   constructor(
     private commandService: CommandService,
     private clipboard: Clipboard,
@@ -52,6 +58,10 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.removeControl.setValue(this.commandService.shouldOverviewRemove(), {emitEvent: false});
+    this.removeControl.valueChanges.subscribe(value => {
+      this.commandService.setOverviewRemove(value);
+    });
     this.web.info().subscribe(info => {
       this.world = info.world;
     });
@@ -74,13 +84,23 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
       this.tasks.count--;
     });
     interval(1000).pipe(takeUntil(this.unsub$)).subscribe(num => {
-      try { // TODO remove try
-        this.tasks.tasks.forEach((task, index, arr) => {
-          if (arr[index].remainingDelay > 0) {
-            arr[index].remainingDelay -= 1;
-          }
-        });
-      } catch (e) {
+      let shouldReload = false;
+      this.tasks?.tasks?.forEach((task, index, arr) => {
+        if (task.remainingDelay === 1) {
+          shouldReload = true;
+        }
+        if (arr[index].remainingDelay > 0) {
+          arr[index].remainingDelay -= 1;
+        }
+      });
+      if (shouldReload) {
+        setTimeout(() => {
+          this.shouldReload = true;
+        }, 16500);
+      }
+      if (this.shouldReload && this.removeControl.value === true) {
+        this.shouldReload = false;
+        this.refresh(this.paginator);
       }
     });
   }
@@ -102,9 +122,21 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     this.isAllSelected() ? this.selection.clear() : this.tasks.tasks.forEach(row => this.selection.select(row));
   }
 
-  editTask(task: CommandTask): void {
-    this.commandService.setEditTask(task);
-    this.dialog.open(CommandEditComponent);
+  editTask(pTask: CommandTask): void {
+    this.dialog.open(CommandEditComponent, {
+      data: pTask,
+    }).afterClosed().subscribe(task => {
+      if (task) {
+        this.tasks.tasks = this.tasks?.tasks?.map(value => {
+          if (value.id === task.id) {
+            return task;
+          } else {
+            return value;
+          }
+        });
+        this.expandedElement = task;
+      }
+    });
   }
 
   refresh(paginator: MatPaginator): void {

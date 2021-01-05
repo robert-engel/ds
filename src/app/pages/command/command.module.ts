@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 
 import {CommandRoutingModule} from './command-routing.module';
 import {CommandComponent} from './command.component';
-import {CommandHomeComponent} from './command-home/command-home.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {CommandSimpleTimerComponent} from './command-simple-timer/command-simple-timer.component';
 import {CommandImportWbComponent} from './command-import-wb/command-import-wb.component';
@@ -30,10 +29,12 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [CommandComponent, CommandHomeComponent, CommandSimpleTimerComponent, CommandImportWbComponent,
+  declarations: [CommandComponent, CommandSimpleTimerComponent, CommandImportWbComponent,
     CommandOverviewComponent, CommandScheduleComponent, CommandEditComponent],
   imports: [
     CommonModule,
@@ -58,6 +59,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatDividerModule,
     MatListModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
+    MatDialogModule,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
