@@ -27,9 +27,20 @@
           </mat-form-field>
         </div>
         <div class="col-xm-3">
-          <button mat-raised-button color="primary" (click)="connectExternal(control.value)">
-            Verbinden
-          </button>
+          <div class="row">
+            <div class="col-md-12">
+              <button mat-raised-button color="primary" (click)="connectExternal(control.value)">
+                Verbinden
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button mat-raised-button color="primary" (click)="connectLocal()">
+                Lokal Verbinden
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </mat-card>

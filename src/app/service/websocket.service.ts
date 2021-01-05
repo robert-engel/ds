@@ -36,40 +36,48 @@ export class WebsocketService {
   }
 
   private setupWebSocket(): void {
-    this.subject = webSocket({
-      url: 'ws://' + environment.ws + ':8888',
-      openObserver: {
-        next: () => this.connected = true
-      },
-      closeObserver: {
-        next: () => this.connected = false
-      }
-    });
+    if (localStorage.getItem('tw.token.use') !== null) {
+      this.subject = webSocket({
+        url: 'wss://ws.tw.robertengel.io',
+        openObserver: {
+          next: () => {
+            this.connected = true;
+            console.log('Connected');
+          }
+        },
+        closeObserver: {
+          next: () => {
+            this.connected = false;
+            console.log('disconnected');
+          }
+        }
+      });
+      this.subject.next({
+        type: 'BROWSER',
+        uuid: localStorage.getItem('tw.token'),
+      });
+    } else {
+      this.subject = webSocket({
+        url: 'ws://' + environment.ws + ':8888',
+        openObserver: {
+          next: () => this.connected = true
+        },
+        closeObserver: {
+          next: () => this.connected = false
+        }
+      });
+    }
+  }
+
+  connectLocal(): void {
+    localStorage.removeItem('tw.token.use');
+    location.reload();
   }
 
   connectExternal(token: string): void {
-    const socket: any = this.subject;
-    socket._socket.close();
-    this.subject = webSocket({
-      url: 'wss://ws.tw.robertengel.io',
-      openObserver: {
-        next: () => {
-          this.connected = true;
-          this.subject.next({
-            type: 'BROWSER',
-            uuid: token,
-          });
-        }
-      },
-      closeObserver: {
-        next: () => this.connected = false
-      }
-    });
-    this.infoObservable = this.observable('InformationPacket').pipe(shareReplay(1));
-    this.infoObservable.subscribe();
-    this.errors().subscribe(error => {
-      this.toastr.error(error.message);
-    });
+    localStorage.setItem('tw.token', token);
+    localStorage.setItem('tw.token.use', 'true');
+    location.reload();
   }
 
   isOpen(unsub: Observable<void>): Observable<boolean> {

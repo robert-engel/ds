@@ -32,8 +32,11 @@ export class BotIpComponent implements OnInit, OnDestroy {
   }
 
   connectExternal(token: string): void {
-    localStorage.setItem('tw.token', token);
     this.web.connectExternal(token);
+  }
+
+  connectLocal(): void {
+    this.web.connectLocal();
   }
 
   openExternal(): void {
