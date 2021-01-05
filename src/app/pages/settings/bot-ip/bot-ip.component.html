@@ -1,16 +1,34 @@
 <div class="row">
   <div class="offset-xl-4 col-xl-4">
     <mat-card>
+      <div *ngIf="connected" class="row">
+        <div class="col-md-9">
+          <ng-container *ngIf="open">
+            Bot kann von außen gesteuert werden.
+          </ng-container>
+          <ng-container *ngIf="!open">
+            Bot kann nicht von außen gesteuert werden.
+          </ng-container>
+        </div>
+        <div class="col-xm-3">
+          <button *ngIf="open" mat-raised-button color="warn" (click)="closeExternal()">
+            Schließen
+          </button>
+          <button *ngIf="!open" mat-raised-button color="primary" (click)="openExternal()">
+            Öffnen
+          </button>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-9">
           <mat-form-field class="w-100">
-            <mat-label>Bot-Host</mat-label>
+            <mat-label>Token</mat-label>
             <input matInput [formControl]="control">
           </mat-form-field>
         </div>
         <div class="col-xm-3">
-          <button mat-raised-button color="primary" (click)="save()">
-            Speichern
+          <button mat-raised-button color="primary" (click)="connectExternal(control.value)">
+            Verbinden
           </button>
         </div>
       </div>

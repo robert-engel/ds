@@ -20,28 +20,20 @@ import {FakePlanRequest} from './packet/fake-plan-request';
 })
 export class PlannerService {
 
-  cache = new Map<string, Observable<CommandPlannerPossibility[]>>();
-
   constructor(private websocket: WebsocketService) {
   }
 
   possibilities(village: number, time: number): Observable<CommandPlannerPossibility[]> {
-    if (!this.cache.has(village + '|' + time)) {
-      const req = new GetCommandPlannerPossibilitiesRequest(village, time);
-      this.cache.set(
-        village + '|' + time,
-        this.websocket.observable(
-          'CommandPlannerPossibilitiesResponse',
-          req
-        ).pipe(
-          filter(resp => req.id === resp.id),
-          first(),
-          map(resp => resp.list),
-          shareReplay(1)
-        )
-      );
-    }
-    return this.cache.get(village + '|' + time);
+    const req = new GetCommandPlannerPossibilitiesRequest(village, time);
+    return this.websocket.observable(
+      'CommandPlannerPossibilitiesResponse',
+      req
+    ).pipe(
+      filter(resp => req.id === resp.id),
+      first(),
+      map(resp => resp.list),
+      shareReplay(1)
+    );
   }
 
   getFakeSelector(): Observable<FakeSelector[]> {

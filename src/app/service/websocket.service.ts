@@ -1,11 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
-import {map, shareReplay} from 'rxjs/operators';
+import {map, shareReplay, takeUntil} from 'rxjs/operators';
 import {ErrorResponse} from './structures/error-response';
 import {Packet} from './packet/packet';
 import {ToastrService} from 'ngx-toastr';
 import {environment} from '../../environments/environment';
+import {WebsocketClientConnectionStatusRequest} from './packet/websocket-client-connection-status-request';
+import {WebsocketClientConnectRequest} from './packet/websocket-client-connect-request';
+import {WebsocketClientDisconnectRequest} from './packet/websocket-client-disconnect-request';
 
 @Injectable({
   providedIn: 'root'
@@ -32,21 +35,9 @@ export class WebsocketService {
     });
   }
 
-  setHost(host: string): void {
-    localStorage.setItem('tw.bot.host', host);
-  }
-
-  getHost(): string {
-    const host = localStorage.getItem('tw.bot.host');
-    if (host !== null) {
-      return host;
-    }
-    return environment.ws;
-  }
-
   private setupWebSocket(): void {
     this.subject = webSocket({
-      url: 'ws://' + this.getHost() + ':8888',
+      url: 'ws://' + environment.ws + ':8888',
       openObserver: {
         next: () => this.connected = true
       },
@@ -54,6 +45,44 @@ export class WebsocketService {
         next: () => this.connected = false
       }
     });
+  }
+
+  connectExternal(token: string): void {
+    const socket: any = this.subject;
+    socket._socket.close();
+    this.subject = webSocket({
+      url: 'wss://ws.tw.robertengel.io',
+      openObserver: {
+        next: () => {
+          this.connected = true;
+          this.subject.next({
+            type: 'BROWSER',
+            uuid: token,
+          });
+        }
+      },
+      closeObserver: {
+        next: () => this.connected = false
+      }
+    });
+    this.infoObservable = this.observable('InformationPacket').pipe(shareReplay(1));
+    this.infoObservable.subscribe();
+    this.errors().subscribe(error => {
+      this.toastr.error(error.message);
+    });
+  }
+
+  isOpen(unsub: Observable<void>): Observable<boolean> {
+    return this.observable('WebSocketClientConnectionResponse', new WebsocketClientConnectionStatusRequest())
+    .pipe(takeUntil(unsub), map(resp => resp.connected));
+  }
+
+  open(): void {
+    this.sendData(new WebsocketClientConnectRequest());
+  }
+
+  close(): void {
+    this.sendData(new WebsocketClientDisconnectRequest());
   }
 
   info(): Observable<any> {
