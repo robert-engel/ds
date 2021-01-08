@@ -20,6 +20,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
 import { AdminUserDetailComponent } from './admin-dashboard/admin-user-detail/admin-user-detail.component';
+import { AdminProxyConnectionsComponent } from './admin-dashboard/admin-proxy-connections/admin-proxy-connections.component';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { AdminUserDetailComponent } from './admin-dashboard/admin-user-detail/ad
     AdminDownloadsComponent,
     AdminLoginsComponent,
     AdminUpdateComponent,
-    AdminUserDetailComponent
+    AdminUserDetailComponent,
+    AdminProxyConnectionsComponent
   ],
   imports: [
     CommonModule,
@@ -46,6 +49,7 @@ import { AdminUserDetailComponent } from './admin-dashboard/admin-user-detail/ad
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatTableModule,
+    ClipboardModule,
   ]
 })
 export class AdminModule {

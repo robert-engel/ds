@@ -37,6 +37,8 @@ import {CancelPlannedTabRequest} from './packet/cancel-planned-tab-request';
 import {EditCommandTimerRequest} from './packet/edit-command-timer-request';
 import {MultiAddResponse} from './structures/multi-add-response';
 import {MultiAddCommandRequest} from './packet/multi-add-command-request';
+import {EditCommandMillisRandomRequest} from './packet/edit-command-millis-random-request';
+import {EditCommandMillisSetRequest} from './packet/edit-command-millis-set-request';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +46,14 @@ import {MultiAddCommandRequest} from './packet/multi-add-command-request';
 export class CommandService {
 
   constructor(private websocket: WebsocketService) {
+  }
+
+  randomizeMillis(ids: number[], min: number, max: number): void {
+    this.websocket.sendData(new EditCommandMillisRandomRequest(ids, min, max));
+  }
+
+  setMillis(ids: number[], ms: number): void {
+    this.websocket.sendData(new EditCommandMillisSetRequest(ids, ms));
   }
 
   setOverviewRemove(should: boolean): void {

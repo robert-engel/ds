@@ -16,6 +16,9 @@ import { DiscordWebhooksComponent } from './discord-webhooks/discord-webhooks.co
 import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
 import { BotIpComponent } from './bot-ip/bot-ip.component';
+import {MatIconModule} from '@angular/material/icon';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -32,7 +35,10 @@ import { BotIpComponent } from './bot-ip/bot-ip.component';
     MatInputModule,
     MatBadgeModule,
     MatSelectModule,
-    MatListModule
+    MatListModule,
+    MatIconModule,
+    ClipboardModule,
+    MatTooltipModule
   ]
 })
 export class SettingsModule { }

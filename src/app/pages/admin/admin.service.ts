@@ -6,6 +6,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {User} from './structures/user';
 import {Download} from './structures/download';
 import {Login} from './structures/login';
+import {ProxyConnection} from './structures/proxy-connection';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class AdminService implements CanActivate {
     private router: Router,
     private http: HttpClient,
   ) {
+  }
+
+  getProxyConnections(): Observable<ProxyConnection[]> {
+    return this.http.get<ProxyConnection[]>('https://tw.robertengel.io/admin/proxy/connections');
   }
 
   deleteUser(id: number): Observable<void> {

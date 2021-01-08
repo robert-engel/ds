@@ -9,6 +9,8 @@ import {environment} from '../../environments/environment';
 import {WebsocketClientConnectionStatusRequest} from './packet/websocket-client-connection-status-request';
 import {WebsocketClientConnectRequest} from './packet/websocket-client-connect-request';
 import {WebsocketClientDisconnectRequest} from './packet/websocket-client-disconnect-request';
+import {GetWebsocketClientKeyRequest} from './packet/get-websocket-client-key-request';
+import {SetWebsocketClientKeyRequest} from './packet/set-websocket-client-key-request';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +38,7 @@ export class WebsocketService {
   }
 
   private setupWebSocket(): void {
-    if (localStorage.getItem('tw.token.use') !== null) {
+    if (sessionStorage.getItem('tw.token.use') !== null) {
       this.subject = webSocket({
         url: 'wss://ws.tw.robertengel.io',
         openObserver: {
@@ -69,14 +71,23 @@ export class WebsocketService {
     }
   }
 
+  refreshKey(): void {
+    this.sendData(new SetWebsocketClientKeyRequest());
+  }
+
+  getKey(until: Observable<void>): Observable<string> {
+    return this.observable('WebSocketClientKeyResponse', new GetWebsocketClientKeyRequest())
+    .pipe(takeUntil(until), map(resp => resp.key));
+  }
+
   connectLocal(): void {
-    localStorage.removeItem('tw.token.use');
+    sessionStorage.removeItem('tw.token.use');
     location.reload();
   }
 
   connectExternal(token: string): void {
     localStorage.setItem('tw.token', token);
-    localStorage.setItem('tw.token.use', 'true');
+    sessionStorage.setItem('tw.token.use', 'true');
     location.reload();
   }
 

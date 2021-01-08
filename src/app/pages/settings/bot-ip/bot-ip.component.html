@@ -1,8 +1,25 @@
 <div class="row">
-  <div class="offset-xl-4 col-xl-4">
+  <div *ngIf="connected" class="col-xl-4">
     <mat-card>
+      <mat-card-title>
+        Erlauben den Bot von extern zu steuern
+      </mat-card-title>
       <mat-card-content>
-        <div *ngIf="connected" class="row mb-3">
+        <div class="row">
+          <div class="col-xl-12">
+            <mat-form-field class="w-100">
+              <mat-label>Token</mat-label>
+              <input matInput type="text" [value]="key" readonly>
+              <button *ngIf="!open" mat-button matSuffix mat-icon-button aria-label="Refresh" matTooltip="Neu generieren" (click)="refreshKey()">
+                <mat-icon>refresh</mat-icon>
+              </button>
+              <button mat-button matSuffix mat-icon-button aria-label="Copy" matTooltip="Kopieren" [cdkCopyToClipboard]="key">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-9">
             <ng-container *ngIf="open">
               Bot kann von außen gesteuert werden.
@@ -20,6 +37,15 @@
             </button>
           </div>
         </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-xl-4" [class.offset-xl-4]="!connected">
+    <mat-card>
+      <mat-card-title>
+        Einen Bot extern steuern
+      </mat-card-title>
+      <mat-card-content>
         <div class="row">
           <div class="col-md-9">
             <mat-form-field class="w-100">
@@ -30,7 +56,8 @@
           <div class="col-xm-3">
             <div class="row mb-1">
               <div class="col-md-12">
-                <button mat-raised-button color="primary" (click)="connectExternal(control.value)">
+                <button [disabled]="!valid()" mat-raised-button color="primary"
+                        (click)="connectExternal(control.value)">
                   Verbinden
                 </button>
               </div>

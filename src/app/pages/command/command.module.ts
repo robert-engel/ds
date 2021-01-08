@@ -31,11 +31,13 @@ import {MatListModule} from '@angular/material/list';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatDialogModule} from '@angular/material/dialog';
+import { CommandOverviewOptionsComponent } from './command-overview/command-overview-options/command-overview-options.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 @NgModule({
   declarations: [CommandComponent, CommandSimpleTimerComponent, CommandImportWbComponent,
-    CommandOverviewComponent, CommandScheduleComponent, CommandEditComponent],
+    CommandOverviewComponent, CommandScheduleComponent, CommandEditComponent, CommandOverviewOptionsComponent],
   imports: [
     CommonModule,
     CommandRoutingModule,
@@ -61,6 +63,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatDialogModule,
+    MatExpansionModule,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
