@@ -54,7 +54,7 @@ export class WebsocketService {
       });
       this.subject.next({
         type: 'BROWSER',
-        uuid: localStorage.getItem('tw.token'),
+        key: localStorage.getItem('tw.token'),
       });
     } else {
       this.subject = webSocket({
