@@ -26,6 +26,9 @@ export class CommandImportWbComponent implements OnInit, OnDestroy {
   imagebase: string;
   buildings: string[] = [];
 
+  showMS = new FormControl(false);
+  msForm = new FormControl(0);
+
   constructor(
     private command: CommandService,
     private web: WebsocketService,
@@ -60,7 +63,11 @@ export class CommandImportWbComponent implements OnInit, OnDestroy {
 
   submit(data, catapult): void {
     this.control.disable();
-    this.id = this.command.importWorkbench(data, catapult);
+    if (this.showMS.value === true) {
+      this.id = this.command.importWorkbench(data, catapult, this.msForm.value);
+    } else {
+      this.id = this.command.importWorkbench(data, catapult, undefined);
+    }
     setTimeout(() => {
       this.control.enable();
     }, 2000);

@@ -155,8 +155,8 @@ export class CommandService {
     this.websocket.sendData(new SimpleTimerRequest(time));
   }
 
-  importWorkbench(plan: string, cataTarget: string): number {
-    const req = new ImportWorkbenchRequest(plan, cataTarget);
+  importWorkbench(plan: string, cataTarget: string, ms: number | undefined): number {
+    const req = new ImportWorkbenchRequest(plan, cataTarget, ms);
     this.websocket.sendData(req);
     return req.id;
   }
