@@ -56,7 +56,6 @@ export class DashboardRunningComponent implements OnInit, OnDestroy {
   }
 
   reLoginDelay(delay: number): void {
-    console.log(delay);
     this.reLogin.setDelay(delay);
   }
 

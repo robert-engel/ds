@@ -3,7 +3,6 @@ import {GameData} from '../../../service/structures/game-data';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {DashboardService} from '../../../service/dashboard/dashboard.service';
-import {BotVersion} from '../../../service/structures/botVersion';
 
 @Component({
   selector: 'app-dashboard-prestart',
@@ -14,7 +13,6 @@ export class DashboardPrestartComponent implements OnInit {
 
   private unsub$ = new Subject<void>();
 
-  version: BotVersion;
   gameData: GameData;
   loading = false;
   progress: number;
@@ -27,9 +25,6 @@ export class DashboardPrestartComponent implements OnInit {
   ngOnInit(): void {
     this.dashboardService.gameData().pipe(takeUntil(this.unsub$)).subscribe(gameData => {
       this.gameData = gameData;
-    });
-    this.dashboardService.getVersion().pipe(takeUntil(this.unsub$)).subscribe(version => {
-      this.version = version;
     });
   }
 

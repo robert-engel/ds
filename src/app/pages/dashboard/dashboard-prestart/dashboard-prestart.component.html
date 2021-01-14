@@ -13,19 +13,9 @@
       </button>
     </mat-card>
   </div>
-  <div *ngIf="version" class="col-xl-6">
+  <div class="col-xl-6">
     <mat-card>
-      <mat-card-header class="no-margin">
-        <mat-card-title>{{version.name}}</mat-card-title>
-        <mat-card-subtitle>
-          Version {{version.tag}} veröffentlicht {{version.published}}
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <markdown>
-          {{version.body}}
-        </markdown>
-      </mat-card-content>
+      <app-bot-version></app-bot-version>
     </mat-card>
   </div>
 </div>

@@ -1,0 +1,18 @@
+<div *ngIf="!version" class="flex-between">
+  <span></span>
+  <mat-spinner></mat-spinner>
+  <span></span>
+</div>
+<ng-container *ngIf="version">
+  <mat-card-header class="no-margin">
+    <mat-card-title>{{version.name}}</mat-card-title>
+    <mat-card-subtitle>
+      Version {{version.tag}} veröffentlicht {{version.published}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <markdown>
+      {{version.body}}
+    </markdown>
+  </mat-card-content>
+</ng-container>

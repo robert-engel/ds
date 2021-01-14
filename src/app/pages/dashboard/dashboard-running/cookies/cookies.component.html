@@ -1,0 +1,17 @@
+<mat-card *ngIf="gameData" class="flex-between">
+  <span></span>
+  <div class="details flex-between">
+    <span></span>
+    <h1 style="margin: 0">{{gameData.player.name}} auf {{gameData.world}}</h1>
+    <span></span>
+  </div>
+  <div class="toggle flex-between">
+    <span></span>
+    <button mat-icon-button matTooltip="DS Kekse kopieren." (click)="copy()">
+      <mat-icon>
+        content_copy
+      </mat-icon>
+    </button>
+    <span></span>
+  </div>
+</mat-card>

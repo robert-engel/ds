@@ -1,0 +1,14 @@
+<ng-container *ngIf="stopping">
+  <h1 mat-dialog-title>Bot wird beendet</h1>
+  <div mat-dialog-content>
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-container>
+<ng-container *ngIf="!stopping">
+  <h1 mat-dialog-title>Bot wirklich beenden?</h1>
+  <div mat-dialog-content>Befehle die noch gesendet/abgebrochen werden müssen gehen verloren.</div>
+  <div mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close color="primary">Nicht beenden</button>
+    <button mat-raised-button color="warn" (click)="stop()">Bot beenden</button>
+  </div>
+</ng-container>

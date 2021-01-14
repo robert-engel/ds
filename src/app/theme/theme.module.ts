@@ -18,8 +18,12 @@ import {MatSelectModule} from '@angular/material/select';
 import {VillageInputComponent} from './village-input/village-input.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatMenuModule} from '@angular/material/menu';
-import { HmsPipe } from './hms.pipe';
-import { UnitsHolderInputComponent } from './units-holder-input/units-holder-input.component';
+import {HmsPipe} from './hms.pipe';
+import {UnitsHolderInputComponent} from './units-holder-input/units-holder-input.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ConfirmStopComponent } from './header/confirm-stop/confirm-stop.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -33,7 +37,8 @@ import { UnitsHolderInputComponent } from './units-holder-input/units-holder-inp
     UnitsInputComponent,
     VillageInputComponent,
     HmsPipe,
-    UnitsHolderInputComponent
+    UnitsHolderInputComponent,
+    ConfirmStopComponent,
   ],
   exports: [
     HeaderComponent,
@@ -57,7 +62,10 @@ import { UnitsHolderInputComponent } from './units-holder-input/units-holder-inp
     MatInputModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class ThemeModule {

@@ -4,7 +4,9 @@
       <button *ngIf="isHandset$ | async" type="button" mat-icon-button (click)="perfToggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span></span>
+      <button *ngIf="version" mat-button matTooltip="Version Details" (click)="openVersion()">
+        {{version.tag}}
+      </button>
     </div>
     <div>
       <button type="button" mat-mini-fab [matMenuTriggerFor]="menu">

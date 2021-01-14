@@ -4,7 +4,6 @@ import * as moment from 'moment';
 import {StandardTroopTemplate} from '../../../service/structures/standard-troop-template';
 import {WebsocketService} from '../../../service/websocket.service';
 import {CommandService} from '../../../service/command/command.service';
-import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';

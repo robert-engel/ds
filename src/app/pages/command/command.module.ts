@@ -31,13 +31,20 @@ import {MatListModule} from '@angular/material/list';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatDialogModule} from '@angular/material/dialog';
-import { CommandOverviewOptionsComponent } from './command-overview/command-overview-options/command-overview-options.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {CommandMultiEditComponent} from './command-multi-edit/command-multi-edit.component';
 
 
 @NgModule({
-  declarations: [CommandComponent, CommandSimpleTimerComponent, CommandImportWbComponent,
-    CommandOverviewComponent, CommandScheduleComponent, CommandEditComponent, CommandOverviewOptionsComponent],
+  declarations: [
+    CommandComponent,
+    CommandSimpleTimerComponent,
+    CommandImportWbComponent,
+    CommandOverviewComponent,
+    CommandScheduleComponent,
+    CommandEditComponent,
+    CommandMultiEditComponent
+  ],
   imports: [
     CommonModule,
     CommandRoutingModule,

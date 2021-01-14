@@ -2,6 +2,9 @@
   <div class="col-xl-3">
     <div class="row">
       <div class="col-md-12 gap-bottom">
+        <app-cookies></app-cookies>
+      </div>
+      <div class="col-md-12 gap-bottom">
         <app-feature-toggle [on]="websocket" title="WebSocket" icon="cached"
                             (toggle)="websocketToggle($event)"></app-feature-toggle>
       </div>
@@ -22,7 +25,8 @@
                             (toggle)="resmoverToggle($event)"></app-feature-toggle>
       </div>
       <div *ngIf="reLoginConfig" class="col-md-12 gap-bottom">
-        <app-feature-toggle-number [num]="reLoginConfig.delay" [on]="reLoginConfig.enabled" title="Re-Login"
+        <app-feature-toggle-number [num]="reLoginConfig.delay" [on]="reLoginConfig.enabled"
+                                   title="Re-Login"
                                    (toggle)="reLoginToggle($event)"
                                    (number)="reLoginDelay($event)"></app-feature-toggle-number>
       </div>

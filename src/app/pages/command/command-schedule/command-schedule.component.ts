@@ -29,7 +29,7 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
     unit: ['ram', Validators.required],
     commandType: CommandType.ATTACK,
     date: moment(),
-    time: moment().format('HH:mm:ss:SSS'),
+    time: [moment().format('HH:mm:ss:SSS'), Validators.pattern('^\\d{2}:\\d{2}:\\d{2}:\\d{3}$')],
   });
   templates: StandardTroopTemplate[];
   units: string[];

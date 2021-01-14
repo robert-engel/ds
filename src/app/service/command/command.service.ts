@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {WebsocketService} from '../websocket.service';
 import {Observable} from 'rxjs';
 import {CommandTask} from '../structures/command-task';
-import {filter, first, map} from 'rxjs/operators';
+import {filter, first, map, takeUntil} from 'rxjs/operators';
 import {CommandListResponse} from '../structures/command-list-response';
 import {CommandListRequest} from './packet/command-list-request';
 import {CommandEditTimes} from '../structures/command-edit-times';
@@ -37,8 +37,14 @@ import {CancelPlannedTabRequest} from './packet/cancel-planned-tab-request';
 import {EditCommandTimerRequest} from './packet/edit-command-timer-request';
 import {MultiAddResponse} from './structures/multi-add-response';
 import {MultiAddCommandRequest} from './packet/multi-add-command-request';
-import {EditCommandMillisRandomRequest} from './packet/edit-command-millis-random-request';
-import {EditCommandMillisSetRequest} from './packet/edit-command-millis-set-request';
+import {MultiEditCommandTimeAddRequest} from './packet/multi/multi-edit-command-time-add-request';
+import {MultiEditCommandMillisRandomRequest} from './packet/multi/multi-edit-command-millis-random-request';
+import {MultiEditCommandMillisSetRequest} from './packet/multi/multi-edit-command-millis-set-request';
+import {MultiEditCommandTimerRequest} from './packet/multi/multi-edit-command-timer-request';
+import {MultiEditCommandTroopsRequest} from './packet/multi/multi-edit-command-troops-request';
+import {MultiEditCommandTypeRequest} from './packet/multi/multi-edit-command-type-request';
+import {MultiEditCommandUnitRequest} from './packet/multi/multi-edit-command-unit-request';
+import {MultiEditResponse} from './structures/multi-edit-response';
 
 @Injectable({
   providedIn: 'root'
@@ -48,12 +54,36 @@ export class CommandService {
   constructor(private websocket: WebsocketService) {
   }
 
+  multiEditEvents(until: Observable<void>): Observable<MultiEditResponse> {
+    return this.websocket.observable('MultiEditCommandResponse').pipe(takeUntil(until));
+  }
+
+  addMillis(ids: number[], plus: number, unit: string): void {
+    this.websocket.sendData(new MultiEditCommandTimeAddRequest(ids, plus, unit));
+  }
+
   randomizeMillis(ids: number[], min: number, max: number): void {
-    this.websocket.sendData(new EditCommandMillisRandomRequest(ids, min, max));
+    this.websocket.sendData(new MultiEditCommandMillisRandomRequest(ids, min, max));
   }
 
   setMillis(ids: number[], ms: number): void {
-    this.websocket.sendData(new EditCommandMillisSetRequest(ids, ms));
+    this.websocket.sendData(new MultiEditCommandMillisSetRequest(ids, ms));
+  }
+
+  multiEditTimer(ids: number[], timer: string): void {
+    this.websocket.sendData(new MultiEditCommandTimerRequest(ids, timer));
+  }
+
+  multiEditTroops(ids: number[], template: number, troops: object): void {
+    this.websocket.sendData(new MultiEditCommandTroopsRequest(ids, template, troops));
+  }
+
+  multiEditType(ids: number[], type: string): void {
+    this.websocket.sendData(new MultiEditCommandTypeRequest(ids, type));
+  }
+
+  multiEditUnit(ids: number[], unit: string): void {
+    this.websocket.sendData(new MultiEditCommandUnitRequest(ids, unit));
   }
 
   setOverviewRemove(should: boolean): void {

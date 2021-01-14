@@ -13,6 +13,7 @@ import {WebsocketService} from '../../../service/websocket.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CommandEditComponent} from '../command-edit/command-edit.component';
 import {FormControl} from '@angular/forms';
+import {CommandMultiEditComponent} from '../command-multi-edit/command-multi-edit.component';
 
 @Component({
   selector: 'app-command-overview',
@@ -122,9 +123,20 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     this.isAllSelected() ? this.selection.clear() : this.tasks.tasks.forEach(row => this.selection.select(row));
   }
 
+  multiEdit(): void {
+    this.dialog.open(CommandMultiEditComponent, {
+      data: this.selection.selected.map(task => task.id),
+      minWidth: '60%'
+    }).afterClosed().subscribe(() => {
+      this.selection.clear();
+      this.refresh(this.paginator);
+    });
+  }
+
   editTask(pTask: CommandTask): void {
     this.dialog.open(CommandEditComponent, {
       data: pTask,
+      minWidth: '60%',
     }).afterClosed().subscribe(task => {
       if (task) {
         this.tasks.tasks = this.tasks?.tasks?.map(value => {

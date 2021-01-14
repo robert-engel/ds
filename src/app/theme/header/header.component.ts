@@ -3,6 +3,10 @@ import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map, shareReplay} from 'rxjs/operators';
 import {DashboardService} from '../../service/dashboard/dashboard.service';
+import {BotVersionComponent} from '../../pages/dashboard/bot-version/bot-version.component';
+import {BotVersion} from '../../service/structures/botVersion';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmStopComponent} from './confirm-stop/confirm-stop.component';
 
 @Component({
   selector: 'app-header',
@@ -20,13 +24,25 @@ export class HeaderComponent implements OnInit {
     shareReplay()
   );
 
+  version: BotVersion;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private dashboardService: DashboardService,
+    private dialog: MatDialog,
   ) {
   }
 
   ngOnInit(): void {
+    this.dashboardService.getVersion().subscribe(version => {
+      this.version = version;
+    });
+  }
+
+  openVersion(): void {
+    this.dialog.open(BotVersionComponent, {
+      panelClass: 'custom-width'
+    });
   }
 
   perfToggle(): void {
@@ -42,6 +58,6 @@ export class HeaderComponent implements OnInit {
   }
 
   stop(): void {
-    this.dashboardService.stop();
+    this.dialog.open(ConfirmStopComponent);
   }
 }

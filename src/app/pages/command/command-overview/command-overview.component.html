@@ -1,10 +1,6 @@
 <ng-container *ngIf="!isLoadingResults && tasks && tasks.tasks.length === 0">
   Keine Tasks vorhanden.
 </ng-container>
-<app-command-overview-options *ngIf="selection.selected.length>0" class="mat-elevation-z6"
-                              [ids]="selection.selected" (edited)="refresh(paginator)"
-                              (hide)="selection.clear()">
-</app-command-overview-options>
 <ng-container *ngIf="isLoadingResults || (tasks && tasks.tasks.length > 0)">
   <div class="row">
     <div class="col-xl-12 flex-between">
@@ -15,6 +11,10 @@
         <button *ngIf="selection.hasValue()" mat-icon-button matTooltip="Ausgewählte löschen."
                 (click)="deleteSelected(paginator)">
           <mat-icon>delete</mat-icon>
+        </button>
+        <button *ngIf="selection.hasValue()" mat-icon-button matTooltip="Ausgewählte bearbeiten."
+                (click)="multiEdit()">
+          <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button matTooltip="Als Workbench Plan exportieren."
                 (click)="exportWorkbench()">

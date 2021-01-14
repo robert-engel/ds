@@ -1,29 +1,5 @@
-<h1 mat-dialog-title>{{title}}</h1>
+<h1 mat-dialog-title>Bearbeiten von {{ids.length}} Befehlen</h1>
 <div mat-dialog-content>
-  <div class="form-group row">
-    <label class="label col-sm-1 col-form-label">Herkunft</label>
-    <div class="col-xl-8">
-      <app-village-input [formControl]="fromForm"></app-village-input>
-    </div>
-    <div class="col-xl-3">
-      <button [disabled]="!fromForm.valid || disabled" type="submit" mat-raised-button
-              color="primary" (click)="updateFrom(fromForm.value)" class="w-100">
-        Herkunft Aktualisieren
-      </button>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label class="label col-xl-1 col-form-label">Ziel</label>
-    <div class="col-xl-8">
-      <app-village-input [formControl]="toForm"></app-village-input>
-    </div>
-    <div class="col-xl-3">
-      <button [disabled]="!toForm.valid || disabled" type="submit" mat-raised-button color="primary"
-              (click)="updateTo(toForm.value)" class="w-100">
-        Ziel Aktualisieren
-      </button>
-    </div>
-  </div>
   <div class="form-group row">
     <label class="label col-xl-1 col-form-label">Timer</label>
     <div class="col-xl-8">
@@ -46,53 +22,81 @@
       </button>
     </div>
   </div>
-  <form [formGroup]="sendDateTimeForm"
-        (ngSubmit)="updateSendTime(sendDateTimeForm.value)">
+  <form [formGroup]="addTimeForm"
+        (ngSubmit)="addTime(addTimeForm.value.plus, addTimeForm.value.unit)">
     <div class="form-group row">
-      <label class="label col-xl-1 col-form-label">Abschickzeit</label>
+      <label class="label col-xl-1 col-form-label">Verschieben</label>
       <div class="col-xl-8">
-        <mat-form-field>
-          <mat-label>Datum</mat-label>
-          <input matInput placeholder="Pick Date" [matDatepicker]="picker" formControlName="date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field class="ml-2">
-          <input matInput maxlength="12" formControlName="time"/>
-        </mat-form-field>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field class="w-100">
+              <mat-label>Plus</mat-label>
+              <input matInput type="number" formControlName="plus">
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="w-100">
+              <mat-label>Einheit</mat-label>
+              <mat-select formControlName="unit">
+                <mat-option *ngFor="let unit of chronoUnits" [value]="unit">
+                  {{unit |titlecase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
       <div class="col-xl-3">
-        <button [disabled]="!sendDateTimeForm.valid || disabled" type="submit" mat-raised-button
+        <button [disabled]="!addTimeForm.valid || disabled" type="submit" mat-raised-button
                 color="primary" class="w-100">
-          Abschickzeit aktualisieren
+          Zeit addieren
         </button>
       </div>
     </div>
   </form>
-  <form [formGroup]="arrivalDateTimeForm"
-        (ngSubmit)="updateArrivalTime(arrivalDateTimeForm.value)">
+  <form [formGroup]="randomMsForm"
+        (ngSubmit)="setRandomMs(randomMsForm.value.min, randomMsForm.value.max)">
     <div class="form-group row">
-      <label class="label col-xl-1 col-form-label">Ankunft</label>
+      <label class="label col-xl-1 col-form-label">Zufällige MS</label>
       <div class="col-xl-8">
-        <mat-form-field>
-          <mat-label>Datum</mat-label>
-          <input matInput placeholder="Pick Date" [matDatepicker]="arrivalpicker"
-                 formControlName="date">
-          <mat-datepicker-toggle matSuffix [for]="arrivalpicker"></mat-datepicker-toggle>
-          <mat-datepicker #arrivalpicker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field class="ml-2">
-          <input matInput maxlength="12" formControlName="time"/>
-        </mat-form-field>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field class="w-100">
+              <mat-label>Min</mat-label>
+              <input matInput type="number" formControlName="min">
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="w-100">
+              <mat-label>Max</mat-label>
+              <input matInput type="number" formControlName="max">
+            </mat-form-field>
+          </div>
+        </div>
       </div>
       <div class="col-xl-3">
-        <button [disabled]="!arrivalDateTimeForm.valid || disabled" type="submit" mat-raised-button
+        <button [disabled]="!randomMsForm.valid || disabled" type="submit" mat-raised-button
                 color="primary" class="w-100">
-          Ankunftszeit aktualisieren
+          Random MS
         </button>
       </div>
     </div>
   </form>
+  <div class="form-group row">
+    <label class="label col-xl-1 col-form-label">MS setzen</label>
+    <div class="col-xl-8">
+      <mat-form-field class="w-100">
+        <mat-label>MS</mat-label>
+        <input matInput type="number" [formControl]="setMsForm">
+      </mat-form-field>
+    </div>
+    <div class="col-xl-3">
+      <button [disabled]="!setMsForm.valid || disabled" type="submit" mat-raised-button
+              color="primary" (click)="setMs(setMsForm.value)" class="w-100">
+        MS setzen
+      </button>
+    </div>
+  </div>
   <div class="form-group row">
     <label for="unit" class="label col-xl-1 col-form-label">Einheit</label>
     <div class="col-xl-8">
@@ -135,7 +139,7 @@
       </ng-container>
     </div>
     <div class="col-xl-3">
-      <button [disabled]="!unitsForm.valid || disabled" type="submit" mat-raised-button
+      <button [disabled]="!unitsForm.valid || disabled || (!unitsForm.value && !templateForm.value)" type="submit" mat-raised-button
               color="primary" (click)="updateUnits(templateForm.value, unitsForm.value)"
               class="w-100">
         Einheiten Aktualisieren
@@ -145,7 +149,7 @@
   <div class="form-group row">
     <label for="commandType" class="label col-xl-1 col-form-label">Befehlstyp</label>
     <div class="col-xl-8">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="w-100">
         <mat-label>Befehlstyp</mat-label>
         <mat-select id="commandType" [formControl]="commandTypeForm">
           <mat-option value="ATTACK">Angriff</mat-option>

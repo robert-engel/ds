@@ -1,0 +1,26 @@
+.no-click {
+  pointer-events: none;
+}
+
+mat-card {
+  padding-top: 0;
+  padding-bottom: 0;
+  display: flex;
+  height: 100px;
+}
+
+.icon-container {
+  height: 100%;
+  width: 15%;
+}
+
+.details {
+  height: 100px;
+  line-height: 100px;
+  width: 65%;
+}
+
+.toggle {
+  height: 100px;
+  width: 20%;
+}
