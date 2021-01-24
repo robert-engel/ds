@@ -10,7 +10,6 @@ import {GetCommandEditTimesRequest} from './packet/get-command-edit-times-reques
 import {SimpleTimerRequest} from './packet/simple-timer-request';
 import {ImportWorkbenchRequest} from './packet/import-workbench-request';
 import {AddCommandRequest} from './packet/add-command-request';
-import {CommandType} from '../structures/command-type';
 import {DeleteCommandRequest} from './packet/delete-command-request';
 import {EditCommandSourceRequest} from './packet/edit-command-source-request';
 import {EditCommandTargetRequest} from './packet/edit-command-target-request';
@@ -45,6 +44,8 @@ import {MultiEditCommandTroopsRequest} from './packet/multi/multi-edit-command-t
 import {MultiEditCommandTypeRequest} from './packet/multi/multi-edit-command-type-request';
 import {MultiEditCommandUnitRequest} from './packet/multi/multi-edit-command-unit-request';
 import {MultiEditResponse} from './structures/multi-edit-response';
+import {CommandType} from './structures/command-type';
+import {CommandListTypesRequest} from './packet/command-list-types-request';
 
 @Injectable({
   providedIn: 'root'
@@ -78,7 +79,7 @@ export class CommandService {
     this.websocket.sendData(new MultiEditCommandTroopsRequest(ids, template, troops));
   }
 
-  multiEditType(ids: number[], type: string): void {
+  multiEditType(ids: number[], type: CommandType): void {
     this.websocket.sendData(new MultiEditCommandTypeRequest(ids, type));
   }
 
@@ -191,8 +192,19 @@ export class CommandService {
     return req.id;
   }
 
-  getCommandList(max: number, firstTask: number): Observable<CommandListResponse> {
-    const req = new CommandListRequest(max, firstTask);
+  getCommandTypes(): Observable<CommandType[]> {
+    return this.websocket.observable('CommandListTypesResponse', new CommandListTypesRequest()).pipe(first());
+  }
+
+  getCommandList(
+    max: number,
+    firstTask: number,
+    origin: number | undefined,
+    target: number | undefined,
+    type: string | undefined,
+    unit: string | undefined
+  ): Observable<CommandListResponse> {
+    const req = new CommandListRequest(max, firstTask, origin, target, type, unit);
     return this.websocket.observable('CommandListResponse', req).pipe(filter(resp => resp.id === req.id), first());
   }
 

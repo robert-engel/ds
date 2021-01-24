@@ -3,10 +3,18 @@ import {ExtraOptions, RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {DashboardService} from './service/dashboard/dashboard.service';
 import {environment} from '../environments/environment';
+import {ConnectComponent} from './c/connect/connect.component';
 
 const routes: Routes = [
   {
+    path: 'defender',
+    canActivate: [DashboardService],
+    loadChildren: () => import('./pages/auto-defender/auto-defender.module')
+    .then(m => m.AutoDefenderModule),
+  },
+  {
     path: 'farm',
+    canActivate: [DashboardService],
     loadChildren: () => import('./pages/farm/farm.module')
     .then(m => m.FarmModule),
   },
@@ -17,6 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'resmover',
+    canActivate: [DashboardService],
     loadChildren: () => import('./pages/resmover/resmover.module')
     .then(m => m.ResmoverModule),
   },
@@ -48,6 +57,10 @@ const routes: Routes = [
     canActivate: [DashboardService],
     loadChildren: () => import('./pages/planner/planner.module')
     .then(m => m.PlannerModule),
+  },
+  {
+    path: 'c/:token',
+    component: ConnectComponent
   },
   {path: '', component: DashboardComponent},
   {path: '**', redirectTo: ''},

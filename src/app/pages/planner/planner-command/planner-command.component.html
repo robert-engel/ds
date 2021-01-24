@@ -1,12 +1,7 @@
 <mat-card>
   <div class="row">
     <div class="col-md-12 flex-between">
-      <ng-container *ngIf="type">
-        {{type}}
-      </ng-container>
-      <ng-container *ngIf="!type">
-        Truppen
-      </ng-container>
+      Truppen
       <span><b>Ziel:</b> <app-village-render [value]="target"></app-village-render></span>
       <span><b>Ankunft:</b> {{time.format('DD.MM.YYYY HH:mm:ss:SSS')}}</span>
     </div>
@@ -96,10 +91,10 @@
           </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span class="mobile-label"><app-unit-render [value]="unit"></app-unit-render></span>
-            <span [class.dis]="element.units[unit]===0"
-                  [class.red]="element.units[unit]>0 && element.remaining[unit]===0"
+            <span [class.dis]="element.available[unit]===0"
+                  [class.red]="element.available[unit]>0 && element.remaining[unit]===0"
                   (click)="openScheduler([element.village], target, type, unit, time.valueOf())">
-              {{element.units[unit]}}
+              {{element.available[unit]}}
             </span>
           </mat-cell>
         </ng-container>

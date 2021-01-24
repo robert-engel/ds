@@ -12,8 +12,9 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {WebsocketService} from '../../../service/websocket.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CommandEditComponent} from '../command-edit/command-edit.component';
-import {FormControl} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl} from '@angular/forms';
 import {CommandMultiEditComponent} from '../command-multi-edit/command-multi-edit.component';
+import {CommandType} from '../../../service/command/structures/command-type';
 
 @Component({
   selector: 'app-command-overview',
@@ -49,25 +50,47 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
   removeControl = new FormControl(false);
   private shouldReload = false;
 
+  filter = this.fb.group({
+    origin: undefined,
+    target: undefined,
+    type: undefined,
+    unit: undefined,
+  });
+  units: string[] = [];
+  usedTypes: CommandType[] = [];
+
   constructor(
     private commandService: CommandService,
     private clipboard: Clipboard,
     private router: Router,
     private web: WebsocketService,
     public dialog: MatDialog,
+    private fb: FormBuilder,
   ) {
   }
 
   ngOnInit(): void {
+    this.commandService.getCommandTypes().subscribe(types => {
+      this.usedTypes = types;
+    });
     this.removeControl.setValue(this.commandService.shouldOverviewRemove(), {emitEvent: false});
     this.removeControl.valueChanges.subscribe(value => {
       this.commandService.setOverviewRemove(value);
     });
+    for (const key of Object.keys(this.filter.controls)) {
+      const control: AbstractControl = this.filter.controls[key];
+      control.valueChanges.subscribe(() => {
+        if (control.valid) {
+          this.refresh(this.paginator);
+        }
+      });
+    }
     this.web.info().subscribe(info => {
       this.world = info.world;
+      this.units = info.units;
     });
     this.isLoadingResults = true;
-    this.commandService.getCommandList(10, 0).subscribe(resp => {
+    this.commandService.getCommandList(10, 0, undefined, undefined, undefined, undefined).subscribe(resp => {
       this.isLoadingResults = false;
       this.tasks = resp;
     });
@@ -154,7 +177,14 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
   refresh(paginator: MatPaginator): void {
     this.isLoadingResults = true;
     setTimeout(() => {
-      this.commandService.getCommandList(paginator.pageSize, paginator.pageIndex * paginator.pageSize).subscribe(resp => {
+      this.commandService.getCommandList(
+        paginator.pageSize,
+        paginator.pageIndex * paginator.pageSize,
+        this.filter.value.origin?.id,
+        this.filter.value.target?.id,
+        this.filter.value.type?.name,
+        this.filter.value.unit
+      ).subscribe(resp => {
         this.tasks = resp;
         this.isLoadingResults = false;
       });
@@ -164,7 +194,14 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
   pageUpdate(event: PageEvent): void {
     this.isLoadingResults = true;
     setTimeout(() => {
-      this.commandService.getCommandList(event.pageSize, event.pageIndex * event.pageSize).subscribe(resp => {
+      this.commandService.getCommandList(
+        event.pageSize,
+        event.pageIndex * event.pageSize,
+        this.filter.value.origin?.id,
+        this.filter.value.target?.id,
+        this.filter.value.type?.name,
+        this.filter.value.unit
+      ).subscribe(resp => {
         this.tasks = resp;
         this.isLoadingResults = false;
       });

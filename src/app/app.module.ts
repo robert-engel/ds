@@ -20,12 +20,14 @@ import {ToastrModule} from 'ngx-toastr';
 import {MarkdownModule} from 'ngx-markdown';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AdminInterceptor} from './pages/admin/admin.interceptor';
+import { ConnectComponent } from './c/connect/connect.component';
 
 registerLocaleData(localeDe);
 
 @NgModule({
   declarations: [
     AppComponent,
+    ConnectComponent,
   ],
   imports: [
     MarkdownModule.forRoot(),

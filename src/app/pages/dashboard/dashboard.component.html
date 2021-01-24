@@ -1,15 +1,12 @@
-<div class="grid-container">
-  <div *ngIf="!connected" class="row">
-    <h1 class="mat-h1">Dashboard</h1>
-    <div class="col-xl-6">
-      <mat-card>
-        <mat-card-title>Konnte keine Verbindung herstellen.</mat-card-title>
-        <mat-card-content>Seite neu laden wenn der Bot gestartet wurde.</mat-card-content>
-      </mat-card>
-    </div>
+<div *ngIf="!connected" class="row">
+  <div class="col-xl-6">
+    <mat-card>
+      <mat-card-title>Konnte keine Verbindung herstellen.</mat-card-title>
+      <mat-card-content>Seite neu laden wenn der Bot gestartet wurde.</mat-card-content>
+    </mat-card>
   </div>
-  <ng-container *ngIf="connected">
-    <app-dashboard-prestart *ngIf="!running"></app-dashboard-prestart>
-    <app-dashboard-running *ngIf="running"></app-dashboard-running>
-  </ng-container>
 </div>
+<ng-container *ngIf="connected">
+  <app-dashboard-prestart *ngIf="!running"></app-dashboard-prestart>
+  <app-dashboard-running *ngIf="running"></app-dashboard-running>
+</ng-container>

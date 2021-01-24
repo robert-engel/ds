@@ -1,139 +1,179 @@
-<ng-container *ngIf="!isLoadingResults && tasks && tasks.tasks.length === 0">
-  Keine Tasks vorhanden.
-</ng-container>
-<ng-container *ngIf="isLoadingResults || (tasks && tasks.tasks.length > 0)">
-  <div class="row">
-    <div class="col-xl-12 flex-between">
-      <span></span>
-      <div class="flex-between">
-        <mat-slide-toggle matTooltip="Gesendete Befehle entfernen"
-                          [formControl]="removeControl"></mat-slide-toggle>
-        <button *ngIf="selection.hasValue()" mat-icon-button matTooltip="Ausgewählte löschen."
-                (click)="deleteSelected(paginator)">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <button *ngIf="selection.hasValue()" mat-icon-button matTooltip="Ausgewählte bearbeiten."
-                (click)="multiEdit()">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Als Workbench Plan exportieren."
-                (click)="exportWorkbench()">
-          <mat-icon>import_export</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Refresh." (click)="refresh(paginator)">
-          <mat-icon>refresh</mat-icon>
-        </button>
+<div class="row">
+  <div class="col-xl-10">
+    <form [formGroup]="filter">
+      <div class="row">
+        <div class="col-xl-3">
+          <app-village-input formControlName="origin" label="Herkunft"></app-village-input>
+        </div>
+        <div class="col-xl-3">
+          <app-village-input formControlName="target" label="Ziel"></app-village-input>
+        </div>
+        <div *ngIf="usedTypes?.length>0" class="col-xl-1">
+          <mat-form-field class="w-100">
+            <mat-label>Typ</mat-label>
+            <mat-select formControlName="type">
+              <mat-select-trigger>
+                <ng-container *ngIf="filter.value.type">
+                  <img [src]="'assets/'+filter.value.type.image" class="img-fluid"/>
+                </ng-container>
+              </mat-select-trigger>
+              <mat-option>
+                Alle
+              </mat-option>
+              <mat-option *ngFor="let type of usedTypes" [value]="type">
+                <img [src]="'assets/'+type.image" class="img-fluid"/>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xl-1">
+          <mat-form-field class="w-100">
+            <mat-label>Einheit</mat-label>
+            <mat-select formControlName="unit">
+              <mat-select-trigger>
+                <app-unit-render *ngIf="filter.value.unit" [value]="filter.value.unit">
+                </app-unit-render>
+              </mat-select-trigger>
+              <mat-option>
+                Alle
+              </mat-option>
+              <mat-option *ngFor="let unit of units" [value]="unit">
+                <app-unit-render [value]="unit"></app-unit-render>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
+    </form>
+  </div>
+  <div class="col-xl-2 flex-between">
+    <span></span>
+    <div class="flex-between">
+      <mat-slide-toggle matTooltip="Gesendete Befehle entfernen"
+                        [formControl]="removeControl"></mat-slide-toggle>
+      <button *ngIf="selection.hasValue()" mat-icon-button matTooltip="Ausgewählte löschen."
+              (click)="deleteSelected(paginator)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button *ngIf="selection.hasValue()" mat-icon-button matTooltip="Ausgewählte bearbeiten."
+              (click)="multiEdit()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Als Workbench Plan exportieren."
+              (click)="exportWorkbench()">
+        <mat-icon>import_export</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Refresh." (click)="refresh(paginator)">
+        <mat-icon>refresh</mat-icon>
+      </button>
     </div>
   </div>
-  <div class="overview-container">
-    <div class="loading-shade" *ngIf="isLoadingResults">
-      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    </div>
-    <div class="table-container">
-      <table mat-table [dataSource]="tasks.tasks" multiTemplateDataRows>
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? masterToggle() : null"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()">
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()"
-                          (change)="$event ? selection.toggle(row) : null"
-                          [checked]="selection.isSelected(row)">
-            </mat-checkbox>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="from">
-          <th mat-header-cell *matHeaderCellDef> Herkunft</th>
-          <td mat-cell *matCellDef="let element">
-            <app-village-render [value]="element.from"></app-village-render>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="to">
-          <th mat-header-cell *matHeaderCellDef> Ziel</th>
-          <td mat-cell *matCellDef="let element">
-            <app-village-render [value]="element.to"></app-village-render>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="commandType">
-          <th mat-header-cell *matHeaderCellDef> Typ</th>
-          <td mat-cell *matCellDef="let element">
-            <app-unit-render *ngIf="element.commandType === 'ATTACK'" [value]="'axe'"
-                             title="Angriff">
-            </app-unit-render>
-            <app-unit-render *ngIf="element.commandType === 'SUPPORT'" [value]="'sword'"
-                             title="Unterstützung">
-            </app-unit-render>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="unit">
-          <th mat-header-cell *matHeaderCellDef> Einheit</th>
-          <td mat-cell *matCellDef="let element">
-            <app-unit-render [value]="element.unit"></app-unit-render>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="sendTime">
-          <th mat-header-cell *matHeaderCellDef> Abschickzeit</th>
-          <td mat-cell *matCellDef="let element"> {{element.sendTime.display}} </td>
-        </ng-container>
-        <ng-container matColumnDef="arrivalTime">
-          <th mat-header-cell *matHeaderCellDef> Ankunftszeit</th>
-          <td mat-cell *matCellDef="let element">
-            {{element.arrivalTime.display}}<small>:{{element.arrivalTime.ms}}</small>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="remainingDelay">
-          <th mat-header-cell *matHeaderCellDef> Verbleibend</th>
-          <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="(element.remainingDelay * 1000)>0">
-              {{element.remainingDelay * 1000 | hms}}
-            </ng-container>
-            <ng-container *ngIf="(element.remainingDelay * 1000)<=0">
-              <span style="color: red">00:00:00</span>
-            </ng-container>
-          </td>
-        </ng-container>
+</div>
+<div class="overview-container">
+  <div class="loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <ng-container *ngIf="!isLoadingResults && tasks && tasks.tasks.length === 0">
+    Keine Tasks vorhanden.
+  </ng-container>
+  <div class="table-container" *ngIf="isLoadingResults || (tasks && tasks.tasks.length > 0)">
+    <table mat-table [dataSource]="tasks.tasks" multiTemplateDataRows>
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="from">
+        <th mat-header-cell *matHeaderCellDef> Herkunft</th>
+        <td mat-cell *matCellDef="let element">
+          <app-village-render [value]="element.from"></app-village-render>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="to">
+        <th mat-header-cell *matHeaderCellDef> Ziel</th>
+        <td mat-cell *matCellDef="let element">
+          <app-village-render [value]="element.to"></app-village-render>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="commandType">
+        <th mat-header-cell *matHeaderCellDef> Typ</th>
+        <td mat-cell *matCellDef="let element">
+          <img [src]="'assets/'+element.commandType.image" class="img-fluid"/>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef> Einheit</th>
+        <td mat-cell *matCellDef="let element">
+          <app-unit-render [value]="element.unit"></app-unit-render>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="sendTime">
+        <th mat-header-cell *matHeaderCellDef> Abschickzeit</th>
+        <td mat-cell *matCellDef="let element"> {{element.sendTime.display}} </td>
+      </ng-container>
+      <ng-container matColumnDef="arrivalTime">
+        <th mat-header-cell *matHeaderCellDef> Ankunftszeit</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.arrivalTime.display}}<small>:{{element.arrivalTime.ms}}</small>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="remainingDelay">
+        <th mat-header-cell *matHeaderCellDef> Verbleibend</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="(element.remainingDelay * 1000)>0">
+            {{element.remainingDelay * 1000 | hms}}
+          </ng-container>
+          <ng-container *ngIf="(element.remainingDelay * 1000)<=0">
+            <span style="color: red">00:00:00</span>
+          </ng-container>
+        </td>
+      </ng-container>
 
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-            <div class="example-element-detail centerflex"
-                 [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-              <span></span>
-              <app-units-render [value]="element.units"></app-units-render>
-              <div class="example-element-description">
-                <a [href]="placeLink(element)" target="_blank">
-                  <button mat-raised-button color="primary">
-                    <mat-icon>open_in_new</mat-icon>
-                  </button>
-                </a>
-                <button class="ml-2" (click)="editTask(element)" mat-raised-button
-                        color="primary">
-                  <mat-icon>edit</mat-icon>
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail centerflex"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <span></span>
+            <app-units-render [value]="element.units"></app-units-render>
+            <div class="example-element-description">
+              <a [href]="placeLink(element)" target="_blank">
+                <button mat-raised-button color="primary">
+                  <mat-icon>open_in_new</mat-icon>
                 </button>
-                <button class="ml-2" (click)="delete(element, paginator)" mat-raised-button
-                        color="warn">
-                  <mat-icon>delete_forever</mat-icon>
-                </button>
-              </div>
+              </a>
+              <button class="ml-2" (click)="editTask(element)" mat-raised-button
+                      color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button class="ml-2" (click)="delete(element, paginator)" mat-raised-button
+                      color="warn">
+                <mat-icon>delete_forever</mat-icon>
+              </button>
             </div>
-          </td>
-        </ng-container>
+          </div>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-            class="example-element-row"
-            [class.example-expanded-row]="element == expandedElement"
-            (click)="expandedElement = expandedElement === element ? null : element">
-        </tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
-            class="example-detail-row"></tr>
-      </table>
-    </div>
-    <mat-paginator #paginator (page)="pageUpdate($event)" [length]="tasks.count" [pageSize]="10"
-                   [pageSizeOptions]="[10, 50, 100, 250]"></mat-paginator>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+          class="example-element-row"
+          [class.example-expanded-row]="element == expandedElement"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
+          class="example-detail-row"></tr>
+    </table>
   </div>
-</ng-container>
+  <mat-paginator #paginator (page)="pageUpdate($event)" [length]="tasks.count" [pageSize]="10"
+                 [pageSizeOptions]="[10, 50, 100, 250]"></mat-paginator>
+</div>

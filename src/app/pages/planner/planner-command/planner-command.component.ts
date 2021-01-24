@@ -4,7 +4,6 @@ import {VillageService} from '../../../service/village/village.service';
 import * as moment from 'moment';
 import {Moment} from 'moment';
 import {Village} from '../../../service/structures/village';
-import {CommandType} from '../../../service/structures/command-type';
 import {PlannerService} from '../../../service/planner/planner.service';
 import {CommandPlannerPossibility} from '../../../service/structures/command-planner-possibility';
 import {WebsocketService} from '../../../service/websocket.service';
@@ -14,6 +13,7 @@ import {FormControl} from '@angular/forms';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatDialog} from '@angular/material/dialog';
 import {CommandScheduleComponent} from '../../command/command-schedule/command-schedule.component';
+import {ATTACK, CommandType, SUPPORT} from '../../../service/command/structures/command-type';
 
 @Component({
   selector: 'app-planner-command',
@@ -58,7 +58,7 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
     this.setupInterval();
   }
 
-  openScheduler(sources: Village[], target: Village, type: string, unit: string, time: number): void {
+  openScheduler(sources: Village[], target: Village, type: CommandType, unit: string, time: number): void {
     this.dialog.open(CommandScheduleComponent, {
       data: {
         sources: sources,
@@ -72,7 +72,7 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
 
   private setupDisplayedUnits(): void {
     const storage = localStorage.getItem(
-      this.world + '_planner_units_' + CommandType[this.route.snapshot.paramMap.get('type')]
+      this.world + '_planner_units_' + this.route.snapshot.paramMap.get('type')
     );
     let cols = storage === null ? this.units : JSON.parse(storage);
     if (Array.isArray(cols) === false) {
@@ -116,7 +116,11 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
         this.update();
       });
       this.time = moment(parseInt(params.get('time'), 10));
-      this.type = CommandType[params.get('type')];
+      if ('ATTACK' === params.get('type')) {
+        this.type = ATTACK;
+      } else if ('SUPPORT' === params.get('type')) {
+        this.type = SUPPORT;
+      }
     });
   }
 

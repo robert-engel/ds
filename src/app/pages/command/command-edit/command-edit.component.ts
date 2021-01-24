@@ -9,6 +9,7 @@ import {Subject} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {CommandTask} from '../../../service/structures/command-task';
+import {ATTACK, SUPPORT} from '../../../service/command/structures/command-type';
 
 @Component({
   selector: 'app-command-edit',
@@ -18,6 +19,9 @@ import {CommandTask} from '../../../service/structures/command-task';
 export class CommandEditComponent implements OnInit, OnDestroy {
 
   private unsub$ = new Subject<void>();
+
+  ATTACK = ATTACK;
+  SUPPORT = SUPPORT;
 
   title: string;
   taskId: number;
@@ -83,7 +87,7 @@ export class CommandEditComponent implements OnInit, OnDestroy {
 
   private setCommandTask(task: CommandTask): void {
     this.taskId = task.id;
-    this.title = `Bearbeiten von Task ${task.commandType} ${task.sendTime.display}`;
+    this.title = `Bearbeiten von Task ${task.commandType.name} ${task.sendTime.display}`;
     this.fromForm.setValue(task.from);
     this.toForm.setValue(task.to);
     this.unitsForm.setValue(task.units);

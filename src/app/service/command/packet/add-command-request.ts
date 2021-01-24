@@ -1,12 +1,12 @@
 import {Packet} from '../../packet/packet';
-import {CommandType} from '../../structures/command-type';
+import {CommandType} from '../structures/command-type';
 
 export class AddCommandRequest implements Packet {
 
   source: number;
   target: number;
   slowestUnit: number;
-  commandType: CommandType;
+  commandType: string;
   arrival: number;
   template: number;
   troops: object;
@@ -17,7 +17,7 @@ export class AddCommandRequest implements Packet {
     this.source = source;
     this.target = target;
     this.slowestUnit = slowestUnit;
-    this.commandType = commandType;
+    this.commandType = commandType.name;
     this.arrival = arrival;
     this.template = template;
     this.troops = troops;

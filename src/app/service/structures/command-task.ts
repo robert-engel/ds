@@ -1,6 +1,6 @@
 import {Village} from './village';
-import {CommandType} from './command-type';
 import {LocalDateTime} from './local-date-time';
+import {CommandType} from '../command/structures/command-type';
 
 export interface CommandTask {
   id: number;

@@ -152,8 +152,8 @@
       <mat-form-field class="w-100">
         <mat-label>Befehlstyp</mat-label>
         <mat-select id="commandType" [formControl]="commandTypeForm">
-          <mat-option value="ATTACK">Angriff</mat-option>
-          <mat-option value="SUPPORT">Unterstützung</mat-option>
+          <mat-option [value]="ATTACK">Angriff</mat-option>
+          <mat-option [value]="SUPPORT">Unterstützung</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

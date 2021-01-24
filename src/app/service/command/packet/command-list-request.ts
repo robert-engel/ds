@@ -6,9 +6,26 @@ export class CommandListRequest implements Packet {
   max: number;
   first: number;
 
-  constructor(max: number, first: number) {
+  origin: number | undefined;
+  target: number | undefined;
+  type: string | undefined;
+  unit: string | undefined;
+
+
+  constructor(
+    max: number,
+    first: number,
+    origin: number | undefined,
+    target: number | undefined,
+    type: string | undefined,
+    unit: string | undefined
+  ) {
     this.max = max;
     this.first = first;
+    this.origin = origin;
+    this.target = target;
+    this.type = type;
+    this.unit = unit;
   }
 
   getName(): string {

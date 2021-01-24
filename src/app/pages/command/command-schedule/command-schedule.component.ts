@@ -1,6 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit, Optional} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import {CommandType} from '../../../service/structures/command-type';
 
 import * as moment from 'moment';
 import {StandardTroopTemplate} from '../../../service/structures/standard-troop-template';
@@ -11,6 +10,7 @@ import {ToastrService} from 'ngx-toastr';
 import {takeUntil} from 'rxjs/operators';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {ScheduleData} from '../../../service/command/structures/schedule-data';
+import {ATTACK, FAKE_UT, SUPPORT} from '../../../service/command/structures/command-type';
 
 @Component({
   selector: 'app-command-schedule',
@@ -21,13 +21,17 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
 
   private unsub$ = new Subject<void>();
 
+  ATTACK = ATTACK;
+  SUPPORT = SUPPORT;
+  FAKE_UT = FAKE_UT;
+
   form = this.fb.group({
     from: [null],
     to: [null],
     units: {},
     template: [null, Validators.required],
     unit: ['ram', Validators.required],
-    commandType: CommandType.ATTACK,
+    commandType: this.ATTACK,
     date: moment(),
     time: [moment().format('HH:mm:ss:SSS'), Validators.pattern('^\\d{2}:\\d{2}:\\d{2}:\\d{3}$')],
   });
@@ -72,7 +76,7 @@ export class CommandScheduleComponent implements OnInit, OnDestroy {
     this.commandService.addCommandEvents().pipe(takeUntil(this.unsub$)).subscribe(command => {
       this.toastr.success(
         `Von ${command.from.search} nach ${command.to.search}. Ankunft: ${command.arrivalTime.display}`,
-        command.commandType,
+        command.commandType.name,
         {
           timeOut: 7000,
         }

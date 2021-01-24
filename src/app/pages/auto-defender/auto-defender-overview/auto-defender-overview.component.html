@@ -1,0 +1,43 @@
+<ng-container *ngIf="config">
+  <mat-card *ngFor="let feature of features" class="mat-elevation-z6">
+    <mat-card-title>
+      <div class="w-100 flex-between">
+        <span>{{feature.name}}</span>
+        <mat-slide-toggle [formControl]="enabled[feature.id]"></mat-slide-toggle>
+      </div>
+    </mat-card-title>
+    <mat-card-subtitle>{{feature.description}}</mat-card-subtitle>
+    <mat-card-content>
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let size of sizes">
+          <mat-expansion-panel-header>
+            {{size | titlecase}}
+          </mat-expansion-panel-header>
+          <div>
+            <form [formGroup]="block[feature.id][size]">
+              <div class="row">
+                <div class="col-xl-12">
+                  <app-units-holder-input formControlName="units"
+                                          [excludeUnits]="['axe', 'light', 'ram', 'catapult', 'snob']">
+                  </app-units-holder-input>
+                </div>
+                <div class="col-xl-12">
+                  <mat-checkbox formControlName="allowOther">Selbe Verteidigung mit anderen Truppen
+                    erlauben.
+                  </mat-checkbox>
+                </div>
+                <div class="col-xl-12">
+                  <button [disabled]="block[feature.id][size].disabled" mat-raised-button
+                          color="primary"
+                          (click)="setDefense(feature, size, block[feature.id][size].value)">
+                    Speichern
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

@@ -21,6 +21,10 @@ import {WebsocketService} from '../../service/websocket.service';
 })
 export class UnitsHolderInputComponent implements OnInit, ControlValueAccessor {
 
+  static nextId = 0;
+
+  id: number;
+
   @Input()
   forceVertical = false;
   @Input()
@@ -48,6 +52,7 @@ export class UnitsHolderInputComponent implements OnInit, ControlValueAccessor {
     private breakpointObserver: BreakpointObserver,
     private web: WebsocketService,
   ) {
+    this.id = UnitsHolderInputComponent.nextId++;
   }
 
   propagateChange = (_: any) => {
@@ -97,7 +102,7 @@ export class UnitsHolderInputComponent implements OnInit, ControlValueAccessor {
         this.select.value = units.cataTarget;
       }
       this.units.forEach(unit => {
-        const elem: any = document.getElementById('troop_input_' + unit);
+        const elem: any = document.getElementById(this.id + '_troop_input_' + unit);
         if (elem !== null && units.hasOwnProperty(unit)) {
           elem.value = units[unit];
         }

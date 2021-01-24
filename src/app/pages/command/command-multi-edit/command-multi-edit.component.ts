@@ -7,6 +7,7 @@ import {CommandService} from '../../../service/command/command.service';
 import {ToastrService} from 'ngx-toastr';
 import {first} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {ATTACK, SUPPORT} from '../../../service/command/structures/command-type';
 
 @Component({
   selector: 'app-command-multi-edit',
@@ -16,6 +17,9 @@ import {Subject} from 'rxjs';
 export class CommandMultiEditComponent implements OnInit, OnDestroy {
 
   private unsub$ = new Subject<void>();
+
+  ATTACK = ATTACK;
+  SUPPORT = SUPPORT;
 
   chronoUnits = ['MILLIS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS'];
   ids: number[];

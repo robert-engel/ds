@@ -4,7 +4,8 @@
         [ngClass]="{'col-xl-12': (forceVertical || ((isHandset$ | async) === true)), 'pad': !(forceVertical || ((isHandset$ | async) === true))}">
     <mat-form-field class="full-width">
       <mat-label>{{unit | titlecase}}</mat-label>
-      <input [id]="'troop_input_'+unit" #t (change)="input(t.value, unit)" matInput type="number">
+      <input [id]="this.id+'_troop_input_'+unit" #t (change)="input(t.value, unit)" matInput
+             type="number">
       <button mat-button matSuffix mat-icon-button>
         <img *ngIf="imagebase" [src]="imagebase+'unit/unit_'+unit+'.png'" class="img-fluid"/>
       </button>
