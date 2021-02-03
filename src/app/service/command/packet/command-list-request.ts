@@ -10,6 +10,7 @@ export class CommandListRequest implements Packet {
   target: number | undefined;
   type: string | undefined;
   unit: string | undefined;
+  cataTarget: string | undefined;
 
 
   constructor(
@@ -18,7 +19,8 @@ export class CommandListRequest implements Packet {
     origin: number | undefined,
     target: number | undefined,
     type: string | undefined,
-    unit: string | undefined
+    unit: string | undefined,
+    cataTarget: string | undefined
   ) {
     this.max = max;
     this.first = first;
@@ -26,6 +28,7 @@ export class CommandListRequest implements Packet {
     this.target = target;
     this.type = type;
     this.unit = unit;
+    this.cataTarget = cataTarget;
   }
 
   getName(): string {

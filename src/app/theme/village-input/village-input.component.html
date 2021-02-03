@@ -1,6 +1,11 @@
 <mat-form-field class="full-width">
   <input autocomplete="off" autocapitalize="off" spellcheck="false" class="full-width"
          matInput [placeholder]="label" [matAutocomplete]="auto" [formControl]="formControl">
+  <button mat-button *ngIf="showClear && formControl.value" matSuffix mat-icon-button
+          aria-label="Clear"
+          (click)="formControl.reset()">
+    <mat-icon>close</mat-icon>
+  </button>
 </mat-form-field>
 <mat-autocomplete panelWidth="450px" #auto="matAutocomplete" [displayWith]="displayFn">
   <mat-option *ngFor="let village of (villages$ | async)" [value]="village">

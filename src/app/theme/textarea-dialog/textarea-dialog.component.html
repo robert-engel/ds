@@ -1,0 +1,8 @@
+<h2 *ngIf="data?.name" mat-dialog-title>{{data.name}}</h2>
+<mat-dialog-content class="mat-typography">
+  <textarea matInput [formControl]="control" cols="100" rows="10"></textarea>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Abbrechen</button>
+  <button mat-button (click)="close()">OK</button>
+</mat-dialog-actions>

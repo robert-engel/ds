@@ -57,4 +57,24 @@
       </mat-card>
     </div>
   </div>
+  <div class="row">
+    <div class="col-xl-4">
+      <mat-card class="mat-elevation-z6">
+        <mat-card-title>UT abziehen.</mat-card-title>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-9">
+              <app-village-input [formControl]="utForm"></app-village-input>
+            </div>
+            <div class="col-xl-3">
+              <button [disabled]="utForm.disabled || utForm.invalid" mat-raised-button
+                      color="primary" (click)="withdraw(utForm.value.id)">
+                UT abziehen.
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </mat-card>

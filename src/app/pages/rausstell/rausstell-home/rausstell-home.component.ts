@@ -5,6 +5,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map, shareReplay, takeUntil} from 'rxjs/operators';
 import {RausstellManagerService} from '../../../service/rausstellmanager/rausstell-manager.service';
 import {Router} from '@angular/router';
+import {WithdrawService} from '../../../service/withdraw/withdraw.service';
 
 @Component({
   selector: 'app-rausstell-home',
@@ -17,6 +18,7 @@ export class RausstellHomeComponent implements OnInit, OnDestroy {
 
   troopForm = new FormControl();
   villageForm = new FormControl();
+  utForm = new FormControl();
   incForm = new FormControl('', Validators.required);
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -29,6 +31,7 @@ export class RausstellHomeComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private rausstell: RausstellManagerService,
     private router: Router,
+    private withdrawService: WithdrawService,
   ) {
   }
 
@@ -36,6 +39,10 @@ export class RausstellHomeComponent implements OnInit, OnDestroy {
     this.rausstell.troops().pipe(takeUntil(this.unsub$)).subscribe(troops => {
       this.troopForm.setValue(troops);
     });
+  }
+
+  withdraw(village: number): void {
+    this.withdrawService.withdraw(village);
   }
 
   saveTroops(): void {

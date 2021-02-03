@@ -5,6 +5,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {VillageCount} from '../../../../service/structures/village-count';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {MatDialog} from '@angular/material/dialog';
+import {TextareaDialogComponent} from '../../../../theme/textarea-dialog/textarea-dialog.component';
 
 @Component({
   selector: 'app-fake-selector-table',
@@ -57,7 +59,7 @@ export class FakeSelectorTableComponent implements OnInit {
 
   cols: string[] = ['select', 'village', 'plan'];
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -118,5 +120,30 @@ export class FakeSelectorTableComponent implements OnInit {
       group[row.village.id] = Math.min(Math.max(val, 0), row.max);
     });
     this.form.patchValue(group);
+  }
+
+  filter(): void {
+    this.dialog.open(TextareaDialogComponent, {
+      data: {
+        name: 'Dorf Filter',
+      }
+    }).afterClosed().subscribe(value => {
+      if (value) {
+        const ids = [];
+        value.split(/^/mg).forEach(line => {
+          const match = /(\d{3})\|(\d{3})/g.exec(line);
+          this.selector.forEach(sel => {
+            if (sel.village.x === parseInt(match[1], 10)) {
+              if (sel.village.y === parseInt(match[2], 10)) {
+                ids.push(sel.village.id);
+              }
+            }
+          });
+        });
+        this.selector = this.selector.filter(sel => {
+          return ids.includes(sel.village.id);
+        });
+      }
+    });
   }
 }

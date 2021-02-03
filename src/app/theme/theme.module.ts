@@ -24,6 +24,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmStopComponent } from './header/confirm-stop/confirm-stop.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { TextareaDialogComponent } from './textarea-dialog/textarea-dialog.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     HmsPipe,
     UnitsHolderInputComponent,
     ConfirmStopComponent,
+    TextareaDialogComponent,
   ],
   exports: [
     HeaderComponent,
@@ -49,7 +51,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     UnitsRenderComponent,
     VillageInputComponent,
     HmsPipe,
-    UnitsHolderInputComponent
+    UnitsHolderInputComponent,
+    BuildingsRenderComponent
   ],
   imports: [
     CommonModule,

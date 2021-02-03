@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {VillageService} from '../../../service/village/village.service';
 import * as moment from 'moment';
 import {Moment} from 'moment';
@@ -8,12 +8,13 @@ import {PlannerService} from '../../../service/planner/planner.service';
 import {CommandPlannerPossibility} from '../../../service/structures/command-planner-possibility';
 import {WebsocketService} from '../../../service/websocket.service';
 import {interval, Subject} from 'rxjs';
-import {debounceTime, takeUntil} from 'rxjs/operators';
+import {debounceTime, filter, takeUntil} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatDialog} from '@angular/material/dialog';
 import {CommandScheduleComponent} from '../../command/command-schedule/command-schedule.component';
 import {ATTACK, CommandType, SUPPORT} from '../../../service/command/structures/command-type';
+import {MatSnackBar, MatSnackBarRef, TextOnlySnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-planner-command',
@@ -37,14 +38,18 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
 
   loading = false;
 
+  snackbarRef: MatSnackBarRef<TextOnlySnackBar>;
+
   private unsub$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private villageService: VillageService,
     private planner: PlannerService,
     private web: WebsocketService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -56,6 +61,26 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
     });
     this.setupRouteChangeListener();
     this.setupInterval();
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      if (this.snackbarRef) {
+        this.snackbarRef.dismiss();
+      }
+    });
+    this.selection.changed.pipe(debounceTime(1000)).subscribe(() => {
+      if (this.selection.hasValue()) {
+        this.snackbarRef = this.snackBar.open(`Für ${this.selection.selected.length} ausgewählte planen.`, 'Planen', {
+          duration: 99999999,
+        });
+        this.snackbarRef.onAction().subscribe(() => {
+          this.openScheduler(this.selectVillages(), this.target, this.type, undefined, this.time.valueOf());
+        });
+      } else {
+        if (this.snackbarRef) {
+          this.snackbarRef.dismiss();
+        }
+      }
+    });
   }
 
   openScheduler(sources: Village[], target: Village, type: CommandType, unit: string, time: number): void {

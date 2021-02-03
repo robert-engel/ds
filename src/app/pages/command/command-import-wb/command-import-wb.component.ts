@@ -5,6 +5,7 @@ import {Subject} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {ImportWorkbenchFinish} from '../../../service/structures/import-workbench-finish';
 import {WebsocketService} from '../../../service/websocket.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-command-import-wb',
@@ -32,6 +33,7 @@ export class CommandImportWbComponent implements OnInit, OnDestroy {
   constructor(
     private command: CommandService,
     private web: WebsocketService,
+    private toastr: ToastrService,
   ) {
   }
 
@@ -56,6 +58,13 @@ export class CommandImportWbComponent implements OnInit, OnDestroy {
     this.command.importWorkbenchFinish()
     .pipe(filter(resp => resp.id === this.id))
     .subscribe(resp => {
+      this.toastr.success(
+        'Import abgeschlossen.',
+        undefined,
+        {
+          timeOut: 7000,
+        }
+      );
       this.importing = false;
       this.result = resp;
     });

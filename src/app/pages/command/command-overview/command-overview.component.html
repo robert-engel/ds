@@ -3,10 +3,12 @@
     <form [formGroup]="filter">
       <div class="row">
         <div class="col-xl-3">
-          <app-village-input formControlName="origin" label="Herkunft"></app-village-input>
+          <app-village-input formControlName="origin" label="Herkunft"
+                             [showClear]="true"></app-village-input>
         </div>
         <div class="col-xl-3">
-          <app-village-input formControlName="target" label="Ziel"></app-village-input>
+          <app-village-input formControlName="target" label="Ziel"
+                             [showClear]="true"></app-village-input>
         </div>
         <div *ngIf="usedTypes?.length>0" class="col-xl-1">
           <mat-form-field class="w-100">
@@ -39,6 +41,24 @@
               </mat-option>
               <mat-option *ngFor="let unit of units" [value]="unit">
                 <app-unit-render [value]="unit"></app-unit-render>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xl-1">
+          <mat-form-field class="w-100">
+            <mat-label>Kata Ziel</mat-label>
+            <mat-select formControlName="cataTarget">
+              <mat-select-trigger>
+                <img *ngIf="filter.value.cataTarget"
+                     [src]="imagebase+'buildings/'+filter.value.cataTarget+'.png'"
+                     class="img-fluid"/>
+              </mat-select-trigger>
+              <mat-option>
+                Alle
+              </mat-option>
+              <mat-option *ngFor="let building of buildings" [value]="building">
+                <img [src]="imagebase+'buildings/'+building+'.png'" class="img-fluid"/>
               </mat-option>
             </mat-select>
           </mat-form-field>

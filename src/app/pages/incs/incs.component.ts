@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
+import {IncManagerService} from '../../service/incmanager/inc-manager.service';
 
 @Component({
   selector: 'app-incs',
@@ -24,7 +25,14 @@ export class IncsComponent implements OnInit, OnDestroy {
 
   private unsub$ = new Subject<void>();
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private inc: IncManagerService,
+  ) {
+  }
+
+  heatmap(): void {
+    this.inc.heatmap();
   }
 
   ngOnInit(): void {

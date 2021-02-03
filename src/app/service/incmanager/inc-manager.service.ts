@@ -11,6 +11,7 @@ import {IncListResponse} from '../structures/inc-list-response';
 import {IncomingEntity} from '../structures/incoming-entity';
 import {RequestIncPacket} from './packet/request-inc-packet';
 import {EditIncRequest} from './packet/edit-inc-request';
+import {GenerateHeatmapPacket} from './packet/generate-heatmap-packet';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ import {EditIncRequest} from './packet/edit-inc-request';
 export class IncManagerService {
 
   constructor(private websocketService: WebsocketService) {
+  }
+
+  heatmap(): void {
+    this.websocketService.sendData(new GenerateHeatmapPacket());
   }
 
   status(): Observable<EnabledStatus> {

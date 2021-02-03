@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, forwardRef, Input, OnInit} from '@angular/core';
 import {Village} from '../../service/structures/village';
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {VillageService} from '../../service/village/village.service';
 import {debounceTime, switchMap} from 'rxjs/operators';
 
@@ -32,6 +32,8 @@ export class VillageInputComponent implements ControlValueAccessor, OnInit, Afte
 
   @Input()
   label = 'Dorf';
+  @Input()
+  showClear = false;
 
   villages$: Observable<Village[]>;
   formControl = new FormControl('', (control: FormControl) => {
@@ -88,8 +90,10 @@ export class VillageInputComponent implements ControlValueAccessor, OnInit, Afte
       switchMap(value => {
         if (typeof value === 'string') {
           return this.villageService.searchVillages(value);
-        } else if (typeof value === 'object') {
+        } else if (typeof value === 'object' && value !== null) {
           return this.villageService.searchVillages(value.search);
+        } else {
+          return of(undefined);
         }
       }),
     );

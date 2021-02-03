@@ -55,8 +55,11 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     target: undefined,
     type: undefined,
     unit: undefined,
+    cataTarget: undefined,
   });
   units: string[] = [];
+  buildings: string[] = [];
+  imagebase: string;
   usedTypes: CommandType[] = [];
 
   constructor(
@@ -80,7 +83,7 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     for (const key of Object.keys(this.filter.controls)) {
       const control: AbstractControl = this.filter.controls[key];
       control.valueChanges.subscribe(() => {
-        if (control.valid) {
+        if (control.valid || control.value === undefined || control.value === null) {
           this.refresh(this.paginator);
         }
       });
@@ -88,9 +91,19 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
     this.web.info().subscribe(info => {
       this.world = info.world;
       this.units = info.units;
+      this.buildings = info.buildings;
+      this.imagebase = info.imageBase;
     });
     this.isLoadingResults = true;
-    this.commandService.getCommandList(10, 0, undefined, undefined, undefined, undefined).subscribe(resp => {
+    this.commandService.getCommandList(
+      10,
+      0,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ).subscribe(resp => {
       this.isLoadingResults = false;
       this.tasks = resp;
     });
@@ -183,7 +196,8 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
         this.filter.value.origin?.id,
         this.filter.value.target?.id,
         this.filter.value.type?.name,
-        this.filter.value.unit
+        this.filter.value.unit,
+        this.filter.value.cataTarget
       ).subscribe(resp => {
         this.tasks = resp;
         this.isLoadingResults = false;
@@ -200,7 +214,8 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
         this.filter.value.origin?.id,
         this.filter.value.target?.id,
         this.filter.value.type?.name,
-        this.filter.value.unit
+        this.filter.value.unit,
+        this.filter.value.cataTarget
       ).subscribe(resp => {
         this.tasks = resp;
         this.isLoadingResults = false;
@@ -214,7 +229,13 @@ export class CommandOverviewComponent implements OnInit, OnDestroy {
   }
 
   exportWorkbench(): void {
-    this.commandService.exportWorkbench().subscribe(data => {
+    this.commandService.exportWorkbench(
+      this.filter.value.origin?.id,
+      this.filter.value.target?.id,
+      this.filter.value.type?.name,
+      this.filter.value.unit,
+      this.filter.value.cataTarget
+    ).subscribe(data => {
       this.clipboard.copy(data);
     });
   }

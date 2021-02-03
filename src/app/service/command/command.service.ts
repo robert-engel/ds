@@ -161,9 +161,20 @@ export class CommandService {
     this.websocket.sendData(new DeleteStandardTroopTemplateRequest(id));
   }
 
-  exportWorkbench(): Observable<string> {
-    return this.websocket.observable('WorkbenchExportResponse', new ExportWorkbenchRequest())
-    .pipe(first(), map(resp => resp.export));
+  exportWorkbench(
+    origin: number | undefined,
+    target: number | undefined,
+    type: string | undefined,
+    unit: string | undefined,
+    cataTarget: string | undefined
+  ): Observable<string> {
+    return this.websocket.observable('WorkbenchExportResponse', new ExportWorkbenchRequest(
+      origin,
+      target,
+      type,
+      unit,
+      cataTarget
+    )).pipe(first(), map(resp => resp.export));
   }
 
   addCommandEvents(): Observable<CommandTask> {
@@ -202,9 +213,10 @@ export class CommandService {
     origin: number | undefined,
     target: number | undefined,
     type: string | undefined,
-    unit: string | undefined
+    unit: string | undefined,
+    cataTarget: string | undefined
   ): Observable<CommandListResponse> {
-    const req = new CommandListRequest(max, firstTask, origin, target, type, unit);
+    const req = new CommandListRequest(max, firstTask, origin, target, type, unit, cataTarget);
     return this.websocket.observable('CommandListResponse', req).pipe(filter(resp => resp.id === req.id), first());
   }
 
