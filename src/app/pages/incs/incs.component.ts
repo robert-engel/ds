@@ -31,8 +31,8 @@ export class IncsComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  heatmap(): void {
-    this.inc.heatmap();
+  heatmap(type: string): void {
+    this.inc.heatmap(type);
   }
 
   ngOnInit(): void {

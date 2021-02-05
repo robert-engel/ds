@@ -21,8 +21,8 @@ export class IncManagerService {
   constructor(private websocketService: WebsocketService) {
   }
 
-  heatmap(): void {
-    this.websocketService.sendData(new GenerateHeatmapPacket());
+  heatmap(type: string): void {
+    this.websocketService.sendData(new GenerateHeatmapPacket(type));
   }
 
   status(): Observable<EnabledStatus> {
