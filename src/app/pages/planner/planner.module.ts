@@ -34,6 +34,8 @@ import {NgxSliderModule} from '@angular-slider/ngx-slider';
 import {MatListModule} from '@angular/material/list';
 import {FakeConfirmationComponent} from './planner-fakes/fake-confirmation/fake-confirmation.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -73,6 +75,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     NgxSliderModule,
     MatListModule,
     MatDialogModule,
+    MatSlideToggleModule,
+    MatTooltipModule,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},

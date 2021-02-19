@@ -131,14 +131,16 @@ export class FakeSelectorTableComponent implements OnInit {
       if (value) {
         const ids = [];
         value.split(/^/mg).forEach(line => {
-          const match = /(\d{3})\|(\d{3})/g.exec(line);
-          this.selector.forEach(sel => {
-            if (sel.village.x === parseInt(match[1], 10)) {
-              if (sel.village.y === parseInt(match[2], 10)) {
-                ids.push(sel.village.id);
+          const match: RegExpExecArray = /(\d{3})\|(\d{3})/g.exec(line);
+          if (match?.length > 0) {
+            this.selector.forEach(sel => {
+              if (sel.village.x === parseInt(match[1], 10)) {
+                if (sel.village.y === parseInt(match[2], 10)) {
+                  ids.push(sel.village.id);
+                }
               }
-            }
-          });
+            });
+          }
         });
         this.selector = this.selector.filter(sel => {
           return ids.includes(sel.village.id);

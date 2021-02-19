@@ -55,7 +55,13 @@ export class DashboardService implements CanActivate {
       if (this.isRunning()) {
         return true;
       } else {
-        return this.router.createUrlTree(['']);
+        return timer(1000).pipe(map(num => {
+          if (this.webSocketService.isConnected() && this.isRunning()) {
+            return true;
+          } else {
+            return this.router.createUrlTree(['']);
+          }
+        }));
       }
     } else {
       return timer(1000).pipe(map(num => {

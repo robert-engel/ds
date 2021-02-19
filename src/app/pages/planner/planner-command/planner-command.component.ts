@@ -30,6 +30,8 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
   poss: CommandPlannerPossibility[] = [];
   selection = new SelectionModel<CommandPlannerPossibility>(true, []);
 
+  unitDisplay = new FormControl(true);
+
   unitsForm = new FormControl([]);
 
   world: string;
@@ -81,6 +83,10 @@ export class PlannerCommandComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  get subtract(): boolean {
+    return this.unitDisplay.value === true;
   }
 
   openScheduler(sources: Village[], target: Village, type: CommandType, unit: string, time: number): void {
