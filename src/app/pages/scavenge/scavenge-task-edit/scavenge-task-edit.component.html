@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-xl-12">
+    <div class="form-group row">
+      <div class="col-xl-3">
+        <label>Einheiten
+          <mat-icon matTooltip="Maximale Einheiten die über alle Raubzüge verteilt werden.">info
+          </mat-icon>
+        </label>
+      </div>
+      <div class="col-xl-9">
+        <app-units-input [formControl]="form" [excludeUnits]="nonFarmUnits">
+        </app-units-input>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-xl-12 flex-between">
+        <span></span>
+        <button [disabled]="!form.valid || form.disabled" type="submit" mat-raised-button
+                color="primary" (click)="submit(form.value)">
+          Bearbeiten
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-6">
+    <div class="row">
+      <div class="col-md-9">
+        <app-village-input [formControl]="villageForm" [onlyOwn]="true"></app-village-input>
+      </div>
+      <div class="col-xl-3">
+        <button [disabled]="villageForm.disabled || villageForm.invalid" mat-raised-button
+                color="primary" (click)="addVillage()">
+          Dorf hinzufügen.
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <textarea placeholder="Massen Hinzufügen/Entfernen" matInput
+                  [formControl]="massVillageForm"></textarea>
+      </div>
+      <div class="col-xl-3">
+        <button [disabled]="massVillageForm.disabled || massVillageForm.invalid" mat-raised-button
+                color="primary" (click)="massAdd()">
+          Dörfer hinzufügen.
+        </button>
+        <br>
+        <button class="mt-1" [disabled]="massVillageForm.disabled || massVillageForm.invalid"
+                mat-raised-button
+                color="primary" (click)="massRemove()">
+          Dörfer entfernen.
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="data.villages.length > 0" class="col-xl-6 list">
+    <table mat-table [dataSource]="data.villages" class="w-100">
+      <ng-container matColumnDef="village">
+        <th mat-header-cell *matHeaderCellDef>Dorf</th>
+        <td mat-cell *matCellDef="let element">
+          <app-village-render [value]="element"></app-village-render>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button type="button" mat-mini-fab color="warn" (click)="removeVillage(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

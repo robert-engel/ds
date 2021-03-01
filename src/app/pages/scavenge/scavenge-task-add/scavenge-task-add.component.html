@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-xl-12">
+    <div class="form-group row">
+      <div class="col-xl-3">
+        <label>Einheiten
+          <mat-icon matTooltip="Maximale Einheiten die über alle Raubzüge verteilt werden.">
+            info
+          </mat-icon>
+        </label>
+      </div>
+      <div class="col-xl-9">
+        <app-units-input [formControl]="form" [excludeUnits]="nonFarmUnits">
+        </app-units-input>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-xl-12 flex-between">
+        <span></span>
+        <button [disabled]="!form.valid || form.disabled" type="submit" mat-raised-button
+                color="primary" (click)="submit(form.value)">
+          Hinzufügen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

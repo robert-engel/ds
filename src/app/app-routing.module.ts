@@ -7,6 +7,18 @@ import {ConnectComponent} from './c/connect/connect.component';
 
 const routes: Routes = [
   {
+    path: 'builder',
+    canActivate: [DashboardService],
+    loadChildren: () => import('./pages/auto-builder/auto-builder.module')
+    .then(m => m.AutoBuilderModule),
+  },
+  {
+    path: 'scavenge',
+    canActivate: [DashboardService],
+    loadChildren: () => import('./pages/scavenge/scavenge.module')
+    .then(m => m.ScavengeModule),
+  },
+  {
     path: 'defender',
     canActivate: [DashboardService],
     loadChildren: () => import('./pages/auto-defender/auto-defender.module')

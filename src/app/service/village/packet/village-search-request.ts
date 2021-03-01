@@ -4,10 +4,12 @@ export class VillageSearchRequest implements Packet {
 
   id: number;
   query: string;
+  onlyOwn: boolean;
 
-  constructor(query: string) {
+  constructor(query: string, onlyOwn: boolean) {
     this.id = Math.random();
     this.query = query;
+    this.onlyOwn = onlyOwn;
   }
 
   getName(): string {

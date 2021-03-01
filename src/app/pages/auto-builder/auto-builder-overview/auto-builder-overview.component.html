@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-xl-12">
+    <div class="row">
+      <div class="flex-between col-xl-12">
+        <span></span>
+        <div>
+          <button mat-mini-fab (click)="openAddTemplate()">
+            <mat-icon>library_add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="templates.length>0">
+      <div class="row" *ngFor="let template of templates">
+        <div class="col-xl-12">
+          <div class="row">
+            <div class="col-sm-1">
+              <mat-icon>construction</mat-icon>
+            </div>
+            <div class="col-sm-2">
+              <h3> {{template.name}} </h3>
+            </div>
+            <div class="col-xl-7">
+              <app-buildings-render class="p-2" [value]="template.levels"></app-buildings-render>
+            </div>
+            <div class="col-sm-2">
+              <button matTooltip="Übersicht" mat-icon-button color="primary"
+                      (click)="openDetail(template)">
+                <mat-icon>pageview</mat-icon>
+              </button>
+              <button matTooltip="Löschen" mat-icon-button color="warn"
+                      (click)="deleteTemplate(template)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row" *ngIf="templates.length===0">
+      <div class="col-xl-12 flex-between">
+        <span></span>
+        <span>Keine Templates vorhanden.</span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</div>

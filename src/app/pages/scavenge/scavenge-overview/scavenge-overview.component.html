@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-xl-12">
+    <mat-card class="mb-3">
+      <div class="flex-between">
+        <div>
+          <mat-slide-toggle [formControl]="slide"></mat-slide-toggle>
+        </div>
+        <button mat-mini-fab color="primary" (click)="add()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>
+<app-scavenge-task *ngFor="let task of tasks" [task]="task"></app-scavenge-task>
+<div *ngIf="tasks && tasks.length === 0" class="row">
+  <div class="col-xl-12 flex-between">
+    <span></span>
+    <span class="text-center">
+      Keine Tasks vorhanden.<br>
+      <button mat-raised-button (click)="add()">
+        Hinzufügen.
+      </button>
+    </span>
+    <span></span>
+  </div>
+</div>

@@ -15,8 +15,8 @@ export class VillageService {
   constructor(private web: WebsocketService) {
   }
 
-  searchVillages(query: string): Observable<Village[]> {
-    const req = new VillageSearchRequest(query);
+  searchVillages(query: string, onlyOwn: boolean = false): Observable<Village[]> {
+    const req = new VillageSearchRequest(query, onlyOwn);
     return this.web.observable('VillageSearchResponse', req)
     .pipe(
       filter(resp => resp.id === req.id),

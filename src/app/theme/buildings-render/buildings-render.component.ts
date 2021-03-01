@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {WebsocketService} from '../../service/websocket.service';
 
 @Component({
@@ -6,26 +6,21 @@ import {WebsocketService} from '../../service/websocket.service';
   templateUrl: './buildings-render.component.html',
   styleUrls: ['./buildings-render.component.css']
 })
-export class BuildingsRenderComponent implements OnInit, OnChanges {
+export class BuildingsRenderComponent implements OnInit {
 
   @Input()
-  value;
-  imageBase: string;
-  buildingsA: string[];
-  buildingsB: string[];
+  value: { [building: string]: number };
+
+  buildings: string[];
+  imagebase: string;
 
   constructor(private web: WebsocketService) {
   }
 
   ngOnInit(): void {
     this.web.infoObservable.subscribe(info => {
-      this.imageBase = info.imageBase;
+      this.buildings = info.buildings;
+      this.imagebase = info.imageBase;
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const buildings = Object.keys(this.value);
-    this.buildingsA = buildings.slice(0, Math.floor(buildings.length / 2));
-    this.buildingsB = buildings.slice(Math.floor(buildings.length / 2) + 1, buildings.length);
   }
 }

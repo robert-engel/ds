@@ -32,13 +32,17 @@ export const MENU_ITEMS_USER: Menu[] = [
   /*{
     title: 'Kata',
     link: '/catas',
-  },
-  {
-    title: 'Auto Builder',
-    link: '/autobuilder',
   },*/
   {
-    title: 'Farmbot',
+    title: 'Konstruktion',
+    link: '/builder',
+  },
+  {
+    title: 'Farmen',
     link: '/farm',
+  },
+  {
+    title: 'Raubzug',
+    link: '/scavenge',
   },
 ];

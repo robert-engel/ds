@@ -9,7 +9,7 @@ import {WebsocketService} from '../../service/websocket.service';
 export class UnitsRenderComponent implements OnInit {
 
   @Input()
-  value: any;
+  value: { [unit: string]: string };
   @Input()
   excludeUnits: string[] = [];
   units: string[];

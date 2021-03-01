@@ -25,6 +25,8 @@ export class UnitsInputComponent implements OnInit, ControlValueAccessor {
   forceVertical = false;
   @Input()
   hideCataTarget = false;
+  @Input()
+  excludeUnits: string[] = [];
 
   @ViewChild(MatSelect) select: MatSelect;
 
@@ -54,6 +56,9 @@ export class UnitsInputComponent implements OnInit, ControlValueAccessor {
   ngOnInit(): void {
     this.web.infoObservable.subscribe(info => {
       this.units = info.units;
+      this.units = this.units.filter(value => {
+        return !this.excludeUnits.includes(value);
+      });
       this.imagebase = info.imageBase;
       this.buildings = info.buildings;
     });

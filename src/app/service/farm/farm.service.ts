@@ -7,7 +7,6 @@ import {DeleteFarmEntityRequest} from './packet/delete-farm-entity-request';
 import {EditFarmEntityRequest} from './packet/edit-farm-entity-request';
 import {FarmEntityAddVillageRequest} from './packet/farm-entity-add-village-request';
 import {FarmEntityRemoveVillageRequest} from './packet/farm-entity-remove-village-request';
-import {FarmTaskVillage} from './structures/farm-task-village';
 import {FarmTaskEnabled} from './structures/farm-task-enabled';
 import {FarmEntitySetEnabledRequest} from './packet/farm-entity-set-enabled-request';
 import {FarmerSetEnabledRequest} from './packet/farmer-set-enabled-request';
@@ -16,6 +15,9 @@ import {GetFarmerConfigRequest} from './packet/get-farmer-config-request';
 import {ListFarmEntityRequest} from './packet/list-farm-entity-request';
 import {FarmerSetMaxIncsRequest} from './packet/farmer-set-max-incs-request';
 import {filter, first, map, takeUntil} from 'rxjs/operators';
+import {Village} from '../structures/village';
+import {FarmEntityMassAddVillageRequest} from './packet/farm-entity-mass-add-village-request';
+import {FarmEntityMassRemoveVillageRequest} from './packet/farm-entity-mass-remove-village-request';
 
 @Injectable({
   providedIn: 'root'
@@ -60,23 +62,37 @@ export class FarmService {
     );
   }
 
-  addVillage(id: number, village: number): Observable<FarmTaskVillage> {
-    return this.websocketService.observable(
-      'FarmEntityAddVillageResponse',
-      new FarmEntityAddVillageRequest(id, village)
-    ).pipe(
-      filter(resp => resp.id === id && resp.village.id === village),
-      first()
+  villageAddEvent(unsub: Observable<void>): Observable<{ id: number, villages: Village[] }> {
+    return this.websocketService.observable('FarmEntityAddVillageResponse')
+    .pipe(takeUntil(unsub));
+  }
+
+  massAddVillage(id: number, villages: string): void {
+    this.websocketService.sendData(
+      new FarmEntityMassAddVillageRequest(id, villages)
     );
   }
 
-  removeVillage(id: number, village: number): Observable<FarmTaskVillage> {
-    return this.websocketService.observable(
-      'FarmEntityRemoveVillageResponse',
+  massRemoveVillage(id: number, villages: string): void {
+    this.websocketService.sendData(
+      new FarmEntityMassRemoveVillageRequest(id, villages)
+    );
+  }
+
+  addVillage(id: number, village: number): void {
+    this.websocketService.sendData(
+      new FarmEntityAddVillageRequest(id, village)
+    );
+  }
+
+  villageRemoveEvent(unsub: Observable<void>): Observable<{ id: number, villages: number[] }> {
+    return this.websocketService.observable('FarmEntityRemoveVillageResponse')
+    .pipe(takeUntil(unsub));
+  }
+
+  removeVillage(id: number, village: number): void {
+    this.websocketService.sendData(
       new FarmEntityRemoveVillageRequest(id, village)
-    ).pipe(
-      filter(resp => resp.id === id && resp.village.id === village),
-      first()
     );
   }
 

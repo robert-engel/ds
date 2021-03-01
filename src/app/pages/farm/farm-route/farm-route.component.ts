@@ -30,8 +30,6 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
 
   add(): void {
     this.dialog.open(FarmRouteAddComponent).afterClosed().subscribe(entity => {
-      console.log('got route from add component:');
-      console.log(entity);
       if (entity !== undefined) {
         this.routes.push(entity);
       }

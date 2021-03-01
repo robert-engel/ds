@@ -34,6 +34,8 @@ export class VillageInputComponent implements ControlValueAccessor, OnInit, Afte
   label = 'Dorf';
   @Input()
   showClear = false;
+  @Input()
+  onlyOwn = false;
 
   villages$: Observable<Village[]>;
   formControl = new FormControl('', (control: FormControl) => {
@@ -89,9 +91,9 @@ export class VillageInputComponent implements ControlValueAccessor, OnInit, Afte
       debounceTime(300),
       switchMap(value => {
         if (typeof value === 'string') {
-          return this.villageService.searchVillages(value);
+          return this.villageService.searchVillages(value, this.onlyOwn);
         } else if (typeof value === 'object' && value !== null) {
-          return this.villageService.searchVillages(value.search);
+          return this.villageService.searchVillages(value.search, this.onlyOwn);
         } else {
           return of(undefined);
         }
