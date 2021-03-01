@@ -8,10 +8,6 @@
         <app-feature-toggle [on]="websocket" title="WebSocket" icon="cached"
                             (toggle)="websocketToggle($event)"></app-feature-toggle>
       </div>
-      <div *ngIf="false" class="col-md-12 gap-bottom">
-        <app-feature-toggle [on]="farm" title="Farm Manager"
-                            (toggle)="farmToggle($event)"></app-feature-toggle>
-      </div>
       <div class="col-md-12 gap-bottom">
         <app-feature-toggle [on]="inc" title="Inc Manager"
                             (toggle)="incToggle($event)"></app-feature-toggle>
@@ -19,6 +15,14 @@
       <div class="col-md-12 gap-bottom">
         <app-feature-toggle [on]="rausstell" title="Rausstell Manager"
                             (toggle)="rausstellToggle($event)"></app-feature-toggle>
+      </div>
+      <div class="col-md-12 gap-bottom">
+        <app-feature-toggle [on]="farm" title="Farmer"
+                            (toggle)="farmToggle($event)"></app-feature-toggle>
+      </div>
+      <div class="col-md-12 gap-bottom">
+        <app-feature-toggle [on]="scavenge" title="Raubzüge"
+                            (toggle)="scavengeToggle($event)"></app-feature-toggle>
       </div>
       <div class="col-md-12 gap-bottom">
         <app-feature-toggle [on]="resmover" title="Res Mover"

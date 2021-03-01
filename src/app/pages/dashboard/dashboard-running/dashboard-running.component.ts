@@ -7,6 +7,8 @@ import {RausstellManagerService} from '../../../service/rausstellmanager/rausste
 import {ResmoverService} from '../../../service/resmover/resmover.service';
 import {ReLoginConfig} from '../../../service/relogin/structures/re-login-config';
 import {ReLoginService} from '../../../service/relogin/re-login.service';
+import {FarmService} from '../../../service/farm/farm.service';
+import {ScavengeService} from '../../../service/scavenge/scavenge.service';
 
 @Component({
   selector: 'app-dashboard-running',
@@ -19,6 +21,7 @@ export class DashboardRunningComponent implements OnInit, OnDestroy {
 
   websocket = false;
   farm = false;
+  scavenge = false;
   inc = false;
   rausstell = false;
   resmover = false;
@@ -30,6 +33,8 @@ export class DashboardRunningComponent implements OnInit, OnDestroy {
     private rausstellService: RausstellManagerService,
     private resmoverService: ResmoverService,
     private reLogin: ReLoginService,
+    private farmService: FarmService,
+    private scavengeService: ScavengeService,
   ) {
   }
 
@@ -53,6 +58,12 @@ export class DashboardRunningComponent implements OnInit, OnDestroy {
     this.reLogin.config().pipe(takeUntil(this.unsub$)).subscribe(config => {
       this.reLoginConfig = config;
     });
+    this.farmService.config(this.unsub$).subscribe(config => {
+      this.farm = config.enabled;
+    });
+    this.scavengeService.enableEvent(this.unsub$).subscribe(enabled => {
+      this.scavenge = enabled;
+    });
   }
 
   reLoginDelay(delay: number): void {
@@ -73,7 +84,12 @@ export class DashboardRunningComponent implements OnInit, OnDestroy {
     }
   }
 
+  scavengeToggle(value: boolean): void {
+    this.scavengeService.setEnabled(!value);
+  }
+
   farmToggle(value: boolean): void {
+    this.farmService.setEnabled(!value);
   }
 
   incToggle(value: boolean): void {
