@@ -20,6 +20,10 @@ export class FarmOverviewComponent implements OnInit, OnDestroy {
   slide = new FormControl();
   max = new FormControl();
 
+  slides: { [id: number]: FormControl } = {};
+
+  displayedColumns = ['interval', 'maxDistance', 'villages', 'units', 'control'];
+
   constructor(
     private farm: FarmService,
     private dialog: MatDialog,
@@ -29,6 +33,12 @@ export class FarmOverviewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.farm.list(this.unsub$).subscribe(tasks => {
       this.tasks = tasks;
+      for (const task of tasks) {
+        this.slides[task.id] = new FormControl(task.enabled);
+        this.slides[task.id].valueChanges.subscribe(enabled => {
+          this.farm.setTaskEnabled(task.id, enabled).subscribe();
+        });
+      }
     });
     this.farm.config(this.unsub$).subscribe(config => {
       this.slide.setValue(config.enabled, {emitEvent: false});
@@ -45,7 +55,10 @@ export class FarmOverviewComponent implements OnInit, OnDestroy {
   add(): void {
     this.dialog.open(FarmTaskAddComponent).afterClosed().subscribe(entity => {
       if (entity !== undefined) {
-        this.tasks.push(entity);
+        this.tasks = [
+          ...this.tasks,
+          entity
+        ];
         this.dialog.open(FarmTaskEditComponent, {
           data: entity,
         });
@@ -54,8 +67,22 @@ export class FarmOverviewComponent implements OnInit, OnDestroy {
   }
 
   delete(id: number): void {
-    this.tasks = this.tasks.filter(value => {
-      return value.id !== id;
+    this.farm.deleteEntity(id).subscribe(remove => {
+      this.tasks = this.tasks.filter(value => {
+        return value.id !== remove;
+      });
+    });
+  }
+
+  edit(task: FarmTaskEntity): void {
+    this.dialog.open(FarmTaskEditComponent, {
+      data: task
+    }).afterClosed().subscribe(entity => {
+      if (entity !== undefined) {
+        this.tasks = this.tasks.map(mapTask => {
+          return mapTask.id === task.id ? entity : mapTask;
+        });
+      }
     });
   }
 

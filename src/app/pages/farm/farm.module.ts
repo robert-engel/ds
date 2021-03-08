@@ -5,7 +5,6 @@ import {FarmRoutingModule} from './farm-routing.module';
 import {FarmComponent} from './farm.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FarmOverviewComponent} from './farm-overview/farm-overview.component';
-import {FarmTaskComponent} from './farm-task/farm-task.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -28,7 +27,16 @@ import { FarmRouteDisplayComponent } from './farm-route/farm-route-display/farm-
 
 
 @NgModule({
-  declarations: [FarmComponent, FarmOverviewComponent, FarmTaskComponent, FarmTaskEditComponent, FarmTaskAddComponent, FarmRouteComponent, FarmRouteAddComponent, FarmRouteEditComponent, FarmRouteDisplayComponent],
+  declarations: [
+    FarmComponent,
+    FarmOverviewComponent,
+    FarmTaskEditComponent,
+    FarmTaskAddComponent,
+    FarmRouteComponent,
+    FarmRouteAddComponent,
+    FarmRouteEditComponent,
+    FarmRouteDisplayComponent
+  ],
   imports: [
     CommonModule,
     FarmRoutingModule,

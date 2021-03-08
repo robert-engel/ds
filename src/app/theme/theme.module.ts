@@ -25,6 +25,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmStopComponent } from './header/confirm-stop/confirm-stop.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { TextareaDialogComponent } from './textarea-dialog/textarea-dialog.component';
+import { UnitsRenderMinComponent } from './units-render-min/units-render-min.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 @NgModule({
@@ -41,6 +43,7 @@ import { TextareaDialogComponent } from './textarea-dialog/textarea-dialog.compo
     UnitsHolderInputComponent,
     ConfirmStopComponent,
     TextareaDialogComponent,
+    UnitsRenderMinComponent,
   ],
   exports: [
     HeaderComponent,
@@ -52,24 +55,26 @@ import { TextareaDialogComponent } from './textarea-dialog/textarea-dialog.compo
     VillageInputComponent,
     HmsPipe,
     UnitsHolderInputComponent,
-    BuildingsRenderComponent
+    BuildingsRenderComponent,
+    UnitsRenderMinComponent
   ],
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    RouterModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatSelectModule,
-    MatAutocompleteModule,
-    MatMenuModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatProgressSpinnerModule,
-  ]
+    imports: [
+        CommonModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatListModule,
+        RouterModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatAutocompleteModule,
+        MatMenuModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatProgressSpinnerModule,
+        MatChipsModule,
+    ]
 })
 export class ThemeModule {
 }

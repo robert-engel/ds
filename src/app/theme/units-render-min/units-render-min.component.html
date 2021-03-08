@@ -1,0 +1,8 @@
+<mat-chip-list *ngIf="!empty">
+  <ng-container *ngFor="let unit of units">
+    <mat-chip *ngIf="value[unit] !== '0' && value[unit] !== 0">
+      {{value[unit]}}
+      <img *ngIf="imagebase" [src]="imagebase+'unit/unit_'+unit+'.png'" class="img-fluid ml-1"/>
+    </mat-chip>
+  </ng-container>
+</mat-chip-list>
