@@ -54,9 +54,8 @@
                      [src]="imagebase+'buildings/'+filter.value.cataTarget+'.png'"
                      class="img-fluid"/>
               </mat-select-trigger>
-              <mat-option>
-                Alle
-              </mat-option>
+              <mat-option>Alle</mat-option>
+              <mat-option value="///DEFAULT///">Default</mat-option>
               <mat-option *ngFor="let building of buildings" [value]="building">
                 <img [src]="imagebase+'buildings/'+building+'.png'" class="img-fluid"/>
               </mat-option>

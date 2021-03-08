@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {FarmTaskEditComponent} from '../../farm-task-edit/farm-task-edit.component';
 import {FarmRoute} from '../../../../service/farm-route/structures/farm-route';
 import {FarmRouteService} from '../../../../service/farm-route/farm-route.service';
+import {FarmRouteEditComponent} from '../farm-route-edit/farm-route-edit.component';
 
 @Component({
   selector: 'app-farm-route-display',
@@ -44,7 +45,7 @@ export class FarmRouteDisplayComponent implements OnInit {
   }
 
   edit(): void {
-    this.dialog.open(FarmTaskEditComponent, {
+    this.dialog.open(FarmRouteEditComponent, {
       data: this.internalRoute
     }).afterClosed().subscribe(entity => {
       if (entity !== undefined) {
