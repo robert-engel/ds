@@ -21,6 +21,8 @@ export class ScavengeOverviewComponent implements OnInit, OnDestroy {
 
   dialogRef: MatDialogRef<any> = undefined;
 
+  displayedColumns = ['villages', 'units', 'control'];
+
   constructor(
     private scavenge: ScavengeService,
     private dialog: MatDialog,
@@ -58,6 +60,16 @@ export class ScavengeOverviewComponent implements OnInit, OnDestroy {
       this.tasks = this.tasks.filter(value => {
         return value.id !== id;
       });
+    });
+  }
+
+  delete(id: number): void {
+    this.scavenge.removeTask(id);
+  }
+
+  edit(task: ScavengeTask): void {
+    this.dialog.open(ScavengeTaskEditComponent, {
+      data: task
     });
   }
 

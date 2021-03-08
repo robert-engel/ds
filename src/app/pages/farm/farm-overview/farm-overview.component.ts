@@ -22,7 +22,7 @@ export class FarmOverviewComponent implements OnInit, OnDestroy {
 
   slides: { [id: number]: FormControl } = {};
 
-  displayedColumns = ['interval', 'maxDistance', 'villages', 'units', 'control'];
+  displayedColumns = ['toggle', 'interval', 'maxDistance', 'villages', 'units', 'control'];
 
   constructor(
     private farm: FarmService,
@@ -59,6 +59,10 @@ export class FarmOverviewComponent implements OnInit, OnDestroy {
           ...this.tasks,
           entity
         ];
+        this.slides[entity.id] = new FormControl(entity.enabled);
+        this.slides[entity.id].valueChanges.subscribe(enabled => {
+          this.farm.setTaskEnabled(entity.id, enabled).subscribe();
+        });
         this.dialog.open(FarmTaskEditComponent, {
           data: entity,
         });

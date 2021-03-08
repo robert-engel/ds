@@ -20,10 +20,9 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
-import { FarmRouteComponent } from './farm-route/farm-route.component';
-import { FarmRouteAddComponent } from './farm-route/farm-route-add/farm-route-add.component';
-import { FarmRouteEditComponent } from './farm-route/farm-route-edit/farm-route-edit.component';
-import { FarmRouteDisplayComponent } from './farm-route/farm-route-display/farm-route-display.component';
+import {FarmRouteComponent} from './farm-route/farm-route.component';
+import {FarmRouteAddComponent} from './farm-route/farm-route-add/farm-route-add.component';
+import {FarmRouteEditComponent} from './farm-route/farm-route-edit/farm-route-edit.component';
 
 
 @NgModule({
@@ -34,8 +33,7 @@ import { FarmRouteDisplayComponent } from './farm-route/farm-route-display/farm-
     FarmTaskAddComponent,
     FarmRouteComponent,
     FarmRouteAddComponent,
-    FarmRouteEditComponent,
-    FarmRouteDisplayComponent
+    FarmRouteEditComponent
   ],
   imports: [
     CommonModule,

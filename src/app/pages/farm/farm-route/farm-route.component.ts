@@ -21,7 +21,7 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
 
   slides: { [id: number]: FormControl } = {};
 
-  displayedColumns = ['interval', 'source', 'target', 'units', 'control'];
+  displayedColumns = ['toggle', 'interval', 'source', 'target', 'units', 'control'];
 
   constructor(
     private farm: FarmRouteService,
@@ -48,6 +48,10 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
           ...this.routes,
           entity
         ];
+        this.slides[entity.id] = new FormControl(entity.enabled);
+        this.slides[entity.id].valueChanges.subscribe(enabled => {
+          this.farm.setTaskEnabled(entity.id, enabled).subscribe();
+        });
       }
     });
   }

@@ -6,7 +6,6 @@ import { ScavengeComponent } from './scavenge.component';
 import { ScavengeOverviewComponent } from './scavenge-overview/scavenge-overview.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatCardModule} from '@angular/material/card';
-import { ScavengeTaskComponent } from './scavenge-task/scavenge-task.component';
 import { ScavengeTaskAddComponent } from './scavenge-task-add/scavenge-task-add.component';
 import { ScavengeTaskEditComponent } from './scavenge-task-edit/scavenge-task-edit.component';
 import {ThemeModule} from '../../theme/theme.module';
@@ -21,7 +20,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
-  declarations: [ScavengeComponent, ScavengeOverviewComponent, ScavengeTaskComponent, ScavengeTaskAddComponent, ScavengeTaskEditComponent],
+  declarations: [ScavengeComponent, ScavengeOverviewComponent, ScavengeTaskAddComponent, ScavengeTaskEditComponent],
     imports: [
         CommonModule,
         ScavengeRoutingModule,
