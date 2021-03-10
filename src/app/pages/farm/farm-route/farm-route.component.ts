@@ -7,6 +7,7 @@ import {FarmRouteAddComponent} from './farm-route-add/farm-route-add.component';
 import {FormControl} from '@angular/forms';
 import {FarmTaskEntity} from '../../../service/farm/structures/farm-task-entity';
 import {FarmRouteEditComponent} from './farm-route-edit/farm-route-edit.component';
+import {FarmRouteConfig} from '../../../service/farm-route/structures/farm-route-config';
 
 @Component({
   selector: 'app-farm-route',
@@ -18,8 +19,9 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
   private unsub$ = new Subject<void>();
 
   routes: FarmRoute[];
-
   slides: { [id: number]: FormControl } = {};
+  config: FarmRouteConfig;
+  autoDisableSlide = new FormControl(false);
 
   displayedColumns = ['toggle', 'interval', 'source', 'target', 'units', 'control'];
 
@@ -30,6 +32,13 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.farm.config(this.unsub$).subscribe(config => {
+      this.config = config;
+      this.autoDisableSlide.setValue(config.autoDisable, {emitEvent: false});
+    });
+    this.autoDisableSlide.valueChanges.subscribe(value => {
+      this.farm.setAutoDisable(value);
+    });
     this.farm.list(this.unsub$).subscribe(routes => {
       this.routes = routes;
       for (const route of routes) {

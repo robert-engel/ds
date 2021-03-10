@@ -9,6 +9,9 @@ import {DeleteFarmRouteRequest} from './packet/delete-farm-route-request';
 import {EditFarmRouteRequest} from './packet/edit-farm-route-request';
 import {FarmTaskEnabled} from '../farm/structures/farm-task-enabled';
 import {FarmRouteSetEnabledRequest} from './packet/farm-route-set-enabled-request';
+import {FarmRouteConfig} from './structures/farm-route-config';
+import {FarmRouteConfigRequest} from './packet/farm-route-config-request';
+import {SetFarmRouteAutoDisableRequest} from './packet/set-farm-route-auto-disable-request';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +19,17 @@ import {FarmRouteSetEnabledRequest} from './packet/farm-route-set-enabled-reques
 export class FarmRouteService {
 
   constructor(private websocketService: WebsocketService) {
+  }
+
+  config(unsub: Observable<void>): Observable<FarmRouteConfig> {
+    return this.websocketService.observable(
+      'FarmRouteConfigResponse',
+      new FarmRouteConfigRequest()
+    ).pipe(takeUntil(unsub));
+  }
+
+  setAutoDisable(autoDisable: boolean): void {
+    this.websocketService.sendData(new SetFarmRouteAutoDisableRequest(autoDisable));
   }
 
   list(unsub: Observable<void>): Observable<FarmRoute[]> {

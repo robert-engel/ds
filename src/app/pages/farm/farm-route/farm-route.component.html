@@ -1,3 +1,11 @@
+<div class="row">
+  <div class="col-xl-12">
+    <mat-card class="mb-3">
+      <mat-slide-toggle [formControl]="autoDisableSlide"
+                        matTooltip="Routen auf Dörfer mit rotem/gelbem Bericht deaktivieren."></mat-slide-toggle>
+    </mat-card>
+  </div>
+</div>
 <table mat-table [dataSource]="routes" class="w-100" *ngIf="routes && routes.length > 0">
   <ng-container matColumnDef="toggle">
     <th mat-header-cell *matHeaderCellDef></th>
