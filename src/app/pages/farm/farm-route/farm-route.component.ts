@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {FarmRoute} from '../../../service/farm-route/structures/farm-route';
@@ -8,22 +8,27 @@ import {FormControl} from '@angular/forms';
 import {FarmTaskEntity} from '../../../service/farm/structures/farm-task-entity';
 import {FarmRouteEditComponent} from './farm-route-edit/farm-route-edit.component';
 import {FarmRouteConfig} from '../../../service/farm-route/structures/farm-route-config';
+import {MatSort} from '@angular/material/sort';
+import {FarmRouteDataSource} from './farm-route-data-source';
 
 @Component({
   selector: 'app-farm-route',
   templateUrl: './farm-route.component.html',
   styleUrls: ['./farm-route.component.css']
 })
-export class FarmRouteComponent implements OnInit, OnDestroy {
+export class FarmRouteComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private unsub$ = new Subject<void>();
 
-  routes: FarmRoute[];
+  dataSource: FarmRouteDataSource;
+
   slides: { [id: number]: FormControl } = {};
   config: FarmRouteConfig;
   autoDisableSlide = new FormControl(false);
 
-  displayedColumns = ['toggle', 'interval', 'source', 'target', 'units', 'control'];
+  displayedColumns = ['toggle', 'distance', 'interval', 'source', 'target', 'units', 'control'];
+
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private farm: FarmRouteService,
@@ -32,6 +37,7 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.dataSource = new FarmRouteDataSource(this.farm);
     this.farm.config(this.unsub$).subscribe(config => {
       this.config = config;
       this.autoDisableSlide.setValue(config.autoDisable, {emitEvent: false});
@@ -39,8 +45,7 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
     this.autoDisableSlide.valueChanges.subscribe(value => {
       this.farm.setAutoDisable(value);
     });
-    this.farm.list(this.unsub$).subscribe(routes => {
-      this.routes = routes;
+    this.dataSource.routes$.subscribe(routes => {
       for (const route of routes) {
         this.slides[route.id] = new FormControl(route.enabled);
         this.slides[route.id].valueChanges.subscribe(enabled => {
@@ -50,13 +55,14 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
     });
   }
 
+  distance(task: FarmRoute): number {
+    return Math.sqrt(Math.pow(task.target.x - task.source.x, 2) + Math.pow(task.target.y - task.source.y, 2));
+  }
+
   add(): void {
     this.dialog.open(FarmRouteAddComponent).afterClosed().subscribe(entity => {
       if (entity !== undefined) {
-        this.routes = [
-          ...this.routes,
-          entity
-        ];
+        this.dataSource.add(entity);
         this.slides[entity.id] = new FormControl(entity.enabled);
         this.slides[entity.id].valueChanges.subscribe(enabled => {
           this.farm.setTaskEnabled(entity.id, enabled).subscribe();
@@ -67,9 +73,7 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
 
   delete(id: number): void {
     this.farm.deleteEntity(id).subscribe(remove => {
-      this.routes = this.routes.filter(value => {
-        return value.id !== remove;
-      });
+      this.dataSource.remove(remove);
     });
   }
 
@@ -78,9 +82,7 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
       data: task
     }).afterClosed().subscribe(entity => {
       if (entity !== undefined) {
-        this.routes = this.routes.map(mapTask => {
-          return mapTask.id === task.id ? entity : mapTask;
-        });
+        this.dataSource.edit(entity);
       }
     });
   }
@@ -88,5 +90,11 @@ export class FarmRouteComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsub$.next();
     this.unsub$.complete();
+  }
+
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe(sort => {
+      this.dataSource.setSort(sort);
+    });
   }
 }

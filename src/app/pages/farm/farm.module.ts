@@ -23,6 +23,7 @@ import {MatTableModule} from '@angular/material/table';
 import {FarmRouteComponent} from './farm-route/farm-route.component';
 import {FarmRouteAddComponent} from './farm-route/farm-route-add/farm-route-add.component';
 import {FarmRouteEditComponent} from './farm-route/farm-route-edit/farm-route-edit.component';
+import {MatSortModule} from '@angular/material/sort';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import {FarmRouteEditComponent} from './farm-route/farm-route-edit/farm-route-ed
     MatTooltipModule,
     MatInputModule,
     MatTableModule,
+    MatSortModule,
   ],
 })
 export class FarmModule {
