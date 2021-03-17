@@ -49,6 +49,7 @@ export class FarmRouteComponent implements OnInit, OnDestroy, AfterViewInit {
       for (const route of routes) {
         this.slides[route.id] = new FormControl(route.enabled);
         this.slides[route.id].valueChanges.subscribe(enabled => {
+          route.enabled = enabled;
           this.farm.setTaskEnabled(route.id, enabled).subscribe();
         });
       }
