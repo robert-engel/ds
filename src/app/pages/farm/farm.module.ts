@@ -24,6 +24,10 @@ import {FarmRouteComponent} from './farm-route/farm-route.component';
 import {FarmRouteAddComponent} from './farm-route/farm-route-add/farm-route-add.component';
 import {FarmRouteEditComponent} from './farm-route/farm-route-edit/farm-route-edit.component';
 import {MatSortModule} from '@angular/material/sort';
+import {FarmSettingsComponent} from './farm-settings/farm-settings.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
 
 
 @NgModule({
@@ -34,7 +38,8 @@ import {MatSortModule} from '@angular/material/sort';
     FarmTaskAddComponent,
     FarmRouteComponent,
     FarmRouteAddComponent,
-    FarmRouteEditComponent
+    FarmRouteEditComponent,
+    FarmSettingsComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +59,12 @@ import {MatSortModule} from '@angular/material/sort';
     MatInputModule,
     MatTableModule,
     MatSortModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
   ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'},
+  ]
 })
 export class FarmModule {
 }

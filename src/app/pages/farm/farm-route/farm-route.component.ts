@@ -25,6 +25,7 @@ export class FarmRouteComponent implements OnInit, OnDestroy, AfterViewInit {
   slides: { [id: number]: FormControl } = {};
   config: FarmRouteConfig;
   autoDisableSlide = new FormControl(false);
+  enableSlide = new FormControl(false);
 
   displayedColumns = ['toggle', 'distance', 'interval', 'source', 'target', 'units', 'control'];
 
@@ -41,17 +42,23 @@ export class FarmRouteComponent implements OnInit, OnDestroy, AfterViewInit {
     this.farm.config(this.unsub$).subscribe(config => {
       this.config = config;
       this.autoDisableSlide.setValue(config.autoDisable, {emitEvent: false});
+      this.enableSlide.setValue(config.enabled, {emitEvent: false});
     });
     this.autoDisableSlide.valueChanges.subscribe(value => {
       this.farm.setAutoDisable(value);
     });
+    this.enableSlide.valueChanges.subscribe(value => {
+      this.farm.setEnabled(value);
+    });
     this.dataSource.routes$.subscribe(routes => {
       for (const route of routes) {
-        this.slides[route.id] = new FormControl(route.enabled);
-        this.slides[route.id].valueChanges.subscribe(enabled => {
-          route.enabled = enabled;
-          this.farm.setTaskEnabled(route.id, enabled).subscribe();
-        });
+        if (!this.slides[route.id]) {
+          this.slides[route.id] = new FormControl(route.enabled);
+          this.slides[route.id].valueChanges.subscribe(enabled => {
+            route.enabled = enabled;
+            this.farm.setTaskEnabled(route.id, enabled).subscribe();
+          });
+        }
       }
     });
   }

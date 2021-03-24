@@ -18,6 +18,10 @@ import {filter, first, map, takeUntil} from 'rxjs/operators';
 import {Village} from '../structures/village';
 import {FarmEntityMassAddVillageRequest} from './packet/farm-entity-mass-add-village-request';
 import {FarmEntityMassRemoveVillageRequest} from './packet/farm-entity-mass-remove-village-request';
+import {FarmCollectorEntry} from './structures/farm-collector-entry';
+import {FarmCollectorTimesRequest} from './packet/farm-collector-times-request';
+import {FarmCollectorClearRequest} from './packet/farm-collector-clear-request';
+import {FarmCollectorAddRequest} from './packet/farm-collector-add-request';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +29,31 @@ import {FarmEntityMassRemoveVillageRequest} from './packet/farm-entity-mass-remo
 export class FarmService {
 
   constructor(private websocketService: WebsocketService) {
+  }
+
+  collectors(unsub: Observable<void>): Observable<FarmCollectorEntry[]> {
+    return this.websocketService.observable(
+      'FarmTroopCollectorTimesResponse',
+      new FarmCollectorTimesRequest()
+    ).pipe(takeUntil(unsub));
+  }
+
+  collectorClearEvent(unsub: Observable<void>): Observable<Village> {
+    return this.websocketService.observable('FarmTroopCollectorClearVillageEvent')
+    .pipe(takeUntil(unsub), map(resp => resp.village));
+  }
+
+  collectorAddEvent(unsub: Observable<void>): Observable<FarmCollectorEntry> {
+    return this.websocketService.observable('FarmTroopCollectorAddTimeEvent')
+    .pipe(takeUntil(unsub));
+  }
+
+  collectorClear(village: number): void {
+    this.websocketService.sendData(new FarmCollectorClearRequest(village));
+  }
+
+  collectorAdd(village: number, time: number): void {
+    this.websocketService.sendData(new FarmCollectorAddRequest(village, time));
   }
 
   list(unsub: Observable<void>): Observable<FarmTaskEntity[]> {

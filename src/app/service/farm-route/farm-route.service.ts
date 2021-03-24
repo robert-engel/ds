@@ -12,6 +12,7 @@ import {FarmRouteSetEnabledRequest} from './packet/farm-route-set-enabled-reques
 import {FarmRouteConfig} from './structures/farm-route-config';
 import {FarmRouteConfigRequest} from './packet/farm-route-config-request';
 import {SetFarmRouteAutoDisableRequest} from './packet/set-farm-route-auto-disable-request';
+import {SetFarmRouteEnableRequest} from './packet/set-farm-route-enable-request';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,10 @@ export class FarmRouteService {
       'FarmRouteConfigResponse',
       new FarmRouteConfigRequest()
     ).pipe(takeUntil(unsub));
+  }
+
+  setEnabled(enabled: boolean): void {
+    this.websocketService.sendData(new SetFarmRouteEnableRequest(enabled));
   }
 
   setAutoDisable(autoDisable: boolean): void {

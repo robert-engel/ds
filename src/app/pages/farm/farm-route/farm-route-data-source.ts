@@ -49,6 +49,20 @@ export class FarmRouteDataSource extends DataSource<FarmRoute> {
           return a.timerInterval - b.timerInterval;
         });
       }
+      if (this.sort.active === 'toggle') {
+        this.routes = this.routes.sort((a, b) => {
+          if (a.enabled === b.enabled) {
+            return 0;
+          }
+          if (a.enabled === true) {
+            return 1;
+          }
+          if (b.enabled === true) {
+            return -1;
+          }
+          return a.timerInterval - b.timerInterval;
+        });
+      }
       if (this.sort.direction === 'desc') {
         this.routes = this.routes.reverse();
       }

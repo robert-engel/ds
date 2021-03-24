@@ -12,8 +12,12 @@ export class FarmComponent implements OnInit, OnDestroy {
 
   links = [
     {
-      title: 'Assistent',
+      title: 'Allgemein',
       link: '/farm',
+    },
+    {
+      title: 'Assistent',
+      link: '/farm/assist',
     },
     {
       title: 'Routen',
