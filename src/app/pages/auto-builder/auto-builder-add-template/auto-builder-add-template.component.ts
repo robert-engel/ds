@@ -60,7 +60,6 @@ export class AutoBuilderAddTemplateComponent implements OnInit, OnDestroy {
       this.buildings = info.buildings;
     });
     this.templateForm.valueChanges.subscribe(value => {
-      console.log(value);
       this.tasks = value;
     });
     this.buildingForm.get('building').valueChanges.subscribe(value => {

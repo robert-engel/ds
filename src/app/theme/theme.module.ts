@@ -27,6 +27,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { TextareaDialogComponent } from './textarea-dialog/textarea-dialog.component';
 import { UnitsRenderMinComponent } from './units-render-min/units-render-min.component';
 import {MatChipsModule} from '@angular/material/chips';
+import { BattleReportComponent } from './battle-report/battle-report.component';
+import {MatCardModule} from '@angular/material/card';
+import { BattleReportTroopsComponent } from './battle-report-troops/battle-report-troops.component';
 
 
 @NgModule({
@@ -44,6 +47,8 @@ import {MatChipsModule} from '@angular/material/chips';
     ConfirmStopComponent,
     TextareaDialogComponent,
     UnitsRenderMinComponent,
+    BattleReportComponent,
+    BattleReportTroopsComponent,
   ],
   exports: [
     HeaderComponent,
@@ -56,7 +61,8 @@ import {MatChipsModule} from '@angular/material/chips';
     HmsPipe,
     UnitsHolderInputComponent,
     BuildingsRenderComponent,
-    UnitsRenderMinComponent
+    UnitsRenderMinComponent,
+    BattleReportComponent
   ],
     imports: [
         CommonModule,
@@ -74,6 +80,7 @@ import {MatChipsModule} from '@angular/material/chips';
         MatDialogModule,
         MatProgressSpinnerModule,
         MatChipsModule,
+        MatCardModule,
     ]
 })
 export class ThemeModule {

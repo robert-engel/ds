@@ -12,7 +12,7 @@ export class BuildingsRenderComponent implements OnInit {
   value: { [building: string]: number };
 
   buildings: string[];
-  imagebase: string;
+  imageBase: string;
 
   constructor(private web: WebsocketService) {
   }
@@ -20,7 +20,7 @@ export class BuildingsRenderComponent implements OnInit {
   ngOnInit(): void {
     this.web.infoObservable.subscribe(info => {
       this.buildings = info.buildings;
-      this.imagebase = info.imageBase;
+      this.imageBase = info.imageBase;
     });
   }
 }

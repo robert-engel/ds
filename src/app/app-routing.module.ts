@@ -7,6 +7,12 @@ import {ConnectComponent} from './c/connect/connect.component';
 
 const routes: Routes = [
   {
+    path: 'cata',
+    canActivate: [DashboardService],
+    loadChildren: () => import('./pages/catapult/catapult.module')
+    .then(m => m.CatapultModule),
+  },
+  {
     path: 'builder',
     canActivate: [DashboardService],
     loadChildren: () => import('./pages/auto-builder/auto-builder.module')

@@ -6,7 +6,7 @@
       <mat-label>{{unit | titlecase}}</mat-label>
       <input [id]="this.id+'_troop_input_'+unit" #t (change)="input(t.value, unit)" matInput
              type="number">
-      <button mat-button matSuffix mat-icon-button>
+      <button mat-button matSuffix mat-icon-button (click)="$event.preventDefault()">
         <img *ngIf="imagebase" [src]="imagebase+'unit/unit_'+unit+'.png'" class="img-fluid"/>
       </button>
     </mat-form-field>

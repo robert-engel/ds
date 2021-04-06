@@ -1,0 +1,43 @@
+<div *ngIf="dataSource.loading$ | async" class="loading-shade">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-table matSort matSortDisableClear matSortActive="id" [dataSource]="dataSource" class="w-100">
+  <ng-container matColumnDef="id">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <a target="_blank" [href]="link(element.id)">{{element.id}}</a>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="report">
+    <mat-header-cell *matHeaderCellDef>Bericht</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button *ngIf="element.report" mat-raised-button (click)="openReport(element)"
+              color="primary">
+        Bericht
+      </button>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="points">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>Punkte</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.points}}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="nextActionTime">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>Nächste Aktion</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.nextActionTime.display}}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="nextAction">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>Nächste Aktion</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{element.nextAction}}
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator [length]="count" [pageSize]="10"
+               [pageSizeOptions]="[10, 50, 100, 250]"></mat-paginator>

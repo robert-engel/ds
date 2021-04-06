@@ -1,0 +1,11 @@
+.center {
+  text-align: center;
+}
+
+.hidden {
+  color: #5a6268;
+}
+
+.faded {
+  opacity: 0.3;
+}

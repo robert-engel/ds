@@ -29,10 +29,6 @@ export const MENU_ITEMS_USER: Menu[] = [
     title: 'Res Mover',
     link: '/resmover',
   },
-  /*{
-    title: 'Kata',
-    link: '/catas',
-  },*/
   {
     title: 'Konstruktion',
     link: '/builder',
@@ -44,5 +40,9 @@ export const MENU_ITEMS_USER: Menu[] = [
   {
     title: 'Raubzug',
     link: '/scavenge',
+  },
+  {
+    title: 'Auto Kata',
+    link: '/cata',
   },
 ];

@@ -1,0 +1,67 @@
+<mat-card>
+  <div class="row flex-between mb-2 p-2">
+    <div>Letzter Spähbericht</div>
+    <div>
+      {{value.reportTime.display}}<small>:{{value.reportTime.ms}}</small>
+    </div>
+  </div>
+  <mat-card>
+    <div class="row">
+      <div class="col-xl-12">
+        <app-battle-report-troops [village]="value.attackerVillage" [player]="value.attacker"
+                                  [units]="value.attackerUnits"
+                                  [lost]="value.attackerUnitsLost"></app-battle-report-troops>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card>
+    <div class="row">
+      <div class="col-xl-12">
+        <app-battle-report-troops [village]="value.defenderVillage" [player]="value.defender"
+                                  [units]="value.defenderUnits"
+                                  [lost]="value.defenderUnitsLost"
+                                  [defender]="true"></app-battle-report-troops>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card *ngIf="value.buildings">
+    <div class="row">
+      <div class="col-xl-6">
+        <table>
+          <tbody>
+          <tr>
+            <th style="width: 50%">Gebäude</th>
+            <th>Stufe</th>
+          </tr>
+
+          <tr *ngFor="let building of first">
+            <td nowrap="" style="vertical-align:middle;">
+              <img [src]="imageBase+'buildings/'+building+'.png'" style="max-height:16px;" alt=""
+                   class="middle"> <span class="middle">{{building | titlecase}}</span>
+            </td>
+            <td class="middle">{{buildings[building]}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-xl-6">
+        <table>
+          <tbody>
+          <tr>
+            <th style="width: 50%">Gebäude</th>
+            <th>Stufe</th>
+          </tr>
+
+          <tr *ngFor="let building of second">
+            <td nowrap="" style="vertical-align:middle;">
+              <img [src]="imageBase+'buildings/'+building+'.png'" style="max-height:16px;" alt=""
+                   class="middle"> <span class="middle">{{building | titlecase}}</span>
+            </td>
+            <td class="middle">{{buildings[building]}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-card>
+</mat-card>

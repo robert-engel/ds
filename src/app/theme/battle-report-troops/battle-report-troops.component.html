@@ -1,0 +1,69 @@
+<table>
+  <tbody>
+  <tr>
+    <th style="width: 20%;">
+      <ng-container *ngIf="!defender">
+        Angreifer:
+      </ng-container>
+      <ng-container *ngIf="defender">
+        Verteidiger:
+      </ng-container>
+    </th>
+    <th>
+      <ng-container *ngIf="player">
+        {{player.name}}
+      </ng-container>
+      <ng-container *ngIf="!player">
+        <span style="font-weight: normal;">---</span>
+      </ng-container>
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <ng-container *ngIf="!defender">
+        Herkunft:
+      </ng-container>
+      <ng-container *ngIf="defender">
+        Ziel:
+      </ng-container>
+    </td>
+    <td>
+      <app-village-render *ngIf="village" [value]="village"></app-village-render>
+      <ng-container *ngIf="!village">Dorf</ng-container>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" style="padding: 0;">
+      <ng-container *ngIf="!units">
+        <p>Keiner deiner Kämpfer ist lebend zurückgekehrt. Es konnten keine Informationen über die
+          Truppenstärke des Feindes erlangt werden.</p>
+      </ng-container>
+      <table *ngIf="units" class="vis" style="border-collapse: collapse;">
+        <tbody>
+        <tr class="center">
+          <td></td>
+          <td style="width: 35px" *ngFor="let unit of unitNames">
+            <img [src]="imageBase+'unit/unit_'+unit+'.png'" [title]="unit" alt="" [class.faded]="units[unit]===0"/>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 20%">Anzahl:</td>
+          <td style="text-align: center;" [class.hidden]="units[unit]===0"
+              *ngFor="let unit of unitNames">
+            {{units[unit]}}
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 20%; text-align: left">Verluste:</td>
+          <td style="text-align: center;" [class.hidden]="lost[unit]===0"
+              *ngFor="let unit of unitNames">
+            {{lost[unit]}}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  </tbody>
+</table>
