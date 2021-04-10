@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-xl-6">
+    <mat-card>
+      <div class="row">
+        <div class="col-xl-12">
+          <mat-slide-toggle [formControl]="enable"></mat-slide-toggle>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-10">
+          <mat-form-field class="w-100">
+            <mat-label>Key</mat-label>
+            <input matInput [formControl]="key">
+          </mat-form-field>
+        </div>
+        <div class="col-xl-2">
+          <button mat-raised-button color="primary" (click)="saveKey()">
+            Speichern
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

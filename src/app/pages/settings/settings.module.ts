@@ -19,26 +19,29 @@ import { BotIpComponent } from './bot-ip/bot-ip.component';
 import {MatIconModule} from '@angular/material/icon';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { AntiCaptchaComponent } from './anti-captcha/anti-captcha.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
-  declarations: [SettingsComponent, TroopTemplateComponent, DiscordWebhooksComponent, BotIpComponent],
-  imports: [
-    CommonModule,
-    SettingsRoutingModule,
-    MatButtonModule,
-    ThemeModule,
-    MatCardModule,
-    MatTableModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatListModule,
-    MatIconModule,
-    ClipboardModule,
-    MatTooltipModule
-  ]
+  declarations: [SettingsComponent, TroopTemplateComponent, DiscordWebhooksComponent, BotIpComponent, AntiCaptchaComponent],
+    imports: [
+        CommonModule,
+        SettingsRoutingModule,
+        MatButtonModule,
+        ThemeModule,
+        MatCardModule,
+        MatTableModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatListModule,
+        MatIconModule,
+        ClipboardModule,
+        MatTooltipModule,
+        MatSlideToggleModule
+    ]
 })
 export class SettingsModule { }

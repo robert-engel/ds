@@ -5,6 +5,11 @@ import {AllJobs} from '../structures/all-jobs';
 import {RequestAllJobs} from './packet/request-all-jobs';
 import {InternalJob} from '../structures/internal-job';
 import {RequestCurrentJob} from './packet/request-current-job';
+import {DriverConfig} from './structure/driver-config';
+import {DriverManagerConfigRequest} from './packet/driver-manager-config-request';
+import {takeUntil} from 'rxjs/operators';
+import {AntiCaptchaSetEnabledRequest} from './packet/anti-captcha-set-enabled-request';
+import {AntiCaptchaSetKeyRequest} from './packet/anti-captcha-set-key-request';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +17,19 @@ import {RequestCurrentJob} from './packet/request-current-job';
 export class DrivermanagerService {
 
   constructor(private websocketService: WebsocketService) {
+  }
+
+  config(unsub: Observable<void>): Observable<DriverConfig> {
+    return this.websocketService.observable('DriverManagerConfigResponse', new DriverManagerConfigRequest())
+    .pipe(takeUntil(unsub));
+  }
+
+  setEnabled(enabled: boolean): void {
+    this.websocketService.sendData(new AntiCaptchaSetEnabledRequest(enabled));
+  }
+
+  setKey(key: string): void {
+    this.websocketService.sendData(new AntiCaptchaSetKeyRequest(key));
   }
 
   allJobs(): Observable<AllJobs> {

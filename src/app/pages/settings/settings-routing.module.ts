@@ -5,6 +5,7 @@ import {TroopTemplateComponent} from './troop-template/troop-template.component'
 import {DiscordWebhooksComponent} from './discord-webhooks/discord-webhooks.component';
 import {BotIpComponent} from './bot-ip/bot-ip.component';
 import {DashboardService} from '../../service/dashboard/dashboard.service';
+import {AntiCaptchaComponent} from './anti-captcha/anti-captcha.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
       {
         path: 'troops',
         component: TroopTemplateComponent,
+        canActivate: [DashboardService],
+      },
+      {
+        path: 'anti-captcha',
+        component: AntiCaptchaComponent,
         canActivate: [DashboardService],
       },
       {
