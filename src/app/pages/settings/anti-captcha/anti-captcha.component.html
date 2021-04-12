@@ -21,4 +21,49 @@
       </div>
     </mat-card>
   </div>
+  <div *ngIf="key.value?.length > 0" class="col-xl-6">
+    <mat-card>
+      <div class="row">
+        <div class="col-sm-12">
+          <mat-form-field>
+            <mat-label>Balance</mat-label>
+            <input matInput readonly [value]="balance">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mh-90">
+          <div *ngIf="loading" class="flex-between">
+            <span></span>
+            <mat-spinner></mat-spinner>
+            <span></span>
+          </div>
+
+          <table *ngIf="!loading" mat-table [dataSource]="spending" class="w-100">
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef>Zeitraum</th>
+              <td mat-cell *matCellDef="let element">
+                {{format(element.dateFrom, element.dateTill)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="volume">
+              <th mat-header-cell *matHeaderCellDef>Captchas gelöst</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.volume}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="money">
+              <th mat-header-cell *matHeaderCellDef>Balance verwendet</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.money}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-card>
+  </div>
 </div>

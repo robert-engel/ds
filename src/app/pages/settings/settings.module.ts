@@ -21,6 +21,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { AntiCaptchaComponent } from './anti-captcha/anti-captcha.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
         MatIconModule,
         ClipboardModule,
         MatTooltipModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatProgressSpinnerModule
     ]
 })
 export class SettingsModule { }
