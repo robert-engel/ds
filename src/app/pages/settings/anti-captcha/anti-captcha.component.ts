@@ -40,7 +40,7 @@ export class AntiCaptchaComponent implements OnInit, OnDestroy {
         this.captcha.getSpending(config.antiCaptchaKey).subscribe(spending => {
           this.spending = spending.filter(spend => {
             return spend.volume > 0;
-          });
+          }).reverse();
           this.loading = false;
         });
         this.captcha.getBalance(config.antiCaptchaKey).subscribe(balance => {

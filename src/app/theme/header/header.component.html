@@ -29,6 +29,12 @@
             <span>Standard Angriffe</span>
           </button>
         </a>
+        <a *ngIf="running" routerLink="/settings/anti-captcha">
+          <button mat-menu-item>
+            <mat-icon>group</mat-icon>
+            <span>Anti-Captcha</span>
+          </button>
+        </a>
         <a routerLink="/settings/ip">
           <button mat-menu-item>
             <mat-icon>dialpad</mat-icon>

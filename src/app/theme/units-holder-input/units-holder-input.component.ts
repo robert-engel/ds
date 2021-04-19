@@ -73,6 +73,9 @@ export class UnitsHolderInputComponent implements OnInit, ControlValueAccessor {
       this.formControl.patchValue(obj);
     });
     this.formControl.valueChanges.subscribe(value => {
+      if (this.hideCataTarget === true) {
+        value.cataTarget = undefined;
+      }
       this.propagateChange(value);
     });
   }
