@@ -116,6 +116,14 @@ export class WebsocketService {
     return this.connected;
   }
 
+  all(unsub: Observable<void>): Observable<string> {
+    return this.subject.pipe(takeUntil(unsub));
+  }
+
+  raw(msg: string): void {
+    this.subject.next(JSON.parse(msg));
+  }
+
   sendData(packet: Packet): void {
     this.subject.next({
       type: packet.getName(),

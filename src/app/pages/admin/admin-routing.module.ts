@@ -5,6 +5,7 @@ import {AdminHomeComponent} from './admin-home/admin-home.component';
 import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
 import {AdminService} from './admin.service';
 import {AdminUserDetailComponent} from './admin-dashboard/admin-user-detail/admin-user-detail.component';
+import {AdminDevComponent} from './admin-dev/admin-dev.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: AdminDashboardComponent,
+        canActivate: [AdminService]
+      },
+      {
+        path: 'dev',
+        component: AdminDevComponent,
         canActivate: [AdminService]
       },
       {

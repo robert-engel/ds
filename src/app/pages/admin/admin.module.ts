@@ -22,6 +22,7 @@ import {MatTableModule} from '@angular/material/table';
 import { AdminUserDetailComponent } from './admin-dashboard/admin-user-detail/admin-user-detail.component';
 import { AdminProxyConnectionsComponent } from './admin-dashboard/admin-proxy-connections/admin-proxy-connections.component';
 import {ClipboardModule} from '@angular/cdk/clipboard';
+import { AdminDevComponent } from './admin-dev/admin-dev.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     AdminLoginsComponent,
     AdminUpdateComponent,
     AdminUserDetailComponent,
-    AdminProxyConnectionsComponent
+    AdminProxyConnectionsComponent,
+    AdminDevComponent
   ],
   imports: [
     CommonModule,

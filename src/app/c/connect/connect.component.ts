@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {WebsocketService} from '../../service/websocket.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class ConnectComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private web: WebsocketService,
+    private router: Router,
   ) {
   }
 
@@ -19,7 +20,9 @@ export class ConnectComponent implements OnInit {
     this.route.paramMap.subscribe(param => {
       if (param.has('token')) {
         this.web.connectExternal(param.get('token'));
-        location.replace('/');
+        this.router.navigate(['/']).then(() => {
+          location.reload();
+        });
       }
     });
   }
