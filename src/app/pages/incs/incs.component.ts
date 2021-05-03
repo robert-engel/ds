@@ -16,10 +16,6 @@ export class IncsComponent implements OnInit, OnDestroy {
       title: 'Home',
       link: '/incs',
     },
-    {
-      title: 'Eigentruppen tabben',
-      link: '/incs/cancel',
-    }
   ];
   activeLink = this.links[0];
 
