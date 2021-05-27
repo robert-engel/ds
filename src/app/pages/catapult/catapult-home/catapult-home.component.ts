@@ -46,7 +46,9 @@ export class CatapultHomeComponent implements OnInit, OnDestroy {
             group.id,
             enabled,
             group.range,
-            group.amount
+            group.amount,
+            group.coordinateX,
+            group.coordinateY
           );
         });
       }
@@ -74,7 +76,9 @@ export class CatapultHomeComponent implements OnInit, OnDestroy {
             entity.id,
             enabled,
             entity.range,
-            entity.amount
+            entity.amount,
+            entity.coordinateX,
+            entity.coordinateY
           );
         });
         this.dialog.open(CatapultGroupEditComponent, {

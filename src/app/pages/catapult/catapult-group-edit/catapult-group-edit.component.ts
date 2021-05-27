@@ -18,6 +18,8 @@ export class CatapultGroupEditComponent implements OnInit, OnDestroy {
   form = this.fb.group({
     amount: ['alle', Validators.required],
     range: 6,
+    coordinateX: undefined,
+    coordinateY: undefined,
   });
   villageForm = new FormControl('', Validators.required);
   massVillageForm = new FormControl('', Validators.required);
@@ -29,9 +31,11 @@ export class CatapultGroupEditComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private catapult: CatapultService,
   ) {
-    this.form.setValue({
+    this.form.patchValue({
       amount: data.amount,
       range: data.range,
+      coordinateX: data.coordinateX,
+      coordinateY: data.coordinateY
     });
     this.slide.setValue(data.enabled, {emitEvent: false});
   }
@@ -62,7 +66,9 @@ export class CatapultGroupEditComponent implements OnInit, OnDestroy {
         this.data.id,
         value,
         this.data.range,
-        this.data.amount
+        this.data.amount,
+        this.data.coordinateX,
+        this.data.coordinateY,
       );
     });
   }
@@ -89,7 +95,9 @@ export class CatapultGroupEditComponent implements OnInit, OnDestroy {
       this.data.id,
       this.slide.value,
       data.range,
-      data.amount
+      data.amount,
+      data.coordinateX,
+      data.coordinateY,
     );
   }
 

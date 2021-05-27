@@ -6,4 +6,6 @@ export interface AutoCatapultVillageGroup {
   enabled: boolean;
   amount: string;
   villages: Village[];
+  coordinateX: number;
+  coordinateY: number;
 }

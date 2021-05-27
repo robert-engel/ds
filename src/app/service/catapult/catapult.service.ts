@@ -82,8 +82,8 @@ export class CatapultService {
     this.websocket.sendData(new BabaPruneCreateGroupRequest(range, amount));
   }
 
-  editGroup(id: number, enabled: boolean, range: number, amount: string): void {
-    this.websocket.sendData(new BabaPruneEditGroupRequest(id, enabled, range, amount));
+  editGroup(id: number, enabled: boolean, range: number, amount: string, coordX: number, coordY: number): void {
+    this.websocket.sendData(new BabaPruneEditGroupRequest(id, enabled, range, amount, coordX, coordY));
   }
 
   deleteGroup(group: number): void {
