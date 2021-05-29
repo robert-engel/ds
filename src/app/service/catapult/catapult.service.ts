@@ -18,6 +18,7 @@ import {BuildingTask} from '../auto-builder/structure/building-task';
 import {BabaPruneSetReductionsRequest} from './packet/baba-prune-set-reductions-request';
 import {BabaPruneMassAddVillageRequest} from './packet/baba-prune-mass-add-village-request';
 import {BabaPruneMassRemoveVillageRequest} from './packet/baba-prune-mass-remove-village-request';
+import {DeleteBabaInfoRequest} from './packet/delete-baba-info-request';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class CatapultService {
       'BabaPruneConfigResponse',
       new BabaPruneConfigRequest()
     ).pipe(takeUntil(unsub));
+  }
+
+  deleteInfo(id: number): void {
+    this.websocket.sendData(new DeleteBabaInfoRequest(id));
   }
 
   groupCreatedEvent(unsub: Observable<void>): Observable<AutoCatapultVillageGroup> {

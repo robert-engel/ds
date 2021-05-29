@@ -20,7 +20,7 @@ export class CatapultInfoComponent implements OnInit, AfterViewInit {
   dataSource: BabaInfoDataSource;
   count: number;
 
-  displayedColumns: string[] = ['id', 'report', 'points', 'nextActionTime', 'nextAction'];
+  displayedColumns: string[] = ['id', 'report', 'points', 'nextActionTime', 'nextAction', 'delete'];
 
   world: string;
 
@@ -54,6 +54,10 @@ export class CatapultInfoComponent implements OnInit, AfterViewInit {
       tap(() => this.pageUpdate())
     )
     .subscribe();
+  }
+
+  remove(id: number): void {
+    this.catapult.deleteInfo(id);
   }
 
   link(village: number): string {
